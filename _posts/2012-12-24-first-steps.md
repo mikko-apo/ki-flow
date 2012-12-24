@@ -35,7 +35,7 @@ different needs.
 
 ## Step 4 - Domain
 
-http://ki-flow.org has been registered. It will contain these release notes for now.
+[http://ki-flow.org](http://ki-flow.org) has been registered. It will contain these release notes for now.
 
 --
 23.12.2012, altitude 11km

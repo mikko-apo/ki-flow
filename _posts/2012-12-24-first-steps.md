@@ -8,7 +8,7 @@ author: Mikko Apo
 
 ## Step 1 - Repository
 
-The first month is behind and the first part of the project was to implement the basic
+The first month is now behind and the first part of the project was to implement the basic
 functionality for the package repository. Now the local features work, the repository
 has command line utilities, Ruby API and documentation in multiple formats.
 

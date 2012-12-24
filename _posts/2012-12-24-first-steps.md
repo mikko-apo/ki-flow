@@ -8,8 +8,8 @@ author: Mikko Apo
 
 ## Step 1 - Repository
 
-The first month and the first part of the project was to implement the basic
-functionality for the package repository. Now local features work, the repository
+The first month is behind and the first part of the project was to implement the basic
+functionality for the package repository. Now the local features work, the repository
 has command line utilities, Ruby API and documentation in multiple formats.
 
 The repository supports basic repository operations like build package, import, export,

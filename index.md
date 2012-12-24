@@ -9,8 +9,7 @@ A Continuous Integration and Continuous Delivery platform.
 
 ### Warning
 
-*note:* Currently ki-flow is not ready for public use. Hopefully during the spring of 2013 it will be ready for
-public use.
+*note:* Currently ki-flow is not ready for public use.
 
 ### Plan
 

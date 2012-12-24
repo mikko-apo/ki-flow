@@ -21,13 +21,14 @@ the repository is not ready or even stable at the moment.
 
 The repository has been published as a rubygem: [ki-repo](https://rubygems.org/gems/ki-repo).
 
-To get the CI features working, two other parts need to be implemented. CI-scripts
-will contains functionality for
-
 ## Steps 2 & 3 - CI-scripts and Web-UI
 
+To get the CI features working, two other parts need to be implemented. CI-scripts
+will contain functionality to identify and configure builds and run them and Web-UI
+will show configuration and reports.
+
 CI-scripts and Web-UI will be done at the same time, as they complement each other.
-Also some kind of integration is needed to git.
+Additional work will be needed in integrating new tools to Ki.
 
 The first project that will use the scripts is ki-flow. Eating your own dogfood is
 a good way to get started and hopefully there will be some other projects with

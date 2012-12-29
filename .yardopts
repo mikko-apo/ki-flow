@@ -1,0 +1,1 @@
+lib/**/*.rb - docs/*.md --asset docs/images/.:images --hide-void-return

@@ -1,7 +1,6 @@
 # @title ki-flow: Backlog
 
-* make web support coffee script, sass and haml
-* compress static files with gz and store to cache
+* optimize static file serving, headers and compress static files with gz and store to cache
 * packages web ui
 ** show
 ** browse

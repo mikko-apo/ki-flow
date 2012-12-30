@@ -16,8 +16,9 @@
 
 module Ki
   class PackagesWeb < Sinatra::Base
+    include KiWebBase
     get '/components' do
-      RackCommand.web_ki_home.finder.components.keys.join(", ")
+      erb :components
     end
   end
 

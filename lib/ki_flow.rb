@@ -17,3 +17,4 @@
 require 'sinatra'
 
 require_relative 'web/packages'
+require_relative 'web/static_files'

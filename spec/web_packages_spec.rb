@@ -33,6 +33,7 @@ describe PackagesWeb do
     create_product_component
     RackCommand.web_ctx.ki_home=@home
     get '/components'
-    [last_response.status, last_response.body].should eq [200, "/file/web/Ki::PackagesWeb:foo.scss\nmy/component, my/product\n"]
+    last_response.status.should eq 200
+    last_response.body.should =~/Components/
   end
 end

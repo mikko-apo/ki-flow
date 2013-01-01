@@ -20,6 +20,11 @@ module Ki
     get '/components' do
       erb :components
     end
+
+    get '/json/components' do
+      content_type :json
+      ki_home.finder.components.keys.to_json
+    end
   end
 
   KiCommand.register("/web/repository", PackagesWeb)

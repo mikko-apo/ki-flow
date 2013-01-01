@@ -1,6 +1,7 @@
 # @title ki-flow: Backlog
 
 * optimize static file serving, headers and compress static files with gz and store to cache
+* fingerprint file urls
 * packages web ui
 ** show
 ** browse

@@ -27,6 +27,8 @@ module Ki
         sass StaticFileWeb.read_file(file)
       elsif file.end_with?(".coffee")
         coffee StaticFileWeb.read_file(file)
+      elsif file.end_with?(".js")
+        send_file(file, :type => "text/javascript")
       end
     end
 

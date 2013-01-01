@@ -20,6 +20,7 @@ module Ki
     include KiWebBase
 
     get '/web/*' do
+#      show_errors do
       file = resolve_path(params[:splat])
       if file.end_with?(".scss")
         scss StaticFileWeb.read_file(file)
@@ -29,6 +30,7 @@ module Ki
         coffee StaticFileWeb.read_file(file)
       elsif file.end_with?(".js")
         send_file(file, :type => "text/javascript")
+#      end
       end
     end
 

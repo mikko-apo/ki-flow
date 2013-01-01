@@ -52,6 +52,10 @@ describe StaticFileWeb do
     coffee = "(function() {\n  var square;\n\n  square = function(x) {\n    return x * x;\n  };\n\n}).call(this);\n"
     coffee_headers = {"Content-Type" => "application/javascript;charset=utf-8", "Content-Length" => "93"}
     [last_response.status, last_response.body, last_response.header].should eq [200, coffee, coffee_headers]
+
+    StaticFileWeb.any_instance.expects(:send_file).with(File.join(root,"foo.js"), :type => "text/javascript").returns "--javascript--"
+    get '/web/Ki::PackagesWeb:foo.js'
+    [last_response.status, last_response.body].should eq [200, "--javascript--"]
   end
 
   it "should error on bad paths" do

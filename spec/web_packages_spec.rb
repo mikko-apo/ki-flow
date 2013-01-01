@@ -29,11 +29,18 @@ describe PackagesWeb do
     PackagesWeb
   end
 
-  it "should support /" do
+  it "/components" do
     create_product_component
     RackCommand.web_ctx.ki_home=@home
     get '/components'
     last_response.status.should eq 200
     last_response.body.should =~/Components/
+  end
+
+  it "/json/components" do
+    create_product_component
+    RackCommand.web_ctx.ki_home=@home
+    get '/json/components'
+    [last_response.status, last_response.body, last_response.content_type].should eq [200,"[\"my/component\",\"my/product\"]","application/json;charset=utf-8"]
   end
 end

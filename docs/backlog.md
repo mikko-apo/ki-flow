@@ -5,7 +5,6 @@
 * packages web ui
 ** show
 ** browse
-** compare versions: files, dependencies, diff
 * cmd: "ki ci-scan https://github.com/mikko-apo/ki-flow/"
 ** download repository
 ** check for buildable projects
@@ -15,8 +14,13 @@
 ** daemon: check for changes
 * daemon
 ** should load scripts and execute them in separate processes
-* env resource pools
-* hierarchic properties
 * action logs
+* version license summary
+
+# Future releases
+
+* compare versions: files, dependencies, source diff
 * authorization
 ** users and groups
+* env resource pools
+* hierarchic properties

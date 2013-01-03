@@ -42,5 +42,13 @@ describe PackagesWeb do
     RackCommand.web_ctx.ki_home=@home
     get '/json/components'
     [last_response.status, last_response.body, last_response.content_type].should eq [200,"[\"my/component\",\"my/product\"]","application/json;charset=utf-8"]
+    get '/json/component/my/component/status_info'
+    [last_response.status, last_response.body, last_response.content_type].should eq [200, "{}", "application/json;charset=utf-8"]
+    get '/json/component/my/component/versions'
+    [last_response.status, last_response.body, last_response.content_type].should eq [200, IO.read(@home.repository("local").component("my/component").versions.path), "application/json;charset=utf-8"]
+    get '/json/version/my/component/23/metadata'
+    [last_response.status, last_response.body, last_response.content_type].should eq [200, IO.read(@home.repository("local").version("my/component/23").metadata.path), "application/json;charset=utf-8"]
+    get '/json/version/my/component/23/status'
+    [last_response.status, last_response.body, last_response.content_type].should eq [200, "[[\"Smoke\",\"Green\"]]", "application/json;charset=utf-8"]
   end
 end

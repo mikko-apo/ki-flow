@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Components</title>
+    <link rel="stylesheet" type="text/css" href="<%= res_url("css/ki.scss") %>"/>
+</head>
+<body>
+
+<script type="text/javascript" src="<%= res_url("js/jquery-1.8.3.js") %>"></script>
+<script type="text/javascript" src="<%= res_url("js/Bacon.coffee") %>"></script>
+<script type="text/javascript" src="<%= res_url("views/repository.coffee") %>"></script>
+
+<script id="t-components" type="text/template">
+    <p>
+        Component: <a class="name">TEST</a>
+    </p>
+</script>
+
+<script id="t-component" type="text/template">
+    <a id="components">Components</a> &gt;
+    <span class="componentName">componentName</span>
+    <hr/>
+    Versions:
+    <p id="version-list">
+    </p>
+</script>
+
+<div id="content"></div>
+
+</body>
+</html>
+
+

@@ -18,12 +18,32 @@ module Ki
   class PackagesWeb < Sinatra::Base
     include KiWebBase
     get '/components' do
-      erb :components
+      erb :repository_page
     end
 
     get '/json/components' do
       content_type :json
       ki_home.finder.components.keys.to_json
+    end
+
+    get '/json/component/*/status_info' do
+      content_type :json
+      ki_home.finder.component(params[:splat].first).status_info.to_json
+    end
+
+    get '/json/component/*/versions' do
+      content_type :json
+      IO.read(ki_home.finder.component(params[:splat].first).versions.path)
+    end
+
+    get '/json/version/*/metadata' do
+      content_type :json
+      IO.read(ki_home.finder.version(params[:splat].first).metadata.path)
+    end
+
+    get '/json/version/*/status' do
+      content_type :json
+      ki_home.finder.version(params[:splat].first).statuses.to_json
     end
   end
 

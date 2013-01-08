@@ -19,9 +19,9 @@ module Ki
   class StaticFileWeb < Sinatra::Base
     include KiWebBase
 
-    get '/web/*' do
+    get '/web/*/*' do
 #      show_errors do
-      file = resolve_path(params[:splat])
+      file = resolve_path(params[:splat].at(1))
       if file.end_with?(".scss")
         scss StaticFileWeb.read_file(file)
       elsif file.end_with?(".sass")
@@ -39,7 +39,7 @@ module Ki
     end
 
     def resolve_path(requested_file)
-      *version_or_class_arr, file = requested_file.first.split(":")
+      *version_or_class_arr, file = requested_file.split(":")
       if file.include?("..")
         raise "File '#{file}' can't include '..'"
       end

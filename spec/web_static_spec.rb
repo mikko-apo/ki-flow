@@ -38,28 +38,28 @@ describe StaticFileWeb do
     RackCommand.web_ctx.ki_home=@home
     root = File.expand_path(File.join(__FILE__, "../../lib/web"))
     StaticFileWeb.expects(:read_file).with(File.join(root, "foo.scss")).returns "$margin: 16px;\n.border {\nmargin: $margin / 2;\n}"
-    get '/web/Ki::PackagesWeb:foo.scss'
+    get '/web/123/Ki::PackagesWeb:foo.scss'
     css = ".border {\n  margin: 8px; }\n"
     css_headers = {"Content-Type" => "text/css;charset=utf-8", "Content-Length" => "27"}
     [last_response.status, last_response.body, last_response.header].should eq [200, css, css_headers]
 
     StaticFileWeb.expects(:read_file).with(File.join(root,"foo.sass")).returns "$margin: 16px\n.border\n  margin: $margin / 2\n"
-    get '/web/Ki::PackagesWeb:foo.sass'
+    get '/web/123/Ki::PackagesWeb:foo.sass'
     [last_response.status, last_response.body, last_response.header].should eq [200, css, css_headers]
 
     StaticFileWeb.expects(:read_file).with(File.join(root,"foo.coffee")).returns "square = (x) -> x * x"
-    get '/web/Ki::PackagesWeb:foo.coffee'
+    get '/web/123/Ki::PackagesWeb:foo.coffee'
     coffee = "(function() {\n  var square;\n\n  square = function(x) {\n    return x * x;\n  };\n\n}).call(this);\n"
     coffee_headers = {"Content-Type" => "application/javascript;charset=utf-8", "Content-Length" => "93"}
     [last_response.status, last_response.body, last_response.header].should eq [200, coffee, coffee_headers]
 
     StaticFileWeb.any_instance.expects(:send_file).with(File.join(root,"foo.js"), :type => "text/javascript").returns "--javascript--"
-    get '/web/Ki::PackagesWeb:foo.js'
+    get '/web/123/Ki::PackagesWeb:foo.js'
     [last_response.status, last_response.body].should eq [200, "--javascript--"]
   end
 
   it "should error on bad paths" do
-    get '/web/Ki::PackagesWeb:../foo.scss'
+    get '/web/123/Ki::PackagesWeb:../foo.scss'
     last_response.status.should eq 500
     last_response.body.should =~/File &#x27;..&#x2F;foo.scss&#x27; can&#x27;t include &#x27;..&#x27;/
   end

@@ -13,17 +13,26 @@
 
 <script id="t-components" type="text/template">
     <p>
-        Component: <a class="name">TEST</a>
+        Component: <a class="name">TEST <span class="s"></span></a>
     </p>
 </script>
 
 <script id="t-component" type="text/template">
-    <a id="components">Components</a> &gt;
-    <span class="componentName">componentName</span>
-    <hr/>
-    Versions:
-    <p id="version-list">
-    </p>
+    <div>
+        <a class="components">Components</a> &gt;
+        <span class="componentName">componentName</span>
+        <hr/>
+        <h3>Versions</h3>
+        <p id="version-list">
+        </p>
+    </div>
+</script>
+
+<script id="t-version" type="text/template">
+    <div>
+        - Version: <p class="id">
+        </p>
+    </div>
 </script>
 
 <div id="content"></div>

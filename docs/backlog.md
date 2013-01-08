@@ -1,6 +1,8 @@
 # @title ki-flow: Backlog
 
 * optimize static file serving, headers and compress static files with gz and store to cache
+* mocha - testing
+* pushstate - urls
 * fingerprint file urls
 * packages web ui
 ** show

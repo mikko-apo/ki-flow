@@ -1,7 +1,9 @@
 # @title ki-flow: Backlog
 
-* optimize static file serving, headers and compress static files with gz and store to cache
 * mocha - testing
+* js template
+** add single tag root when handling templates from script
+* optimize static file serving, headers and compress static files with gz and store to cache
 * pushstate - urls
 * cache busting file urls based on file mtime
 * packages web ui

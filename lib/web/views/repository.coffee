@@ -1,8 +1,9 @@
 show_components = ->
+  clear()
+  fill("#content", "#t-components-top", {components: (n) -> n.click -> show_components()})
   $.get "/repository/json/components", (data) ->
-    clear()
     for component in data
-      fill("#content", "#t-components", {name: [component, (n) -> n.click -> show_component(component)]} )
+      fill("#component-list", "#t-components", {name: [component, (n) -> n.click -> show_component(component)]} )
 
 clear = ->
   $("#content").empty()
@@ -69,9 +70,9 @@ fillNode = (node, values) ->
     else
       node.text value
 
-$(document).ready ->
-  fill("#content", "#t-components", [
-      {name: [ "Alert", (node) -> node.click -> alert("foo")]},
-      {name: "Abort"}
-    ]
-  )
+#$(document).ready ->
+#  fill("#content", "#t-components", [
+#      {name: [ "Alert", (node) -> node.click -> alert("foo")]},
+#      {name: "Abort"}
+#    ]
+#  )

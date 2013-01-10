@@ -11,10 +11,22 @@
 <script type="text/javascript" src="<%= res_url("js/Bacon.coffee") %>"></script>
 <script type="text/javascript" src="<%= res_url("views/repository.coffee") %>"></script>
 
+<script id="t-components-top" type="text/template">
+    <div>
+        <a class="components">Components</a>
+        <hr/>
+        <h3>Components</h3>
+        <p id="component-list">
+        </p>
+    </div>
+</script>
+
 <script id="t-components" type="text/template">
+<div>
     <p>
         Component: <a class="name">TEST <span class="s"></span></a>
     </p>
+</div>
 </script>
 
 <script id="t-component" type="text/template">

@@ -20,6 +20,9 @@ module Ki
     include KiWebBase
 
     get '/web/*/*' do
+      if !web_ctx.development
+        expires 3*30*24*3600, :public, :must_revalidate
+      end
 #      show_errors do
       file = resolve_path(params[:splat].at(1))
       if file.end_with?(".scss")

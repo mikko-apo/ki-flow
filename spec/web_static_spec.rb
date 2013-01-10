@@ -22,6 +22,8 @@ describe StaticFileWeb do
   end
 
   after do
+    RackCommand.web_ctx.development=nil
+    RackCommand.web_ctx.started=Time.now.to_i
     @tester.after
   end
 
@@ -37,12 +39,18 @@ describe StaticFileWeb do
     create_product_component
     RackCommand.web_ctx.ki_home=@home
     root = File.expand_path(File.join(__FILE__, "../../lib/web"))
+
+    css_headers = {"Content-Type" => "text/css;charset=utf-8", "Content-Length" => "27"}
     StaticFileWeb.expects(:read_file).with(File.join(root, "foo.scss")).returns "$margin: 16px;\n.border {\nmargin: $margin / 2;\n}"
     get '/web/123/Ki::PackagesWeb:foo.scss'
     css = ".border {\n  margin: 8px; }\n"
-    css_headers = {"Content-Type" => "text/css;charset=utf-8", "Content-Length" => "27"}
-    [last_response.status, last_response.body, last_response.header].should eq [200, css, css_headers]
+    time = Time.now
+    RackCommand.web_ctx.started=time.to_i
+    expires_date = (time + 7776000).httpdate
+    cached_css_headers = css_headers.merge("Cache-Control"=>"public, must-revalidate, max-age=7776000", "Expires"=>expires_date)
+    [last_response.status, last_response.body, last_response.header].should eq [200, css, cached_css_headers]
 
+    RackCommand.web_ctx.development=true
     StaticFileWeb.expects(:read_file).with(File.join(root,"foo.sass")).returns "$margin: 16px\n.border\n  margin: $margin / 2\n"
     get '/web/123/Ki::PackagesWeb:foo.sass'
     [last_response.status, last_response.body, last_response.header].should eq [200, css, css_headers]

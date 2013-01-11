@@ -40,7 +40,7 @@ describe StaticFileWeb do
     RackCommand.web_ctx.ki_home=@home
     root = File.expand_path(File.join(__FILE__, "../../lib/web"))
 
-    css_headers = {"Content-Type" => "text/css;charset=utf-8", "Content-Length" => "27"}
+    css_headers = {"Content-Type" => "text/css;charset=utf-8", "Cache-Control"=>"no-cache", "Content-Length" => "27"}
     StaticFileWeb.expects(:read_file).with(File.join(root, "foo.scss")).returns "$margin: 16px;\n.border {\nmargin: $margin / 2;\n}"
     get '/web/123/Ki::RepositoryWeb:foo.scss'
     css = ".border {\n  margin: 8px; }\n"
@@ -58,7 +58,7 @@ describe StaticFileWeb do
     StaticFileWeb.expects(:read_file).with(File.join(root,"foo.coffee")).returns "square = (x) -> x * x"
     get '/web/123/Ki::RepositoryWeb:foo.coffee'
     coffee = "(function() {\n  var square;\n\n  square = function(x) {\n    return x * x;\n  };\n\n}).call(this);\n"
-    coffee_headers = {"Content-Type" => "application/javascript;charset=utf-8", "Content-Length" => "93"}
+    coffee_headers = {"Content-Type" => "application/javascript;charset=utf-8", "Cache-Control"=>"no-cache", "Content-Length" => "93"}
     [last_response.status, last_response.body, last_response.header].should eq [200, coffee, coffee_headers]
 
     StaticFileWeb.any_instance.expects(:send_file).with(File.join(root,"foo.js"), :type => "text/javascript").returns "--javascript--"

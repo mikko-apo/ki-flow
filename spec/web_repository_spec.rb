@@ -60,7 +60,6 @@ describe RepositoryWeb do
     url = "http://localhost:#{port}/repository/components"
     @tester.cleaners << -> {rack_command.stop_server}
     chrome = ChromeDelegator.init
-    @tester.cleaners << -> {chrome.quit}
     @tester.catch_stdio do
       Thread.new do
         rack_command.execute(RackCommand.web_ctx, %W(-p #{port}))

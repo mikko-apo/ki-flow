@@ -20,7 +20,9 @@ module Ki
     include KiWebBase
 
     get '/web/*/*' do
-      if !web_ctx.development
+      if web_ctx.development
+        cache_control :no_cache
+      else
         expires 3*30*24*3600, :public, :must_revalidate
       end
 #      show_errors do

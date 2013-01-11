@@ -1,7 +1,6 @@
 # @title ki-flow: Backlog
 
 * mocha testing - should display failed test info and poll for finished test round
-* development mode - should not change resource url but instead handle headers better
 * js template
 ** use single tag root when handling templates from script
 ** check key type: property -> look for class, string -> look for any element

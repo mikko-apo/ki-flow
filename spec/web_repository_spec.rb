@@ -57,7 +57,7 @@ describe RepositoryWeb do
     RackCommand.web_ctx.ki_home=KiHome.new(@tester.tmpdir)
     port = RackCommand.find_free_tcp_port
     rack_command = RackCommand.new
-    url = "http://localhost:#{port}/repository/components?test=true"
+    url = "http://localhost:#{port}/repository/components"
     @tester.cleaners << -> {rack_command.stop_server}
     chrome = ChromeDelegator.init
     @tester.cleaners << -> {chrome.quit}
@@ -68,7 +68,17 @@ describe RepositoryWeb do
       RackCommand.wait_until_url_responds(url)
       chrome.navigate.to url
     end
-    sleep 0.2 # poll for finished test
+    chrome.execute_script <<EOF
+$("head").append('<link rel="stylesheet" href="/file/web/50efd9a1/Ki::RepositoryWeb:js-test/mocha.css" type="text/css" />');
+$("head").append('<script type="text/javascript" src="/file/web/50efd9a1/Ki::RepositoryWeb:js-test/mocha.js"/>');
+$("head").append('<script type="text/javascript" src="/file/web/50efd9a1/Ki::RepositoryWeb:js-test/chai.js"/>');
+$("body").append('<div id="mocha"></div>');
+mocha.setup('bdd');
+chai.should();
+$("head").append('<script type="text/javascript" src="/file/web/50efd9a1/Ki::RepositoryWeb:views/repository_js_test.coffee">');
+mocha.run();
+EOF
+
     if chrome.find_element(css: ".failures em").text != "0"
       puts chrome.find_element(css: "#mocha-report").text
     end

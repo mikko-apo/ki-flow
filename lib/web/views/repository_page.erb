@@ -4,9 +4,6 @@
     <meta charset="UTF-8"/>
     <title>Components</title>
     <link rel="stylesheet" type="text/css" href="<%= res_url("css/ki.scss") %>"/>
-    <% if params[:test] %>
-        <link rel="stylesheet" href="<%= res_url("js-test/mocha.css") %>"/>
-    <% end %>
 </head>
 <body>
 
@@ -53,17 +50,6 @@
 </script>
 
 <div id="content"></div>
-
-<% if params[:test] %>
-    <div id="mocha"></div>
-    <script type="text/javascript" src="<%= res_url("js-test/mocha.js")%>"></script>
-    <script type="text/javascript" src="<%= res_url("js-test/chai.js")%>"></script>
-    <script type="text/javascript">mocha.setup('bdd');chai.should();</script>
-    <script type="text/javascript" src="<%= res_url("views/repository_js_test.coffee")%>"></script>
-    <script type="text/javascript">
-        mocha.run();
-    </script>
-<% end %>
 </body>
 </html>
 

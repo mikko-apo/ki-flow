@@ -4,6 +4,11 @@
 * development mode - should not change resource url but instead handle headers better
 * js template
 ** use single tag root when handling templates from script
+** check key type: property -> look for class, string -> look for any element
+* jquery-assert: map based multi-assert
+** check key type
+** support list
+** support "text" and functions
 * optimize static file serving, headers and compress static files with gz and store to cache
 * pushstate - urls
 * cache busting file urls based on file mtime

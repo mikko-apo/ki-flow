@@ -4,4 +4,3 @@ describe 'Array', ->
       [1,2,3].indexOf(4).should.equal(-1)
     it 'should return index when the value is present', ->
       [1,2,3].indexOf(2).should.equal(1)
-      [1,2,3].indexOf(2).should.equal(0)

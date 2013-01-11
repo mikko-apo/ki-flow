@@ -16,17 +16,18 @@
 
 require_relative 'spec_helper'
 
-describe PackagesWeb do
+describe RepositoryWeb do
   before do
     @tester = Tester.new(example.metadata[:full_description])
   end
 
   after do
+    RackCommand.web_ctx.ki_home=nil
     @tester.after
   end
 
   def app
-    PackagesWeb
+    RepositoryWeb
   end
 
   it "/components" do
@@ -50,5 +51,28 @@ describe PackagesWeb do
     [last_response.status, last_response.body, last_response.content_type].should eq [200, IO.read(@home.repository("local").version("my/component/23").metadata.path), "application/json;charset=utf-8"]
     get '/json/version/my/component/23/status'
     [last_response.status, last_response.body, last_response.content_type].should eq [200, "[[\"Smoke\",\"Green\"]]", "application/json;charset=utf-8"]
+  end
+
+  it "js-tests should pass" do
+    RackCommand.web_ctx.ki_home=KiHome.new(@tester.tmpdir)
+    port = RackCommand.find_free_tcp_port
+    rack_command = RackCommand.new
+    url = "http://localhost:#{port}/repository/components?test=true"
+    @tester.cleaners << -> {rack_command.stop_server}
+    chrome = ChromeDelegator.init
+    @tester.cleaners << -> {chrome.quit}
+    @tester.catch_stdio do
+      Thread.new do
+        rack_command.execute(RackCommand.web_ctx, %W(-p #{port}))
+      end
+      RackCommand.wait_until_url_responds(url)
+      chrome.navigate.to url
+    end
+    sleep 0.2 # poll for finished test
+    if chrome.find_element(css: ".failures em").text != "0"
+      puts chrome.find_element(css: "#mocha-report").text
+    end
+    chrome.find_element(css: ".passes em").text.should eq "2"
+    chrome.find_element(css: ".failures em").text.should eq "0"
   end
 end

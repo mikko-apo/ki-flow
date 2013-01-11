@@ -15,7 +15,7 @@
 # limitations under the License.
 
 module Ki
-  class PackagesWeb < Sinatra::Base
+  class RepositoryWeb < Sinatra::Base
     include KiWebBase
     get '/components' do
       erb :repository_page
@@ -47,5 +47,5 @@ module Ki
     end
   end
 
-  KiCommand.register("/web/repository", PackagesWeb)
+  KiCommand.register("/web/repository", RepositoryWeb)
 end

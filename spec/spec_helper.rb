@@ -48,31 +48,6 @@ ENV["KIHOME"]=File.dirname(File.dirname(File.expand_path(__FILE__)))
 
 # common helper methods
 
-def try(retries, retry_sleep, &block)
-  c = 0
-  start = Time.now
-  while c < retries
-    begin
-      return block.call(c+1)
-    rescue Exception => e
-      c += 1
-      if c < retries
-        sleep retry_sleep
-      else
-        raise e.class, e.message + " (tried #{c} times, waited #{sprintf("%.2f", Time.now - start)} seconds)", e.backtrace
-      end
-    end
-  end
-end
-
-def restore_extensions
-  original_commands = KiCommand::KiExtensions.dup
-  @tester.cleaners << lambda do
-    KiCommand::KiExtensions.clear
-    KiCommand::KiExtensions.register(original_commands)
-  end
-end
-
 def create_product_component
   @tester = Tester.new(example.metadata[:full_description])
   @tester.chdir(@source = @tester.tmpdir)

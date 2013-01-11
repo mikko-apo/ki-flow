@@ -33,6 +33,8 @@ module Ki
         coffee StaticFileWeb.read_file(file)
       elsif file.end_with?(".js")
         send_file(file, :type => "text/javascript")
+      elsif file.end_with?(".css")
+        send_file(file, :type => "text/css")
 #      end
       end
     end

@@ -15,4 +15,4 @@ For more information, see http://ki-flow.org and https://github.com/mikko-apo/ki
 ## Javascript
 * http://jquery.com/
 * http://visionmedia.github.com/mocha - Javascript testing framework
-* https://github.com/visionmedia/should.js - Javascript assertions
+* http://chaijs.com/ - Javascript assertions

@@ -1,8 +1,9 @@
 # @title ki-flow: Backlog
 
-* mocha - testing
+* mocha testing - should display failed test info and poll for finished test round
+* development mode - should not change resource url but instead handle headers better
 * js template
-** add single tag root when handling templates from script
+** use single tag root when handling templates from script
 * optimize static file serving, headers and compress static files with gz and store to cache
 * pushstate - urls
 * cache busting file urls based on file mtime

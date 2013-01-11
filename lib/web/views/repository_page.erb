@@ -4,6 +4,9 @@
     <meta charset="UTF-8"/>
     <title>Components</title>
     <link rel="stylesheet" type="text/css" href="<%= res_url("css/ki.scss") %>"/>
+    <% if params[:test] %>
+        <link rel="stylesheet" href="<%= res_url("js-test/mocha.css") %>"/>
+    <% end %>
 </head>
 <body>
 
@@ -16,17 +19,18 @@
         <a class="components">Components</a>
         <hr/>
         <h3>Components</h3>
+
         <p id="component-list">
         </p>
     </div>
 </script>
 
 <script id="t-components" type="text/template">
-<div>
-    <p>
-        Component: <a class="name">TEST <span class="s"></span></a>
-    </p>
-</div>
+    <div>
+        <p>
+            Component: <a class="name">TEST <span class="s"></span></a>
+        </p>
+    </div>
 </script>
 
 <script id="t-component" type="text/template">
@@ -35,6 +39,7 @@
         <span class="componentName">componentName</span>
         <hr/>
         <h3>Versions</h3>
+
         <p id="version-list">
         </p>
     </div>
@@ -43,12 +48,22 @@
 <script id="t-version" type="text/template">
     <div>
         - Version: <p class="id">
-        </p>
+    </p>
     </div>
 </script>
 
 <div id="content"></div>
 
+<% if params[:test] %>
+    <div id="mocha"></div>
+    <script type="text/javascript" src="<%= res_url("js-test/mocha.js")%>"></script>
+    <script type="text/javascript" src="<%= res_url("js-test/chai.js")%>"></script>
+    <script type="text/javascript">mocha.setup('bdd');chai.should();</script>
+    <script type="text/javascript" src="<%= res_url("views/repository_js_test.coffee")%>"></script>
+    <script type="text/javascript">
+        mocha.run();
+    </script>
+<% end %>
 </body>
 </html>
 

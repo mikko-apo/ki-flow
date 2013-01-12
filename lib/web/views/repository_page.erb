@@ -12,41 +12,34 @@
 <script type="text/javascript" src="<%= res_url("views/repository.coffee") %>"></script>
 
 <script id="t-components-top" type="text/template">
-    <div>
-        <a class="components">Components</a>
-        <hr/>
-        <h3>Components</h3>
+    <a class="components">Components</a>
+    <hr/>
+    <h3>Components</h3>
 
-        <p id="component-list">
-        </p>
-    </div>
+    <p id="component-list">
+    </p>
 </script>
 
 <script id="t-components" type="text/template">
-    <div>
-        <p>
-            Component: <a class="name">TEST <span class="s"></span></a>
-        </p>
-    </div>
+    <p>
+        Component: <a class="name">TEST <span class="s"></span></a>
+    </p>
 </script>
 
 <script id="t-component" type="text/template">
-    <div>
-        <a class="components">Components</a> &gt;
-        <span class="componentName">componentName</span>
-        <hr/>
-        <h3>Versions</h3>
+    <a class="components">Components</a>
+    <span> &gt; </span>
+    <span class="componentName">componentName</span>
+    <hr/>
+    <h3>Versions</h3>
 
-        <p id="version-list">
-        </p>
-    </div>
+    <p id="version-list">
+    </p>
 </script>
 
 <script id="t-version" type="text/template">
-    <div>
-        - Version: <p class="id">
-    </p>
-    </div>
+    - Version: <p class="id">
+</p>
 </script>
 
 <div id="content"></div>

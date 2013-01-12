@@ -1,9 +1,7 @@
 # @title ki-flow: Backlog
 
 * mocha testing - should display failed test info and poll for finished test round
-* js template
-** use single tag root when handling templates from script
-** check key type: property -> look for class, string -> look for any element
+* js template - dom element templates
 * jquery-assert: map based multi-assert
 ** check key type
 ** support list

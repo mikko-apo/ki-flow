@@ -3,7 +3,7 @@ show_components = ->
   fill("#content", "#t-components-top", {components: (n) -> n.click -> show_components()})
   $.get "/repository/json/components", (data) ->
     for component in data
-      fill("#component-list", "#t-components", {name: [component, (n) -> n.click -> show_component(component)]} )
+      fill("#component-list", "#t-components", {"a.name": [component, (n) -> n.click -> show_component(component)]} )
 
 clear = ->
   $("#content").empty()
@@ -18,22 +18,28 @@ $(document).ready show_components
 
 # simple templating mechanism that handles
 # - templates from script tags
-# - fills templates based on key-value pairs from parameter object
+# - fills templates based on key-value pairs from parameter object, lookup either class (property name) or jquery selector string (string)
 # - renders single object or list of objects based on parameter count
 # - supports modifier function for named fields
 fill = (destId, templateId, data = {}) ->
-  original_template = $($(templateId).html())
-  dest = $(destId)
   if !Array.isArray(data)
     data = [data]
-  clone = data.length > 1;
+  clone = true
+  template_source = $(templateId)
+  if template_source.is("script")
+    original_template = $("<div>"+template_source.html()+"</div>")
+    clone = data.length > 1
+  else
+    original_template = template_source
   # repeat for every item in data, good for rendering a list
+  dest = $(destId)
   for item in data
     template = original_template
     if clone
       template = original_template.clone()
     fillTemplate(template, item)
-    dest.append template
+    for i in template.children()
+      dest.append i
   if clone
     dest
   else
@@ -44,8 +50,12 @@ fillTemplate = (template, item) ->
   for key, values of item
     if !Array.isArray(values)
       values = [values]
+    if $.type(key) == "string"
+      selector = key
+    else
+      selector = ".#{key}"
     # repeat for every matching node
-    for node in template.find(".#{key}")
+    for node in template.find(selector)
       fillNode(node, values)
 
 fillNode = (node, values) ->

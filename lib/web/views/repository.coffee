@@ -50,12 +50,11 @@ fillTemplate = (template, item) ->
   for key, values of item
     if !Array.isArray(values)
       values = [values]
-    if $.type(key) == "string"
-      selector = key
-    else
-      selector = ".#{key}"
+    nodes = template.find(key)
+    if nodes.size() == 0
+      nodes = template.find(".#{key}")
     # repeat for every matching node
-    for node in template.find(selector)
+    for node in nodes
       fillNode(node, values)
 
 fillNode = (node, values) ->

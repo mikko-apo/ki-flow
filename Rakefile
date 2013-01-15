@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Copyright 2012 Mikko Apo
+# Copyright 2012-2013 Mikko Apo
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

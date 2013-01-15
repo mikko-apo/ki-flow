@@ -77,9 +77,6 @@ $("body").append('<div id="mocha"></div>');
 mocha.setup('bdd');
 chai.should();
 $("head").append('<script type="text/javascript" src="/file/web/50efd9a1/Ki::RepositoryWeb:views/repository_js_test.coffee">');
-$.ajaxSetup({
-async: false
-});
 mocha.run();
 EOF
     sleep 4

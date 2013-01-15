@@ -18,6 +18,8 @@ limitations under the License.
 
 "use strict"
 
+$.ajaxSetup(async: false)
+
 describe '/repository', ->
   it "/components", ->
     show_components

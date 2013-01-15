@@ -1,11 +1,11 @@
 # @title ki-flow: Backlog
 
-* mocha testing - should display failed test info and poll for finished test round
-* js template - dom element templates
-* jquery-assert: map based multi-assert
-** check key type
-** support list
-** support "text" and functions
+* testing
+** display summary: passed, failed, all tests that were run
+** switch js code synchronous mode: ajax
+** should display failed test info and poll for finished test round
+* renderElements - dom element templates
+* assertElements - functions
 * optimize static file serving, headers and compress static files with gz and store to cache
 * pushstate - urls
 * cache busting file urls based on file mtime

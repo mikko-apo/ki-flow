@@ -1,6 +1,11 @@
-describe 'Array', ->
-  describe '#indexOf()', ->
-    it 'should return -1 when the value is not present', ->
-      [1,2,3].indexOf(4).should.equal(-1)
-    it 'should return index when the value is present', ->
-      [1,2,3].indexOf(2).should.equal(1)
+"use strict"
+
+describe '/repository', ->
+  it "/components", ->
+    show_components
+    assertElements({"#component-list a": [/my\/c/, "my/product"]})
+  it "/component/X", ->
+    show_component 'my/component'
+    assertElements({"#version-list p": "23"})
+    show_component 'my/product'
+    assertElements({"#version-list p": "2"})

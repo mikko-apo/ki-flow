@@ -4,10 +4,13 @@
     <meta charset="UTF-8"/>
     <title>Components</title>
     <link rel="stylesheet" type="text/css" href="<%= res_url("css/ki.scss") %>"/>
+    <% if params[:test] %>
+        <link rel="stylesheet" href="<%= res_url("js-test/mocha.css") %>"/>
+    <% end %>
 </head>
 <body>
 
-<script type="text/javascript" src="<%= res_url("js/jquery-1.8.3.js") %>"></script>
+<script type="text/javascript" src="<%= res_url("js/jquery-1.9.0.js") %>"></script>
 <script type="text/javascript" src="<%= res_url("js/Bacon.coffee") %>"></script>
 <script type="text/javascript" src="<%= res_url("views/repository.coffee") %>"></script>
 
@@ -22,7 +25,7 @@
 
 <script id="t-components" type="text/template">
     <p>
-        Component: <a class="name">TEST <span class="s"></span></a>
+        Component: <a class="name">TEST</a>
     </p>
 </script>
 
@@ -43,6 +46,20 @@
 </script>
 
 <div id="content"></div>
+
+<% if params[:test] %>
+    <div id="mocha"></div>
+    <script type="text/javascript" src="<%= res_url("js-test/mocha.js")%>"></script>
+    <script type="text/javascript" src="<%= res_url("js-test/chai.js")%>"></script>
+    <script type="text/javascript">mocha.setup('bdd');chai.should();</script>
+    <script type="text/javascript" src="<%= res_url("views/repository_js_test.coffee")%>"></script>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            async: false
+        });
+        mocha.run();
+    </script>
+<% end %>
 </body>
 </html>
 

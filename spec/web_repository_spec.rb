@@ -54,7 +54,9 @@ describe RepositoryWeb do
   end
 
   it "js-tests should pass" do
-    RackCommand.web_ctx.ki_home=KiHome.new(@tester.tmpdir)
+    create_product_component
+
+    RackCommand.web_ctx.ki_home=@home
     port = RackCommand.find_free_tcp_port
     rack_command = RackCommand.new
     url = "http://localhost:#{port}/repository/components"
@@ -75,13 +77,15 @@ $("body").append('<div id="mocha"></div>');
 mocha.setup('bdd');
 chai.should();
 $("head").append('<script type="text/javascript" src="/file/web/50efd9a1/Ki::RepositoryWeb:views/repository_js_test.coffee">');
+$.ajaxSetup({
+async: false
+});
 mocha.run();
 EOF
-
+    sleep 4
     if chrome.find_element(css: ".failures em").text != "0"
       puts chrome.find_element(css: "#mocha-report").text
     end
-    chrome.find_element(css: ".passes em").text.should eq "2"
-    chrome.find_element(css: ".failures em").text.should eq "0"
+    [chrome.find_element(css: ".passes em").text, chrome.find_element(css: ".failures em").text].should eq ["2","0"]
   end
 end

@@ -1,18 +1,20 @@
-show_components = ->
+"use strict"
+
+this.show_components = show_components = ->
   clear()
-  fill("#content", "#t-components-top", {components: (n) -> n.click -> show_components()})
+  renderElements("#content", "#t-components-top", {components: (n) -> n.click -> show_components()})
   $.get "/repository/json/components", (data) ->
     for component in data
-      fill("#component-list", "#t-components", {"a.name": [component, (n) -> n.click -> show_component(component)]} )
+      renderElements("#component-list", "#t-components", {"a.name": [component, (n) -> n.click -> show_component(component)]} )
 
 clear = ->
   $("#content").empty()
 
-show_component = (component) ->
+this.show_component = show_component = (component) ->
   clear()
-  fill("#content", "#t-component", {componentName: component, components: (n) -> n.click -> show_components()})
+  renderElements("#content", "#t-component", {componentName: component, components: (n) -> n.click -> show_components()})
   $.get "/repository/json/component/#{component}/versions", (data) ->
-    fill("#version-list", "#t-version", data)
+    renderElements("#version-list", "#t-version", data)
 
 $(document).ready show_components
 
@@ -21,7 +23,7 @@ $(document).ready show_components
 # - fills templates based on key-value pairs from parameter object, lookup either class (property name) or jquery selector string (string)
 # - renders single object or list of objects based on parameter count
 # - supports modifier function for named fields
-fill = (destId, templateId, data = {}) ->
+renderElements = (destId, templateId, data = {}) ->
   if !Array.isArray(data)
     data = [data]
   clone = true
@@ -85,3 +87,26 @@ fillNode = (node, values) ->
 #      {name: "Abort"}
 #    ]
 #  )
+
+this.assertElements = (assert_map) ->
+  for key, asserts of assert_map
+    if !Array.isArray(asserts)
+      asserts = [asserts]
+    nodes = $(key)
+    selector = key
+    if nodes.size() == 0
+      selector = ".#{key}"
+      nodes = $(selector)
+    if asserts.length != nodes.size()
+      throw "Selector '#{selector}' matched #{nodes.size()} but there are #{asserts.length} asserts."
+    for i in [0..(asserts.length-1)]
+      a = asserts[i]
+      element = nodes.get(i)
+      type = $.type(a)
+      text = $(element).text()
+      if type == "regexp"
+        if !a.test(text)
+          throw "Selector #{selector} returned #{nodes.size()} elements, item at index #{i} '#{text}' does not match RegEx '#{a}'"
+      else
+        if a != text
+          throw "Selector #{selector} returned #{nodes.size()} elements, item at index #{i} '#{text}' does not match '#{a}'"

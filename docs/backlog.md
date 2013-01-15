@@ -1,14 +1,13 @@
 # @title ki-flow: Backlog
 
-* testing
-** display summary: passed, failed, all tests that were run
-** switch js code synchronous mode: ajax
-** should display failed test info and poll for finished test round
 * renderElements - dom element templates
 * assertElements - functions
 * optimize static file serving, headers and compress static files with gz and store to cache
-* pushstate - urls
+* pushstate - urls. https://github.com/olivernn/davis.js
 * cache busting file urls based on file mtime
+
+# Next release
+
 * packages web ui
 ** show
 ** browse
@@ -31,3 +30,4 @@
 ** users and groups
 * env resource pools
 * hierarchic properties
+* js-testing: xunit output

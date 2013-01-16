@@ -51,23 +51,29 @@ this.assertElements = (assert_map) ->
 # - fills templates based on key-value pairs from parameter object, lookup either class (property name) or jquery selector string (string)
 # - renders single object or list of objects based on parameter count
 # - supports modifier function for named fields
-renderElements = (destId, templateId, data = {}) ->
+# - gFun is a global function applied to all matched element
+this.renderElements = (destId, templateId, data = {}, gFun = null) ->
+  template_source = $(templateId)
+  if template_source.size() == 0
+    throw "Could not locate template '#{templateId}'"
+  dest = $(destId)
+  if dest.size() == 0
+    throw "Could not locate destination '#{destId}'"
+
   if !Array.isArray(data)
     data = [data]
   clone = true
-  template_source = $(templateId)
   if template_source.is("script")
     original_template = $("<div>"+template_source.html()+"</div>")
     clone = data.length > 1
   else
     original_template = template_source
   # repeat for every item in data, good for rendering a list
-  dest = $(destId)
   for item in data
     template = original_template
     if clone
       template = original_template.clone()
-    fillTemplate(template, item)
+    fillTemplate(template, item, gFun)
     for i in template.children()
       dest.append i
   if clone
@@ -75,7 +81,7 @@ renderElements = (destId, templateId, data = {}) ->
   else
     template
 
-fillTemplate = (template, item) ->
+fillTemplate = (template, item, gFun) ->
   # go throug every named key-value pair in item
   for key, values of item
     if !Array.isArray(values)
@@ -85,9 +91,9 @@ fillTemplate = (template, item) ->
       nodes = template.find(".#{key}")
     # repeat for every matching node
     for node in nodes
-      fillNode(node, values)
+      fillNode(key, node, values, gFun)
 
-fillNode = (node, values) ->
+fillNode = (key, node, values, gFun) ->
   node = jQuery(node)
   for value in values
     type = $.type(value)
@@ -108,3 +114,5 @@ fillNode = (node, values) ->
     # other values are set as text
     else
       node.text value
+    if gFun
+      gFun(key, value, node)

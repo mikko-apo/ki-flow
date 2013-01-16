@@ -82,6 +82,6 @@ EOF
     if chrome.find_element(css: ".failures em").text != "0"
       puts chrome.find_element(css: "#mocha-report").text
     end
-    [chrome.find_element(css: ".passes em").text, chrome.find_element(css: ".failures em").text].should eq ["2","0"]
+    [chrome.find_element(css: ".passes em").text, chrome.find_element(css: ".failures em").text].should eq ["3","0"]
   end
 end

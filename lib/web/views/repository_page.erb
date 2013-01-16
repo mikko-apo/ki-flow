@@ -60,6 +60,41 @@
 </p>
 </script>
 
+<script id="t-version-top" type="text/template">
+    <a class="components">Components</a>
+    <span> &gt; </span>
+    <span class="componentName">componentName</span>
+    <span>/</span>
+    <span class="versionName">versionName</span>
+    <hr/>
+    <p class="version_id">full/version</p>
+    <h3>Dependencies</h3>
+
+    <span id="dependencies"></span>
+
+    <h3>Files</h3>
+    <span id="version-files">
+        Path; Size; SHA1
+    </span>
+</script>
+
+<script id="t-version-file" type="text/template">
+    <p>
+    <span class="path"/>
+    <span class="size"/>
+    <span class="sha1"/>
+    </p>
+</script>
+
+<script id="t-version-dependency" type="text/template">
+    <p>
+        <span class="version_id"/>
+        <span class="name"/>
+        <span class="path"/>
+        <span class="internal"/>
+    </p>
+</script>
+
 <div id="content"></div>
 
 <% if params[:test] %>

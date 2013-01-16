@@ -23,9 +23,14 @@ $.ajaxSetup(async: false)
 describe '/repository', ->
   it "/components", ->
     show_components
-    assertElements({"#component-list a": [/my\/c/, "my/product"]})
+    assertElements
+      "#component-list a": [/my\/c/, "my/product"]
   it "/component/X", ->
     show_component 'my/component'
-    assertElements({"#version-list p": "23"})
+    assertElements
+      "#version-list p": "23"
     show_component 'my/product'
-    assertElements({"#version-list p": "2"})
+    assertElements
+      "#version-list p": "2"
+  it "/version/X", ->
+    show_version 'my/product', "2"

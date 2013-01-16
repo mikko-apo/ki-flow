@@ -53,7 +53,7 @@ this.show_version = (component, version) ->
     if metadata.files
       renderElements "#version-files", "#t-version-file", metadata.files
     if metadata.dependencies
-      renderElements "#version-files", "#t-version-dependency", metadata.dependencies.map (d) ->
+      renderElements "#dependencies", "#t-version-dependency", metadata.dependencies.map (d) ->
         id = d.version_id
         d.version_id = [id, (n) -> n.click -> show_version(id)]
         d

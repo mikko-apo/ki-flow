@@ -30,10 +30,10 @@ describe RepositoryWeb do
     RepositoryWeb
   end
 
-  it "/components" do
+  it "/" do
     create_product_component
     RackCommand.web_ctx.ki_home=@home
-    get '/components'
+    get '/'
     last_response.status.should eq 200
     last_response.body.should =~/Components/
   end
@@ -59,7 +59,7 @@ describe RepositoryWeb do
     RackCommand.web_ctx.ki_home=@home
     port = RackCommand.find_free_tcp_port
     rack_command = RackCommand.new
-    url = "http://localhost:#{port}/repository/components"
+    url = "http://localhost:#{port}/repository"
     @tester.cleaners << -> {rack_command.stop_server}
     chrome = ChromeDelegator.init
     @tester.catch_stdio do
@@ -83,5 +83,11 @@ EOF
       puts chrome.find_element(css: "#mocha-report").text
     end
     [chrome.find_element(css: ".passes em").text, chrome.find_element(css: ".failures em").text].should eq ["3","0"]
+  end
+
+  it "/routes" do
+    get '/routes'
+    last_response.status.should eq 200
+    last_response.body.should =~/\/json\/component/
   end
 end

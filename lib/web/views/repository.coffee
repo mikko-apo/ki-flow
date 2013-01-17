@@ -33,9 +33,13 @@ clear = ->
 this.show_component = (component) ->
   $.get "/repository/json/component/#{component}/versions", (data) ->
     clear()
+    # #fi-component template contains two elements:
+    # - .componentName
+    # - .components is a link back to main page
     renderElements "#content", "#t-component",
       componentName: component
       components: (n) -> n.click -> show_components()
+    # data is a list of versions: {"id": "2","time": "2013-01-03 00:31:33 +0200"}
     renderElements "#version-list", "#t-version", data, (k, v, n) -> n.click -> show_version(component, v)
 
 this.show_version = (component, version) ->

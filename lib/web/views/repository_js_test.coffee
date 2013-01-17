@@ -28,9 +28,11 @@ describe '/repository', ->
   it "/component/X", ->
     show_component 'my/component'
     assertElements
+      "componentName": "my/component"
       "#version-list p": "23"
     show_component 'my/product'
     assertElements
+      "componentName": "my/product"
       "#version-list p": "2"
   it "/version/X", ->
     show_version 'my/product', "2"

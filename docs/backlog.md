@@ -4,9 +4,7 @@
 * assertElements - functions
 * optimize static file serving, headers and compress static files with gz and store to cache
 * pushstate - urls. https://github.com/olivernn/davis.js
-* cache busting file urls based on file mtime
-* packages web ui - barebones
-** status
+* packages web ui - version status
 
 # Next release
 

@@ -21,7 +21,8 @@
 * version license summary
 * renderElements - fix for multi-dest, now uses hardcoded element from dest[0]
 * optimize static file serving, headers and compress static files with gz and store to cache
-* assertElements - functions
+* assertElements: functions
+* assertElement: for list data collect all values in one
 
 
 # Future releases

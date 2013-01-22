@@ -21,11 +21,13 @@ limitations under the License.
 $.ajaxSetup(async: false)
 
 describe '/repository', ->
+
   it "/components", ->
     show_components()
     document.title.should.equal "All components"
     assertElements
       "#component-list a": [/my\/c/, "my/product"]
+
   it "/component/X", ->
     show_component 'my/component'
     document.title.should.equal "my/component"
@@ -38,12 +40,15 @@ describe '/repository', ->
       "#version-list .id": "2"
     $("#version-list .id").click()
     document.title.should.equal "my/product/2"
+
   it "/version/X", ->
     show_version 'my/product', "2"
     document.title.should.equal "my/product/2"
     assertElements
-      "#version-files .path": "readme.txt"
-      "#version-files .size": "2"
-      "#dependencies .version_id": "my/component/23"
-      "#dependencies .name": "comp"
-      "#dependencies .path": "comp"
+      "#version-files":
+        path: "readme.txt"
+        ".size": "2"
+      "#dependencies":
+        "version_id": "my/component/23"
+        "name": "comp"
+        "path": "comp"

@@ -23,17 +23,25 @@ limitations under the License.
 # - Hash key is used as jquery selector
 # - value can contain either one item or a list of values. selector needs to find the same number of elements
 # - value can contain either strings or regex objects
-this.assertElements = (assert_map) ->
+this.assertElements = (source, assert_map) ->
+  if !assert_map?
+    assert_map = source
+    source = $("body")
+  else
+    source = $(source)
   for key, asserts of assert_map
     if !Array.isArray(asserts)
       asserts = [asserts]
-    nodes = $(key)
+    nodes = source.find(key)
     selector = key
     if nodes.size() == 0
       selector = ".#{key}"
-      nodes = $(selector)
+      nodes = source.find(selector)
     if asserts.length != nodes.size()
-      throw "Selector '#{selector}' matched #{nodes.size()} but there are #{asserts.length} asserts."
+      if nodes.size() == 0
+        throw "Selector '#{selector}' did not match any nodes! There are #{asserts.length} asserts."
+      else
+        throw "Selector '#{selector}' matched #{nodes.size()} but there are #{asserts.length} asserts."
     for i in [0..(asserts.length-1)]
       a = asserts[i]
       element = nodes.get(i)
@@ -42,9 +50,11 @@ this.assertElements = (assert_map) ->
       if type == "regexp"
         if !a.test(text)
           throw "Selector #{selector} returned #{nodes.size()} elements, item at index #{i} '#{text}' does not match RegEx '#{a}'"
-      else
+      else if type == "string"
         if a != text
           throw "Selector #{selector} returned #{nodes.size()} elements, item at index #{i} '#{text}' does not match '#{a}'"
+      else
+        assertElements(element, a)
 
 # simple templating mechanism that handles
 # - templates from script tags

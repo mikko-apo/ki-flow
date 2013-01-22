@@ -18,7 +18,10 @@ limitations under the License.
 
 "use strict"
 
-this.show_components = show_components = ->
+clear = ->
+  $("#content").empty()
+
+this.show_components = ->
   $.get "/repository/json/components", (data) ->
     document.title = "All components"
     clear()
@@ -27,9 +30,6 @@ this.show_components = show_components = ->
     for component in data
       renderElements "#component-list", "#t-components",
         "a.name": [component, (n) -> n.click -> show_component(component)]
-
-clear = ->
-  $("#content").empty()
 
 this.show_component = (component) ->
   $.get "/repository/json/component/#{component}/versions", (data) ->
@@ -64,5 +64,3 @@ this.show_version = (component, version) ->
         id = d.version_id
         d.version_id = [id, (n) -> n.click -> show_version(id)]
         d
-
-$(document).ready show_components

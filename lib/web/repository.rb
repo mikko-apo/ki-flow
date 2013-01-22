@@ -18,7 +18,7 @@ module Ki
   class RepositoryWeb < Sinatra::Base
     include KiWebBase
     get '/' do
-      erb :repository_page
+      erb :repository_page, :locals => {js: "show_components();"}
     end
 
     get '/json/components' do

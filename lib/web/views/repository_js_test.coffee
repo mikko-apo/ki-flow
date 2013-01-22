@@ -22,7 +22,7 @@ $.ajaxSetup(async: false)
 
 describe '/repository', ->
   it "/components", ->
-    show_components
+    show_components()
     document.title.should.equal "All components"
     assertElements
       "#component-list a": [/my\/c/, "my/product"]

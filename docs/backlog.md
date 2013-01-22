@@ -1,8 +1,5 @@
 # @title ki-flow: Backlog
 
-* renderElements - dom element templates, fix missing elements for script templates
-* assertElements - functions
-* optimize static file serving, headers and compress static files with gz and store to cache
 * pushstate - urls. https://github.com/olivernn/davis.js
 * packages web ui - version status
 
@@ -22,6 +19,10 @@
 ** should load scripts and execute them in separate processes
 * action logs
 * version license summary
+* renderElements - fix for multi-dest, now uses hardcoded element from dest[0]
+* optimize static file serving, headers and compress static files with gz and store to cache
+* assertElements - functions
+
 
 # Future releases
 

@@ -34,65 +34,56 @@
     <hr/>
     <h3>Components</h3>
 
-    <p id="component-list">
-    </p>
+    <table id="component-list"/>
 </script>
 
 <script id="t-components" type="text/template">
-    <p>
-        Component: <a class="name">TEST</a>
-    </p>
+    <tr><td><a class="name">TEST</a></td></tr>
 </script>
 
 <script id="t-component" type="text/template">
-    <a class="components">Components</a>
-    <span> &gt; </span>
-    <span class="componentName">componentName</span>
+    <a class="components">Components</a> &gt; <span class="componentName">componentName</span>
     <hr/>
     <h3>Versions</h3>
 
-    <p id="version-list">
-    </p>
+    <table id="version-list"/>
 </script>
 
 <script id="t-version" type="text/template">
-    - Version: <p class="id">
-</p>
+    <tr><td class="id"/></tr>
 </script>
 
 <script id="t-version-top" type="text/template">
-    <a class="components">Components</a>
-    <span> &gt; </span>
-    <span class="componentName">componentName</span>
-    <span>/</span>
-    <span class="versionName">versionName</span>
+    <a class="components">Components</a> &gt; <span class="componentName">componentName</span> / <span class="versionName">versionName</span>
     <hr/>
     <p class="version_id">full/version</p>
     <h3>Dependencies</h3>
 
-    <span id="dependencies"></span>
+    <table id="dependencies">
+        <tr><th>Version</th><th>Name</th><th>Path</th><th>Internal</th></tr>
+    </table>
 
     <h3>Files</h3>
-    <span id="version-files">
-        Path; Size; SHA1
-    </span>
+    <table id="version-files">
+        <tr><th>Path</th><th>Size</th><th>SHA1</th></tr>
+    </table>
 </script>
 
 <script id="t-version-file" type="text/template">
-    <p>
-    <span class="path"/>
-    <span class="size"/>
-    <span class="sha1"/>
-    </p>
+    <tr>
+        <td class="path"/>
+        <td class="size"/>
+        <td class="sha1"/>
+    </tr>
 </script>
 
 <script id="t-version-dependency" type="text/template">
-    <p>
-        <span class="version_id"/>
-        <span class="name"/>
-        <span class="path"/>
-        <span class="internal"/>
-    </p>
+    <tr>
+        <td class="version_id"/>
+        <td class="name"/>
+        <td class="path"/>
+        <td class="internal"/>
+    </tr>
 </script>
 
 <div id="content"></div>

@@ -20,6 +20,7 @@ limitations under the License.
 
 this.show_components = show_components = ->
   $.get "/repository/json/components", (data) ->
+    document.title = "All components"
     clear()
     renderElements "#content", "#t-components-top",
       components: (n) -> n.click -> show_components()
@@ -33,6 +34,7 @@ clear = ->
 this.show_component = (component) ->
   $.get "/repository/json/component/#{component}/versions", (data) ->
     clear()
+    document.title = component
     # #fi-component template contains two elements:
     # - .componentName
     # - .components is a link back to main page
@@ -49,6 +51,7 @@ this.show_version = (component, version) ->
     version = arr[arr.length-1]
   $.get "/repository/json/version/#{component}/#{version}/metadata", (metadata) ->
     clear()
+    document.title = "#{component}/#{version}"
     renderElements "#content", "#t-version-top",
       versionName: version
       componentName: [component, (n) -> n.click -> show_component(component)]

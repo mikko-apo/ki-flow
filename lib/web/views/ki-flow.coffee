@@ -54,28 +54,28 @@ this.assertElements = (assert_map) ->
 # - gFun is a global function applied to all matched element
 this.renderElements = (destId, templateId, data = {}, gFun = null) ->
   template_source = $(templateId)
+  if !template_source.is("script")
+    throw "Template '#{templateId}' is not a script tag!"
   if template_source.size() == 0
-    throw "Could not locate template '#{templateId}'"
+    throw "Could not locate template script tag for '#{templateId}'"
   dest = $(destId)
   if dest.size() == 0
     throw "Could not locate destination '#{destId}'"
+  destTag = document.createElement(dest[0].tagName)
 
   if !Array.isArray(data)
     data = [data]
-  clone = true
-  if template_source.is("script")
-    original_template = $("<div>"+template_source.html()+"</div>")
-    clone = data.length > 1
-  else
-    original_template = template_source
+  destTag.innerHTML = template_source.html()
+  original_template = destTag
+  clone = data.length > 1
   # repeat for every item in data, good for rendering a list
   for item in data
     template = original_template
     if clone
-      template = original_template.clone()
-    fillTemplate(template, item, gFun)
-    for i in template.children()
-      dest.append i
+      template = original_template.cloneNode(true)
+    fillTemplate($(template), item, gFun)
+    while template.hasChildNodes()
+      dest.append template.removeChild(template.firstChild)
   if clone
     dest
   else

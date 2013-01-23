@@ -19,6 +19,7 @@ limitations under the License.
 "use strict"
 
 $.ajaxSetup(async: false)
+this.test = true
 
 describe '/repository', ->
 
@@ -52,3 +53,13 @@ describe '/repository', ->
         "version_id": "my/component/23"
         "name": "comp"
         "path": "comp"
+    # check dependency and status
+    $(".version_id").click()
+    document.title.should.equal "my/component/23"
+    assertElements
+      "#version-files":
+        path: "test.sh"
+        ".size": "2"
+      "#statuses":
+        status: "Smoke"
+        value: "Green"

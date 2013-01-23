@@ -1,7 +1,5 @@
 # @title ki-flow: Backlog
 
-* packages web ui - version status
-
 # Next release
 
 * packages web ui

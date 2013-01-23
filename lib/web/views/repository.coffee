@@ -21,13 +21,16 @@ limitations under the License.
 clear = ->
   $("#content").empty()
 
+pushState = (restore, push_command, push_args, title, url) ->
+  if !restore && !test?
+    stateObj = { restore: push_command, args: push_args }
+    history.pushState(stateObj, title, url)
+  document.title = title
+
 this.show_components = (restore) ->
   $.get "/repository/json/components", (data) ->
     clear()
-    if !restore
-      stateObj = { restore: "show_components", args: [] }
-      history.pushState(stateObj, "page 2", "/repository")
-    document.title = "All components"
+    pushState restore, "show_components", [], "All components", "/repository"
     renderElements "#content", "#t-components-top",
       components: (n) -> n.click -> show_components()
     for component in data
@@ -37,10 +40,7 @@ this.show_components = (restore) ->
 this.show_component = (component, restore) ->
   $.get "/repository/json/component/#{component}/versions", (data) ->
     clear()
-    if !restore
-      stateObj = { restore: "show_component", args: [component] }
-      history.pushState(stateObj, "page 2", "/repository/component/#{component}")
-    document.title = component
+    pushState restore, "show_component", [component], component, "/repository/component/#{component}"
     # #fi-component template contains two elements:
     # - .componentName
     # - .components is a link back to main page
@@ -57,10 +57,7 @@ this.show_version = (component, version, restore) ->
     version = arr[arr.length-1]
   $.get "/repository/json/version/#{component}/#{version}/metadata", (metadata) ->
     clear()
-    if !restore
-      stateObj = { restore: "show_version", args: [component, version] }
-      history.pushState(stateObj, "page 2", "/repository/version/#{component}/#{version}")
-    document.title = "#{component}/#{version}"
+    pushState restore, "show_version", [component, version], "#{component}/#{version}", "/repository/version/#{component}/#{version}"
     renderElements "#content", "#t-version-top",
       versionName: version
       componentName: [component, (n) -> n.click -> show_component(component)]
@@ -73,6 +70,10 @@ this.show_version = (component, version, restore) ->
         id = d.version_id
         d.version_id = [id, (n) -> n.click -> show_version(id)]
         d
+    $.get "/repository/json/version/#{component}/#{version}/status", (status) ->
+      renderElements "#statuses", "#t-version-status", status.map (s) ->
+        status: s[0]
+        value: s[1]
 
 window.onpopstate = (event) ->
   if (event.state)

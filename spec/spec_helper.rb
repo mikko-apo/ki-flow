@@ -55,7 +55,7 @@ def create_product_component
   Tester.write_files(@source, "readme.txt" => "aa", "test.sh" => "bb")
   KiCommand.new.execute(%W(version-build --version-id my/component/23 -t foo test.sh --source-url http://test.repo/repo@21331 --source-tag-url http://test.repo/tags/23 --source-repotype git --source-author john))
   KiCommand.new.execute(%W(version-import -h #{@home.path}))
-  KiCommand.new.execute(%W(version-status add  my/component/23 Smoke=Green action=path/123 -h #{@home.path}))
+  KiCommand.new.execute(%W(version-status add my/component/23 Smoke=Green action=path/123 -h #{@home.path}))
   FileUtils.rm("ki-version.json")
   KiCommand.new.execute(%W(version-build --version-id my/product/2 -t bar readme.txt -d my/component/23,name=comp,path=comp,internal) <<
                             "-o" << "cp comp/test.sh test.bat" << "-O" << "cp readme.txt README")

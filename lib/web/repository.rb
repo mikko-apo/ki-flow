@@ -21,6 +21,14 @@ module Ki
       erb :repository_page, :locals => {js: "show_components();"}
     end
 
+    get '/component/*' do
+      erb :repository_page, :locals => {js: "show_component(\"#{params[:splat].first}\");"}
+    end
+
+    get '/version/*' do
+      erb :repository_page, :locals => {js: "show_version(\"#{params[:splat].first}\");"}
+    end
+
     get '/json/components' do
       content_type :json
       ki_home.finder.components.keys.to_json

@@ -1,6 +1,5 @@
 # @title ki-flow: Backlog
 
-* pushstate - urls. https://github.com/olivernn/davis.js
 * packages web ui - version status
 
 # Next release
@@ -23,6 +22,7 @@
 * optimize static file serving, headers and compress static files with gz and store to cache
 * assertElements: functions
 * assertElement: for list data collect all values in one
+* pushstate - urls. https://github.com/olivernn/davis.js
 
 
 # Future releases

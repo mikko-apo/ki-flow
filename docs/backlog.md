@@ -1,10 +1,12 @@
 # @title ki-flow: Backlog
 
-# Next release
-
-* packages web ui
-** show
-** browse
+# CI
+* ki.yml - config file based build
+** parse
+** export tools
+** run commands
+** collect artifacts into version
+* check for repository changes
 * cmd: "ki ci-scan https://github.com/mikko-apo/ki-flow/"
 ** download repository
 ** check for buildable projects
@@ -15,7 +17,12 @@
 * daemon
 ** should load scripts and execute them in separate processes
 * action logs
-* version license summary
+
+# Web
+
+* packages web ui
+** show
+** browse
 * renderElements - fix for multi-dest, now uses hardcoded element from dest[0]
 * optimize static file serving, headers and compress static files with gz and store to cache
 * assertElements: functions
@@ -31,3 +38,4 @@
 * env resource pools
 * hierarchic properties
 * js-testing: xunit output
+* version license metadata

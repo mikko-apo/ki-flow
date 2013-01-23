@@ -14,7 +14,8 @@ A Continuous Integration and Continuous Delivery platform.
 ### Plan
 
 1. Package repository - local features done, additional features need to be implemented
-2. CI-scripts and Web-UI - missing at the moment
+2. Web-UI - Barebones version works
+3. CI-scripts - being implemented
 
 ### Posts
 

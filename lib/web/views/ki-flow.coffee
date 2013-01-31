@@ -63,33 +63,42 @@ this.assertElements = (source, assert_map) ->
 # - supports modifier function for named fields
 # - gFun is a global function applied to all matched element
 this.renderElements = (destId, templateId, data = {}, gFun = null) ->
-  template_source = $(templateId)
-  if !template_source.is("script")
-    throw "Template '#{templateId}' is not a script tag!"
-  if template_source.size() == 0
-    throw "Could not locate template script tag for '#{templateId}'"
   dest = $(destId)
   if dest.size() == 0
     throw "Could not locate destination '#{destId}'"
-  destTag = document.createElement(dest[0].tagName)
 
   if !Array.isArray(data)
     data = [data]
-  destTag.innerHTML = template_source.html()
-  original_template = destTag
+
+  original_template = document.createElement(dest[0].tagName)
+  original_template.innerHTML = getTemplate(templateId)
   clone = data.length > 1
   # repeat for every item in data, good for rendering a list
+  fragment = document.createDocumentFragment()
   for item in data
     template = original_template
     if clone
       template = original_template.cloneNode(true)
     fillTemplate($(template), item, gFun)
     while template.hasChildNodes()
-      dest.append template.removeChild(template.firstChild)
+      fragment.appendChild( template.removeChild(template.firstChild))
+  dest.append(fragment)
   if clone
     dest
   else
     template
+
+templateCache = {}
+getTemplate = (templateId) ->
+  cached = templateCache[templateId]
+  if !cached?
+    template_source = $(templateId)
+    if !template_source.is("script")
+      throw "Template '#{templateId}' is not a script tag!"
+    if template_source.size() == 0
+      throw "Could not locate template script tag for '#{templateId}'"
+    templateCache[templateId] = cached = template_source.html()
+  cached
 
 fillTemplate = (template, item, gFun) ->
   # go throug every named key-value pair in item

@@ -98,6 +98,16 @@
 <script type="text/javascript" src="<%= res_url("views/ki-flow.coffee") %>"></script>
 <script type="text/javascript" src="<%= res_url("views/repository.coffee") %>"></script>
 
+<% if params[:cssReload] %>
+    <script>
+        setInterval(function() {
+            $('link[rel="stylesheet"]').each(function(i, e){
+                $(e).attr('href', $(e).attr('href').split("?")[0] + "?" + Date.now());
+            })
+        }, 1000);
+    </script>
+<% end %>
+
 <% if params[:test] %>
     <div id="mocha"></div>
     <script type="text/javascript" src="<%= res_url("js-test/mocha.js")%>"></script>

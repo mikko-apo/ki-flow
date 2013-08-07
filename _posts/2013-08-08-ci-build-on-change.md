@@ -51,7 +51,7 @@ and imported in to ki repository.
     ki version-build build
     ki version-import --move -c ki/sbt
 
-Note: you can now delete ~/src/ki_sbt, it's stored in your repository.
+Note: you can now delete ~/src/ki_sbt, it's files are stored in your local ki repository.
 
 ki_sbt/1 should be visible in the repository page if you refresh the browser.
 

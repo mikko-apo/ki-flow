@@ -1,14 +1,15 @@
 # @title ki-flow: Backlog
 
 # CI
+* check for repository changes
+* build action logs
+* logs should be collected
+* test results should be parsed and collected
 * ki.yml - config file based build
 ** parse DONE
 ** export tools DONE
 ** run commands DONE
 ** collect artifacts into version DONE
-* test results should be parsed and collected
-* logs should be collected
-* check for repository changes
 * cmd: "ki ci-scan https://github.com/mikko-apo/ki-flow/"
 ** download repository
 ** check for buildable projects
@@ -18,7 +19,6 @@
 ** daemon: check for changes
 * daemon
 ** should load scripts and execute them in separate processes
-* action logs
 
 # Web
 

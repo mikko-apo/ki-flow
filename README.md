@@ -8,6 +8,10 @@ ki-flow is being actively developed, but it is in alpha stage. This means that i
 
 For more information, see http://ki-flow.org and https://github.com/mikko-apo/ki-repo
 
+# Documentation
+
+* {file:docs/development.md Development} provides additional development related information.
+
 # Tech stack
 
 * https://rubygems.org/gems/ki-repo

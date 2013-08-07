@@ -2,10 +2,12 @@
 
 # CI
 * ki.yml - config file based build
-** parse
-** export tools
-** run commands
-** collect artifacts into version
+** parse DONE
+** export tools DONE
+** run commands DONE
+** collect artifacts into version DONE
+* test results should be parsed and collected
+* logs should be collected
 * check for repository changes
 * cmd: "ki ci-scan https://github.com/mikko-apo/ki-flow/"
 ** download repository

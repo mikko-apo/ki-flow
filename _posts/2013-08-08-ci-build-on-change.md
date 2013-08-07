@@ -33,7 +33,7 @@ Now the ki command automatically loads ki-flow files and ki-flow's command line 
 
     ki web
 
-Open browser to http://localhost:8290/repository/
+Open browser to [http://localhost:8290/repository/](http://localhost:8290/repository/)
 
 ## Example build tool: build/sbt
 

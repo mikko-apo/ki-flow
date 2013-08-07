@@ -25,11 +25,7 @@ describe Ki::Ci::CiBuildCommand do
     @tester.after
   end
 
-  it "should run full build" do
-    @tester.chdir(source = @tester.tmpdir)
-    home = KiHome.new(@tester.tmpdir)
-
-    # create ki/ant/1
+  def create_ki_ant(home, source)
     Tester.write_files(
         source,
         "ant.sh" => "#!/usr/bin/env bash
@@ -38,8 +34,9 @@ echo ANT >> result.txt"
     system("chmod u+x #{source}/ant.sh")
     KiCommand.new.execute(%W(version-build ant.sh))
     KiCommand.new.execute(%W(version-import -h #{home.path} --move -c ki/ant))
+  end
 
-    # create ki/sbt/1
+  def create_ki_sbt(home, source)
     Tester.write_files(
         source,
         "sbt.sh" => "#!/usr/bin/env bash
@@ -49,6 +46,14 @@ cat info.txt >> result.txt"
     system("chmod u+x #{source}/sbt.sh")
     KiCommand.new.execute(%W(version-build sbt.sh))
     KiCommand.new.execute(%W(version-import -h #{home.path} --move -c ki/sbt))
+  end
+
+  it "should run full build" do
+    @tester.chdir(source = @tester.tmpdir)
+    home = KiHome.new(@tester.tmpdir)
+
+    create_ki_ant(home, source)
+    create_ki_sbt(home, source)
 
     build_config = <<EOF
 build_dependencies:
@@ -93,4 +98,57 @@ After script
 ")
   end
 
+  it "should execute build only if remote git changes" do
+    @tester.chdir(build_dir = @tester.tmpdir)
+    home = KiHome.new(@tester.tmpdir)
+
+    create_ki_sbt(home, build_dir)
+
+    build_config = <<EOF
+build_dependencies: ki/sbt
+script: ./sbt.sh
+build_version:
+  - result.txt
+import_component: test/result
+env:
+  global:
+    - TIMEOUT=1000
+EOF
+
+    git_dir = @tester.tmpdir
+    git_sh = HashLogShell.new.chdir(git_dir)
+    git_sh.spawn("git init")
+
+    # create 1st version
+    Tester.write_files(git_dir,
+                       "info.txt" => "INFO
+",
+                       "ki.yml" => build_config
+    )
+    git_sh.spawn("git add *.*")
+    git_sh.spawn("git commit -m 'initial commit'")
+
+    Tester.write_files(build_dir, "ki-builds.json" => JSON.pretty_generate({builds: [{remote_url: git_dir + ":master"}]}))
+    KiCommand.new.execute(%W(ci-build-on-change -h #{home.path}))
+    v1 = home.version("test/result")
+    v1.name.should eq("1")
+    IO.read(v1.binaries.path("result.txt")).should eq("SBT 1000\nINFO\n")
+    KiCommand.new.execute(%W(ci-build-on-change -h #{home.path}))
+    home.version("test/result").name.should eq("1")
+
+    # create 2nd version
+    Tester.write_files(git_dir,
+                       "info.txt" => "WARN
+"
+    )
+    git_sh.spawn("git add *.*")
+    git_sh.spawn("git commit -m '2nd commit'")
+    KiCommand.new.execute(%W(ci-build-on-change -h #{home.path}))
+    v2 = home.version("test/result")
+    v2.name.should eq("2")
+    IO.read(v2.binaries.path("result.txt")).should eq("SBT 1000\nWARN\n")
+    KiCommand.new.execute(%W(ci-build-on-change -h #{home.path}))
+    home.version("test/result").name.should eq("2")
+
+  end
 end

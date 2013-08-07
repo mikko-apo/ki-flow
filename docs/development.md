@@ -4,9 +4,10 @@
 
 # Important Ruby classes
 
-## Command line utilities - /commands/
+## Continuous Integration / Delivery
 
-* ci-build - {Ki::Ci::CiBuildCommand}
+* {Ki::Ci::CiBuild}
+* /commands/ci-build - {Ki::Ci::CiBuildCommand}
 
 ## Build Config Extensions - /ci/build/config/
 

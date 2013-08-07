@@ -17,11 +17,18 @@
 module Ki
   module Ci
     module BuildConfig
+      # Build config file based on .travis.yml
+      #
+      # More information at http://about.travis-ci.org/docs/user/build-configuration/
+      #
+      # extensions to the syntax:
+      # * *build_version*, list of "build version" commands
+      # * *import_component*, name of the component where the version is created
       class YmlBuildConfig
         attr_chain :ki_home, :require
         attr_chain :build_dir, :require
         attr_chain :config, -> {read_config}
-        attr_chain :shell, -> {HashLogShell.new.chdir(build_dir.path)}
+        attr_chain :sh, -> {HashLogShell.new.chdir(build_dir.path)}
 
         def handles_build_directory?(dir)
           dir.exists?("ki.yml")
@@ -41,7 +48,7 @@ module Ki
         def execute_build
           if( env = config.fetch("env", nil))
             if ( global = env.fetch("global", nil))
-              shell.env( map_env_list_to_map(global))
+              sh.env( map_env_list_to_map(global))
             end
           end
           ["before_install", "install", "before_script"].each do |c|
@@ -56,12 +63,15 @@ module Ki
           run_commands("after_script")
         end
 
-        def build_versions_and_import
+        def build_versions
           if (build_version_commands = config.fetch("build_version", nil))
             build_version_commands.each do |c|
               KiCommand.new.execute(%W(version-build --file #{build_dir.path("ki-version.json")} #{c}))
             end
           end
+        end
+
+        def import_versions
           if (import_component = config.fetch("import_component", nil))
             KiCommand.new.execute(%W(version-import -h #{ki_home.path} -i #{build_dir.path} --move -c #{import_component}))
           end
@@ -74,7 +84,7 @@ module Ki
         end
 
         def run_command(command)
-          shell.spawn(command)
+          sh.spawn(command)
         end
 
         def map_env_list_to_map(list)

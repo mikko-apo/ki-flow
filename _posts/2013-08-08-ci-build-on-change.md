@@ -9,7 +9,7 @@ author: Mikko Apo
 After a week of coding, a simple CI implementation is ready. This post describes how to get it working.
 There are still quite a few manual steps needed to get things rolling.
 
-Huge thanks to [http://reaktor.fi/](Reaktor), Janni and Miku for supporting this project.
+Huge thanks to [Reaktor](http://reaktor.fi/), Janni and Miku for supporting this project.
 
 ## Setup ki-repo gem
 

@@ -140,5 +140,14 @@ Uninstall ki rem
 
     gem uninstall ki
 
+# What next?
+
+The CI implementation is quite immature. Following features are next on the backlog:
+
+* Logs for builds
+* Test result handling
+* Product build for collection versions from different components
+* Daemon process that automatically triggers builds
+
 --
 08.08.2013 @ Olari

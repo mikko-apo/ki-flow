@@ -136,7 +136,7 @@ EOF
     KiCommand.new.execute(%W(ci-build-on-change -h #{home.path}))
     home.version("test/result").name.should eq("1")
 
-    # create 2nd version
+    # modify project and commit, create 2nd version
     Tester.write_files(git_dir,
                        "info.txt" => "WARN
 "
@@ -150,5 +150,42 @@ EOF
     KiCommand.new.execute(%W(ci-build-on-change -h #{home.path}))
     home.version("test/result").name.should eq("2")
 
+  end
+
+  it "should execute product there are new components" do
+    @tester.chdir(build_dir = @tester.tmpdir)
+    home = KiHome.new(@tester.tmpdir)
+
+    create_ki_sbt(home, build_dir)
+
+    build_config = {products: [{component: "ki/product", dependencies: [{name: "sbt", source: "ki/sbt", path: "build"}]}]}
+    Tester.write_files(build_dir, "ki-builds.json" => JSON.pretty_generate(build_config))
+    KiCommand.new.execute(%W(ci-build-on-change -h #{home.path}))
+    v1 = home.version("ki/product")
+    v1.name.should eq("1")
+    v1.metadata.dependencies.should eq([{"name"=>"sbt", "path"=>"build", "version_id"=>"ki/sbt/1"}])
+    build_config_with_state = {
+        "builds" => [],
+        "products" => [
+            {
+                "component" => "ki/product",
+                "dependencies" => [
+                    {"name" => "sbt", "source" => "ki/sbt", "last_version" => "ki/sbt/1", "path" => "build"}
+                ]
+            }
+        ]
+    }
+    Ki::Ci::CiBuildConfigFile.new("ki-builds.json").cached_data.should eq(build_config_with_state)
+
+    # no changes, no new product version
+    KiCommand.new.execute(%W(ci-build-on-change -h #{home.path}))
+    home.version("ki/product").version_id.should eq("ki/product/1")
+
+    # create new sbt, new product build produces new product
+    create_ki_sbt(home, build_dir)
+    KiCommand.new.execute(%W(ci-build-on-change -h #{home.path}))
+    v2 = home.version("ki/product")
+    v2.version_id.should eq("ki/product/2")
+    v2.metadata.dependencies.should eq([{"name"=>"sbt", "path"=>"build", "version_id"=>"ki/sbt/2"}])
   end
 end

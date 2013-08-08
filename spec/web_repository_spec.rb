@@ -79,7 +79,7 @@ chai.should();
 $("head").append('<script type="text/javascript" src="/file/web/50efd9a1/Ki::RepositoryWeb:views/repository_js_test.coffee">');
 mocha.run();
 EOF
-    sleep 1
+    sleep 1000
     if chrome.find_element(css: ".failures em").text != "0"
       puts chrome.find_element(css: "#mocha-report").text
     end

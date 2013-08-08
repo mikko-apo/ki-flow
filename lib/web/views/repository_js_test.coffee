@@ -28,6 +28,11 @@ describe '/repository', ->
     document.title.should.equal "All components"
     assertElements
       "#component-list a": [/my\/c/, "my/product"]
+    $("#component-list a")[0].click()
+    document.title.should.equal "my/component"
+    show_components()
+    $("#component-list a")[1].click()
+    document.title.should.equal "my/product"
 
   it "/component/X", ->
     show_component 'my/component'

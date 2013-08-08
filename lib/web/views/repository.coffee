@@ -33,9 +33,8 @@ this.show_components = (restore) ->
     pushState restore, "show_components", [], "All components", "/repository"
     renderElements "#content", "#t-components-top",
       components: (n) -> n.click -> show_components()
-    for component in data
-      renderElements "#component-list", "#t-components",
-        "a.name": [component, (n) -> n.click -> show_component(component)]
+    renderElements "#component-list", "#t-components", data.map (component) ->
+      "a.name": [component, (n) -> n.click -> show_component(component)]
 
 this.show_component = (component, restore) ->
   $.get "/repository/json/component/#{component}/versions", (data) ->

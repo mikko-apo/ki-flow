@@ -178,7 +178,7 @@ All ki repository files are located under ~/ki, you can safely delete that direc
 
     rm -rf ~/ki
 
-Uninstall ki rem
+Uninstall ki gem
 
     gem uninstall ki
 

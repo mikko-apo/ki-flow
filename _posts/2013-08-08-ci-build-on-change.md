@@ -6,8 +6,16 @@ author: Mikko Apo
 
 # CI building works, kind of
 
-After a week of coding, a simple CI implementation is ready. This post describes how to get it working.
-There are still quite a few manual steps needed to get things rolling.
+After a week of coding, a simple CI implementation is ready. It's possible to execute builds,
+build packages and import them to the repository automatically. The build process can be
+executed only after there is a change in the version control (only git support at the moment).
+There is also support for creating product builds, that combine multiple components together.
+
+This post describes how to get the system working.
+There are still quite a few manual steps needed to get things rolling,
+but hopefully this will improve by time.
+
+note: there is no daemon support yet, so builds have to be triggered manually :)
 
 Huge thanks to [Reaktor](http://reaktor.fi/), Janni and Miku for supporting this project.
 
@@ -71,7 +79,7 @@ Next create ki.yml file with following contents
     script: build/sbt.sh
     build_version:
       - result.txt
-    import_component: test/result
+    import_component: demo/result
 
 * build_dependencies are exported to build directory
 * commands defined by script are executed to produce the package
@@ -104,7 +112,7 @@ Now run the first build for ki_demo
 
     ki ci-build-on-change
 
-If you refresh the browser, there should be a new component called "test/result" and it should have one version available.
+Refresh the browser, there should be a new component called "demo/result" and it should have one version available.
 
 If you run "ki ci-build-on-change" again, no new versions are created because there isn't any changes.
 
@@ -122,11 +130,45 @@ Execute another build
     cd ~/src/ki_ci_builds
     ki ci-build-on-change
 
-If you refresh the browser, there should be two versions for "test/result".
+If you refresh the browser, there should be two versions for "demo/result".
 
 If you browse the ~/src/ki_ci_builds directory, you'll see that
 * ki-builds.json has been updated, it now contains local_path and last_revision
 * builds/ki_demomaster contains a clone of the original repository
+
+## Creating a product build
+
+Product builds define dependencies to other components. If there is a new version available from a dependency
+product build can build new product version.
+
+    cd ~/src/ki_ci_builds
+
+Modify ~/src/ki_ci_builds/ki-builds.json with following contents
+
+    {
+        "builds": [
+            {
+                ...
+            }
+        ],
+        "products": [
+            {
+                "component": "ki/product",
+                "dependencies": [
+                    { "name": "sbt", "source": "ki/sbt/1", "path": "utils"},
+                    { "name": "demo", "source": "demo/result"}
+                ]
+            }
+        ]
+    }
+
+Run
+
+    ki ci-build-on-change
+
+Now there should be a product available in the browser that depends on two packages.
+
+## Clean things up
 
 To clean thing from your src directory, remove ~/src/ki_demo and ~/src/ki_ci_builds
 

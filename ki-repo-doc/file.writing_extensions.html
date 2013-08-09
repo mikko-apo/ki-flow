@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />
+<title>
+  File: Ki: Writing extensions
+  
+    &mdash; Documentation by YARD 0.8.7
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: Ki: Writing extensions</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1>Writing extensions</h1>
+
+<p>Ki can be extended by packaging extension code in to version packages and using the <code>ki -u version/id</code> command line
+parameter to load scripts in to the Ruby VM. Extension versions can also be configured to be automatically loaded
+with the <code>ki pref prefix version/id</code> command.</p>
+
+<p>"ki" is the main command line tool that starts all other Ki processes. Whenever ki command line tools
+are executed, ki goes through the following startup process</p>
+
+<ol>
+<li>Common command line parameters are parsed. These can used to set execution parameters for this invocation.</li>
+<li>Extension scripts are loaded from repository. Version configuration is from either -u or user preferences</li>
+<li>Find command by name</li>
+<li>Execute the command and pass rest of the command line parameters</li>
+</ol>
+
+
+<p>Examples</p>
+
+<pre class="code ruby"><code class="ruby">ki build-version *.txt
+ki -u my/tools compile
+ki -u my/tools:scripts,tools compile
+</code></pre>
+
+<p>note: By default only files with tag "ki" are used. Use the 'my/tools:scripts,tools' to define additional tags.</p>
+
+<p>Ki's extension mechanism makes it easy to manage different scenarios:
+* write and distribute command line utilities
+* use different versions of those utilities at the same time on the same machine (backwards compatability)
+* add new features to existing utilities: hashing algorithms, integrations to different tools like git, mercurial and svn</p>
+
+<h1>Extension points</h1>
+
+<p><span class='object_link'><a href="Ki/KiCommand.html" title="Ki::KiCommand (class)">Ki::KiCommand</a></span> stores all registered extensions to its class variable <span class='object_link'><a href="Ki/KiCommand.html#KiExtensions-constant" title="Ki::KiCommand::KiExtensions (constant)">Ki::KiCommand::KiExtensions</a></span> (<span class='object_link'><a href="Ki/ServiceRegistry.html" title="Ki::ServiceRegistry (class)">Ki::ServiceRegistry</a></span>).</p>
+
+<p>Currently used extension points are:</p>
+
+<ul>
+<li>/commands/</li>
+<li>/hashing/</li>
+<li>/web/</li>
+</ul>
+
+
+<h2>Command line utility - /commands/</h2>
+
+<p>Command classes are registered with KiCommand.register_cmd</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>KiCommand</span><span class='period'>.</span><span class='id identifier rubyid_register_cmd'>register_cmd</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>version-build</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='const'>BuildVersionMetadataFile</span><span class='rparen'>)</span>
+</code></pre>
+
+<p>They should implement following methods:</p>
+
+<ul>
+<li>execute(ctx, args)</li>
+<li>help, summary</li>
+<li>attr_chain :shell_command, :require is optional but help method can use it to generate more useful help texts</li>
+</ul>
+
+
+<p>For more information, see <span class='object_link'><a href="Ki/ImportVersion.html" title="Ki::ImportVersion (class)">Ki::ImportVersion</a></span></p>
+
+<h2>Cryptographic hash functions - /hashing/</h2>
+
+<p>Classes used for hashing must implement class method digest which returns a class extending Digest::Class</p>
+
+<p>For more information, see <span class='object_link'><a href="Ki/SHA2.html" title="Ki::SHA2 (class)">Ki::SHA2</a></span> and <span class='object_link'><a href="Ki/SHA2.html" title="Ki::SHA2 (class)">Ki::SHA2</a></span></p>
+
+<h2>Web classes - /web/</h2>
+
+<p>Ki-repo includes support for running web applications. Web applications are created by creating Rack application classes
+and tagging each file containing classes with "ki". That way "ki" command loads files and <span class='object_link'><a href="Ki/RackCommand.html" title="Ki::RackCommand (class)">Ki::RackCommand</a></span> starts
+web application from classes that were loaded. Each class is registered to the path remaining from registration key:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>KiCommand</span><span class='period'>.</span><span class='id identifier rubyid_register'>register</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/web/test</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='const'>MyApp2</span><span class='rparen'>)</span>
+</code></pre>
+
+<p>For more information, see <span class='object_link'><a href="Ki/RackCommand.html" title="Ki::RackCommand (class)">Ki::RackCommand</a></span></p>
+</div></div>
+
+    <div id="footer">
+  Generated on Fri Aug  9 12:57:02 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

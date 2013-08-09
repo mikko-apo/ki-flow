@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />
+<title>
+  File: Ki: Setting up development environment
+  
+    &mdash; Documentation by YARD 0.8.7
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: Ki: Setting up development environment</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1>Setting up development environment</h1>
+
+<h2>Install Ruby 1.9</h2>
+
+<p>Rvm makes it easy to use multiple ruby installations. By default it installs rubies to users home directory.
+Rvm is available at <a href="http://beginrescueend.com/">http://beginrescueend.com/</a></p>
+
+<p>Follow the rvm installation instructions, once the rvm command line tool works execute:</p>
+
+<pre class="code ruby"><code class="ruby">rvm install 1.9.2
+rvm use 1.9.2
+rvm gemset create ki
+rvm use 1.9.2@ki
+</code></pre>
+
+<p>Now ruby 1.9.2 should be available and all gems will be installed for Ki use only.</p>
+
+<h2>Check out the source</h2>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_git'>git</span> <span class='id identifier rubyid_clone'>clone</span> <span class='id identifier rubyid_git'>git</span><span class='ivar'>@github</span><span class='period'>.</span><span class='id identifier rubyid_com'>com</span><span class='symbol'>:mikko</span><span class='op'>-</span><span class='id identifier rubyid_apo'>apo</span><span class='op'>/</span><span class='id identifier rubyid_ki'>ki</span><span class='op'>-</span><span class='id identifier rubyid_repo'>repo</span><span class='period'>.</span><span class='id identifier rubyid_git'>git</span>
+<span class='id identifier rubyid_cd'>cd</span> <span class='id identifier rubyid_ki'>ki</span><span class='op'>-</span><span class='id identifier rubyid_repo'>repo</span>
+</code></pre>
+
+<h2>Install gems</h2>
+
+<p>Bundler is used to download and install the required gems to the ruby environment in use. if you are using rvm, gems are installed to rvm's directories.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='id identifier rubyid_install'>install</span> <span class='id identifier rubyid_bundler'>bundler</span>
+<span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_install'>install</span>
+</code></pre>
+
+<h2>Run tests</h2>
+
+<p>Tests are run with</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_spec'>spec</span>
+</code></pre>
+
+<p>All tests should pass. Code coverage report is generated to coverage/index.html</p>
+
+<h2>Generate documentation</h2>
+
+<p>Documentation is generated to doc/index.html with</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_yard'>yard</span>
+</code></pre>
+
+<p>You can also start up the yard in server mode, which makes it easier to update the documentation. When server starts
+up, the documentation will be available at <a href="http://localhost:8808/">http://localhost:8808/</a></p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_yard'>yard</span> <span class='id identifier rubyid_server'>server</span> <span class='op'>-</span><span class='op'>-</span><span class='id identifier rubyid_reload'>reload</span>
+</code></pre>
+</div></div>
+
+    <div id="footer">
+  Generated on Fri Aug  9 12:57:02 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

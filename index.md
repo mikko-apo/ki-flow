@@ -15,7 +15,8 @@ A Continuous Integration and Continuous Delivery platform.
 
 1. Package repository - local features done, additional features need to be implemented
 2. Web-UI - Barebones version works
-3. CI-scripts - being implemented
+3. CI-scripts - ki.yml based build works, product build works
+4. Supervisor - launches processes (web, ci) and monitors them
 
 ### Posts
 
@@ -25,3 +26,11 @@ A Continuous Integration and Continuous Delivery platform.
 {% endfor %}
 </ul>
 
+### Documentation
+
+<ul>
+  <li>
+    ki-flow uses <a href="https://github.com/mikko-apo/ki-repo">ki-repo</a> extensively.
+    ki-repo is a file system based package repository, more information is available here: <a href="/ki-repo-doc">ki-repo documentation</a>
+  </li>
+</ul>

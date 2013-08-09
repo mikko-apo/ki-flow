@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />
+<title>
+  File: development
+  
+    &mdash; Documentation by YARD 0.8.7
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: development</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><p>Warning! Ki is currently not ready for public use. APIs, classes and functionality will change.</p>
+
+<h1>Setting up development environment</h1>
+
+<p>Follow the instructions here: <a href="file.development_setup.html" title="Ki: Setting up development environment">Ki: Setting up development environment</a></p>
+
+<h1>Writing extensions</h1>
+
+<p><a href="file.writing_extensions.html" title="Ki: Writing extensions">Ki: Writing extensions</a> describes how to extend Ki by writing extension scripts.</p>
+
+<h1>Important Ruby classes</h1>
+
+<h2>Command line utilities</h2>
+
+<ul>
+<li><span class='object_link'><a href="Ki/KiCommand.html" title="Ki::KiCommand (class)">Ki::KiCommand</a></span> - Main ki entry point</li>
+<li><span class='object_link'><a href="Ki/KiCommandHelp.html" title="Ki::KiCommandHelp (class)">Ki::KiCommandHelp</a></span>, <span class='object_link'><a href="Ki/KiInfoCommand.html" title="Ki::KiInfoCommand (class)">Ki::KiInfoCommand</a></span> - help, ki-info</li>
+<li><span class='object_link'><a href="Ki/UserPrefCommand.html" title="Ki::UserPrefCommand (class)">Ki::UserPrefCommand</a></span> - Stored preferences</li>
+<li><span class='object_link'><a href="Ki/BuildVersionMetadataFile.html" title="Ki::BuildVersionMetadataFile (class)">Ki::BuildVersionMetadataFile</a></span>, <span class='object_link'><a href="Ki/TestVersion.html" title="Ki::TestVersion (class)">Ki::TestVersion</a></span>, <span class='object_link'><a href="Ki/ImportVersion.html" title="Ki::ImportVersion (class)">Ki::ImportVersion</a></span>, <span class='object_link'><a href="Ki/ExportVersion.html" title="Ki::ExportVersion (class)">Ki::ExportVersion</a></span>, <span class='object_link'><a href="Ki/VersionStatus.html" title="Ki::VersionStatus (class)">Ki::VersionStatus</a></span>, <span class='object_link'><a href="Ki/ShowVersion.html" title="Ki::ShowVersion (class)">Ki::ShowVersion</a></span>, <span class='object_link'><a href="Ki/VersionSearch.html" title="Ki::VersionSearch (class)">Ki::VersionSearch</a></span> - repository management</li>
+<li><span class='object_link'><a href="Ki/RackCommand.html" title="Ki::RackCommand (class)">Ki::RackCommand</a></span> - Starts up web application</li>
+</ul>
+
+
+<h2>Data storage - files and directories</h2>
+
+<ul>
+<li><span class='object_link'><a href="Ki/KiHome.html" title="Ki::KiHome (class)">Ki::KiHome</a></span>, <span class='object_link'><a href="Ki/Repository/Repository.html" title="Ki::Repository::Repository (class)">Ki::Repository::Repository</a></span>, <span class='object_link'><a href="Ki/Repository/Component.html" title="Ki::Repository::Component (class)">Ki::Repository::Component</a></span>, <span class='object_link'><a href="Ki/Repository/Version.html" title="Ki::Repository::Version (class)">Ki::Repository::Version</a></span> - Repository directory objects</li>
+<li><span class='object_link'><a href="Ki/VersionMetadataFile.html" title="Ki::VersionMetadataFile (class)">Ki::VersionMetadataFile</a></span>, <span class='object_link'><a href="Ki/VersionStatusFile.html" title="Ki::VersionStatusFile (class)">Ki::VersionStatusFile</a></span> - Version metadata and statuses</li>
+<li><span class='object_link'><a href="Ki/DirectoryBase.html" title="Ki::DirectoryBase (class)">Ki::DirectoryBase</a></span> - Base class for file and directory management</li>
+<li><span class='object_link'><a href="Ki/KiJSONFile.html" title="Ki::KiJSONFile (class)">Ki::KiJSONFile</a></span>, <span class='object_link'><a href="Ki/KiJSONListFile.html" title="Ki::KiJSONListFile (class)">Ki::KiJSONListFile</a></span>, <span class='object_link'><a href="Ki/KiJSONHashFile.html" title="Ki::KiJSONHashFile (class)">Ki::KiJSONHashFile</a></span>, <span class='object_link'><a href="Ki/KiJSONHashFile/CachedMapDataAccessor.html" title="Ki::KiJSONHashFile::CachedMapDataAccessor (class)">Ki::KiJSONHashFile::CachedMapDataAccessor</a></span> - Base classes for JSON files</li>
+<li><span class='object_link'><a href="Ki/DirectoryWithChildrenInListFile.html" title="Ki::DirectoryWithChildrenInListFile (class)">Ki::DirectoryWithChildrenInListFile</a></span> - Helper to generate list file class and related methods for a repository object</li>
+<li><span class='object_link'><a href="Ki/RepositoryMethods.html" title="Ki::RepositoryMethods (module)">Ki::RepositoryMethods</a></span>, <span class='object_link'><a href="Ki/RepositoryMethods/RepositoryListFile.html" title="Ki::RepositoryMethods::RepositoryListFile (class)">Ki::RepositoryMethods::RepositoryListFile</a></span> - Repository helper methods</li>
+<li><span class='object_link'><a href="Ki/UserPrefFile.html" title="Ki::UserPrefFile (class)">Ki::UserPrefFile</a></span> - Stored preferences</li>
+</ul>
+
+
+<h2>Data access - finders, helpers, iterators</h2>
+
+<ul>
+<li><span class='object_link'><a href="Ki/VersionTester.html" title="Ki::VersionTester (class)">Ki::VersionTester</a></span>, <span class='object_link'><a href="Ki/VersionImporter.html" title="Ki::VersionImporter (class)">Ki::VersionImporter</a></span>, <span class='object_link'><a href="Ki/VersionExporter.html" title="Ki::VersionExporter (class)">Ki::VersionExporter</a></span> - Utility classes for managing version</li>
+<li><span class='object_link'><a href="Ki/RepositoryFinder.html" title="Ki::RepositoryFinder (class)">Ki::RepositoryFinder</a></span> - Loads components from all available repositories and finds components and versions</li>
+<li><span class='object_link'><a href="Ki/VersionIterator.html" title="Ki::VersionIterator (class)">Ki::VersionIterator</a></span> - Provides method to iterate through all component's matching versions</li>
+<li><span class='object_link'><a href="Ki/FileFinder.html" title="Ki::FileFinder (class)">Ki::FileFinder</a></span> - Finds matchins files from a Version</li>
+<li><span class='object_link'><a href="Ki/Component.html" title="Ki::Component (class)">Ki::Component</a></span>, <span class='object_link'><a href="Ki/Version.html" title="Ki::Version (class)">Ki::Version</a></span> - Classes that manage combined information for versions and components from all repositories</li>
+<li><span class='object_link'><a href="Ki/VersionFileOperations.html" title="Ki::VersionFileOperations (class)">Ki::VersionFileOperations</a></span> - Helper class to process Version's file operations</li>
+</ul>
+
+
+<h2>Utilities</h2>
+
+<ul>
+<li><span class='object_link'><a href="Ki/Tester.html" title="Ki::Tester (class)">Ki::Tester</a></span> - Helper class for tests, makes it easy to clear resources</li>
+<li><span class='object_link'><a href="AttrChain.html" title="AttrChain (class)">AttrChain</a></span> - Chained accessor methods</li>
+<li><span class='object_link'><a href="ExceptionCatcher.html" title="ExceptionCatcher (class)">ExceptionCatcher</a></span> - Execute multiple blocks and process exceptions in the end</li>
+<li><span class='object_link'><a href="Ki/ServiceRegistry.html" title="Ki::ServiceRegistry (class)">Ki::ServiceRegistry</a></span> - Class for storing all Ki extensions</li>
+<li><span class='object_link'><a href="Ki/SimpleOptionParser.html" title="Ki::SimpleOptionParser (class)">Ki::SimpleOptionParser</a></span> - Simplified OptionParser</li>
+<li><span class='object_link'><a href="Ki/HashLog.html" title="Ki::HashLog (module)">Ki::HashLog</a></span> - Hash based logging</li>
+</ul>
+
+</div></div>
+
+    <div id="footer">
+  Generated on Fri Aug  9 12:57:02 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

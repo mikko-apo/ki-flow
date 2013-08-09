@@ -1,0 +1,1845 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Ki::Tester
+  
+    &mdash; Documentation by YARD 0.8.7
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (T)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Ki.html" title="Ki (module)">Ki</a></span></span>
+     &raquo; 
+    <span class="title">Tester</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Ki::Tester
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></span>
+      
+        <ul class="fullTree">
+          <li><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></li>
+          
+            <li class="next">Ki::Tester</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/util/test.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Modifies run time environment for tests and automatically restores original
+state</p>
+<ul><li>
+<p>note: cleanup is triggered by calling the <span class='object_link'><a href="#after-instance_method" title="Ki::Tester#after (method)">#after</a></span> method</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="#cleaners-instance_method" title="Ki::Tester#cleaners (method)">#cleaners</a></span></li>
+    
+      <li><span class='object_link'><a href="#tmpdir-instance_method" title="Ki::Tester#tmpdir (method)">#tmpdir</a></span></li>
+    
+      <li><span class='object_link'><a href="#catch_stdio-instance_method" title="Ki::Tester#catch_stdio (method)">#catch_stdio</a></span></li>
+    
+      <li><span class='object_link'><a href="#chdir-instance_method" title="Ki::Tester#chdir (method)">#chdir</a></span></li>
+    
+      <li><span class='object_link'><a href="#after-instance_method" title="Ki::Tester#after (method)">#after</a></span></li>
+    
+  </ul>
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Tester/DummyIO.html" title="Ki::Tester::DummyIO (class)">DummyIO</a></span>
+    
+  
+</p>
+
+
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#cleaners-instance_method" title="#cleaners (instance method)">- (Object) <strong>cleaners</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>List of Procs which should be executed.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#test_name-instance_method" title="#test_name (instance method)">- (Object) <strong>test_name</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Name of the test round that uses this tester.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#copy_visible_files-class_method" title="copy_visible_files (class method)">+ (String) <strong>copy_visible_files</strong>(src, dest) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Copies contents of src to dest * excludes files and directories beginning
+with a '.'.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#final_tester_check-class_method" title="final_tester_check (class method)">+ (Object) <strong>final_tester_check</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#verify_files-class_method" title="verify_files (class method)">+ (Boolean) <strong>verify_files</strong>(source_root, *args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Verifies that files exist in target directory.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#write_files-class_method" title="write_files (class method)">+ (String) <strong>write_files</strong>(dest_root, files = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Writes defined files to target directory * note: dest_root and target
+directories are automatically created.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#after-instance_method" title="#after (instance method)">- <strong>after</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Executes all pending cleanup operations * cleaners lists all procs that
+will be executed * all exceptions from procs are caught and raised together
+* Tester helper methods schedule cleanup operations to cleaners if needed.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#catch_stdio-instance_method" title="#catch_stdio (instance method)">- (Object) <strong>catch_stdio</strong>(&amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Redirects $stdin, $stdout, $stderr streams to the Tester instance * if
+called without block, streams are restored when after is called.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#chdir-instance_method" title="#chdir (instance method)">- (Object) <strong>chdir</strong>(dest, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Changes working directory to target.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#clear%3F-instance_method" title="#clear? (instance method)">- (Boolean) <strong>clear?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#env-instance_method" title="#env (instance method)">- (Object) <strong>env</strong>(key, value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Tester) <strong>initialize</strong>(test_name = nil) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of Tester.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#restore_extensions-instance_method" title="#restore_extensions (instance method)">- (Object) <strong>restore_extensions</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#tmpdir-instance_method" title="#tmpdir (instance method)">- (String, Object) <strong>tmpdir</strong>(src = nil, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Creates a temporary directory * if called without a block removes directory
+when after is called.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Ki::Tester (class)">Tester</a></span></tt>) <strong>initialize</strong>(test_name = nil) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a new instance of Tester</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+56
+57
+58
+59
+60</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 56</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_test_name'>test_name</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='ivar'>@test_name</span> <span class='op'>=</span> <span class='id identifier rubyid_test_name'>test_name</span>
+  <span class='ivar'>@cleaners</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='gvar'>$testers</span> <span class='op'>&lt;&lt;</span> <span class='kw'>self</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="cleaners-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>cleaners</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>List of Procs which should be executed</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li>after</li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+39
+40
+41</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 39</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_cleaners'>cleaners</span>
+  <span class='ivar'>@cleaners</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="test_name-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>test_name</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Name of the test round that uses this tester</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+42
+43
+44</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 42</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_test_name'>test_name</span>
+  <span class='ivar'>@test_name</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="copy_visible_files-class_method">
+  
+    + (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>copy_visible_files</strong>(src, dest) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Copies contents of src to dest</p>
+<ul><li>
+<p>excludes files and directories beginning with a '.'</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>src</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>source directory path</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>dest</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>destination directory path</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>dest directory</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 220</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_copy_visible_files'>copy_visible_files</span><span class='lparen'>(</span><span class='id identifier rubyid_src'>src</span><span class='comma'>,</span> <span class='id identifier rubyid_dest'>dest</span><span class='rparen'>)</span>
+  <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_glob'>glob</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_src'>src</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>**/*</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_file_src'>file_src</span><span class='op'>|</span>
+    <span class='id identifier rubyid_file_path'>file_path</span> <span class='op'>=</span> <span class='id identifier rubyid_file_src'>file_src</span><span class='lbracket'>[</span><span class='id identifier rubyid_src'>src</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='op'>+</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span>
+    <span class='kw'>if</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_file?'>file?</span><span class='lparen'>(</span><span class='id identifier rubyid_file_src'>file_src</span><span class='rparen'>)</span>
+      <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_cp'>cp</span><span class='lparen'>(</span><span class='id identifier rubyid_file_src'>file_src</span><span class='comma'>,</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_dest'>dest</span><span class='comma'>,</span> <span class='id identifier rubyid_file_path'>file_path</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>elsif</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_directory?'>directory?</span><span class='lparen'>(</span><span class='id identifier rubyid_file_src'>file_src</span><span class='rparen'>)</span>
+      <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_mkdir'>mkdir</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_dest'>dest</span><span class='comma'>,</span> <span class='id identifier rubyid_file_path'>file_path</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_dest'>dest</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="final_tester_check-class_method">
+  
+    + (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>final_tester_check</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 202</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_final_tester_check'>final_tester_check</span>
+  <span class='id identifier rubyid_catcher'>catcher</span> <span class='op'>=</span> <span class='const'>ExceptionCatcher</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='gvar'>$testers</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tester'>tester</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_tester'>tester</span><span class='period'>.</span><span class='id identifier rubyid_clear?'>clear?</span>
+      <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Tester</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_tester'>tester</span><span class='period'>.</span><span class='id identifier rubyid_test_name'>test_name</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_tester'>tester</span><span class='period'>.</span><span class='id identifier rubyid_test_name'>test_name</span><span class='rbrace'>}</span><span class='tstring_content'>'</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='tstring_content'> has not been cleared! Please add the missing .after() command. Clearing it automatically.</span><span class='tstring_end'>&quot;</span></span>
+      <span class='id identifier rubyid_catcher'>catcher</span><span class='period'>.</span><span class='id identifier rubyid_catch'>catch</span> <span class='kw'>do</span>
+        <span class='id identifier rubyid_tester'>tester</span><span class='period'>.</span><span class='id identifier rubyid_after'>after</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_catcher'>catcher</span><span class='period'>.</span><span class='id identifier rubyid_check'>check</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="verify_files-class_method">
+  
+    + (<tt>Boolean</tt>) <strong>verify_files</strong>(source_root, *args) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Verifies that files exist in target directory. If files or directories are
+missing, contents are wrong, type is wrong or there are unwanted files
+raises an exception.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code><span class='ivar'>@tester</span><span class='period'>.</span><span class='id identifier rubyid_verify_files'>verify_files</span><span class='lparen'>(</span><span class='id identifier rubyid_tmpdir'>tmpdir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>file.txt</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>aa</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>dir/my.txt</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>bb</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>dir</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='rparen'>)</span> <span class='comment'># other files are ok
+</span><span class='ivar'>@tester</span><span class='period'>.</span><span class='id identifier rubyid_verify_files'>verify_files</span><span class='lparen'>(</span><span class='id identifier rubyid_tmpdir'>tmpdir</span><span class='comma'>,</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>file.txt</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>aa</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>dir/my.txt</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>bb</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>dir</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='rparen'>)</span> <span class='comment'># other files will fail</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>source_root</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>target directory path</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>args</span>
+      
+      
+        <span class='type'>(<tt>List</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>containing check_for_extra_files and files map</p>
+<ul><li>
+<p>check_for_extra_files, by default verify_files does not check if there are
+other files or directories. If set to true, raises an exception if there
+are other files</p>
+</li><li>
+<p>files, a map of file paths and contents. If file name ends with “/” or file
+contents are nil, path is a directory</p>
+</li></ul>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>true if there were no errors</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 260</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_verify_files'>verify_files</span><span class='lparen'>(</span><span class='id identifier rubyid_source_root'>source_root</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_check_for_extra_files'>check_for_extra_files</span><span class='comma'>,</span> <span class='id identifier rubyid_files'>files</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_files'>files</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_check_for_extra_files'>check_for_extra_files</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Hash</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_files'>files</span> <span class='op'>=</span> <span class='id identifier rubyid_check_for_extra_files'>check_for_extra_files</span>
+    <span class='id identifier rubyid_check_for_extra_files'>check_for_extra_files</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_files'>files</span><span class='period'>.</span><span class='id identifier rubyid_each_pair'>each_pair</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_file'>file</span><span class='comma'>,</span> <span class='id identifier rubyid_contents'>contents</span><span class='op'>|</span>
+    <span class='id identifier rubyid_file_path'>file_path</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_source_root'>source_root</span><span class='comma'>,</span> <span class='id identifier rubyid_file'>file</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_is_dir'>is_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_file'>file</span><span class='period'>.</span><span class='id identifier rubyid_end_with?'>end_with?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_contents'>contents</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+    <span class='kw'>if</span> <span class='op'>!</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_exists?'>exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_file_path'>file_path</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_is_dir'>is_dir</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Directory</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>File</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='tstring_content'> '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_file_path'>file_path</span><span class='rbrace'>}</span><span class='tstring_content'>' is missing!</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_is_dir'>is_dir</span> <span class='op'>!=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_directory?'>directory?</span><span class='lparen'>(</span><span class='id identifier rubyid_file_path'>file_path</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Existing </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_is_dir'>is_dir</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>file</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>directory</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='tstring_content'> '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_file_path'>file_path</span><span class='rbrace'>}</span><span class='tstring_content'>' should be a </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_is_dir'>is_dir</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>directory</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>file</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='tstring_content'>!</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+    <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_is_dir'>is_dir</span>
+      <span class='id identifier rubyid_file_contents'>file_contents</span> <span class='op'>=</span> <span class='const'>IO</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='id identifier rubyid_file_path'>file_path</span><span class='rparen'>)</span>
+      <span class='lbracket'>[</span><span class='id identifier rubyid_contents'>contents</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_o'>o</span><span class='op'>|</span>
+        <span class='kw'>if</span> <span class='id identifier rubyid_o'>o</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Regexp</span><span class='rparen'>)</span>
+          <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_file_contents'>file_contents</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span><span class='rparen'>)</span>
+            <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>File '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_file_path'>file_path</span><span class='rbrace'>}</span><span class='tstring_content'>' does not match regexp </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_o'>o</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_content'>, file contents: '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_file_contents'>file_contents</span><span class='rbrace'>}</span><span class='tstring_content'>'</span><span class='tstring_end'>&quot;</span></span>
+          <span class='kw'>end</span>
+        <span class='kw'>elsif</span> <span class='id identifier rubyid_o'>o</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
+          <span class='kw'>if</span> <span class='id identifier rubyid_file_contents'>file_contents</span> <span class='op'>!=</span> <span class='id identifier rubyid_o'>o</span>
+            <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>File '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_file_path'>file_path</span><span class='rbrace'>}</span><span class='tstring_content'>' is broken! Expected '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_o'>o</span><span class='rbrace'>}</span><span class='tstring_content'>' but was '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_file_contents'>file_contents</span><span class='rbrace'>}</span><span class='tstring_content'>'</span><span class='tstring_end'>&quot;</span></span>
+          <span class='kw'>end</span>
+        <span class='kw'>elsif</span> <span class='id identifier rubyid_o'>o</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Proc</span><span class='rparen'>)</span>
+          <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_o'>o</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_file_contents'>file_contents</span><span class='rparen'>)</span>
+            <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>File '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_file_path'>file_path</span><span class='rbrace'>}</span><span class='tstring_content'>' did not pass test!</span><span class='tstring_end'>&quot;</span></span>
+          <span class='kw'>end</span>
+        <span class='kw'>else</span>
+          <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unsupported checker! File '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_file_path'>file_path</span><span class='rbrace'>}</span><span class='tstring_content'>' object: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_o'>o</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_check_for_extra_files'>check_for_extra_files</span>
+    <span class='id identifier rubyid_files_and_dirs'>files_and_dirs</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_files'>files</span><span class='period'>.</span><span class='id identifier rubyid_each_pair'>each_pair</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span>
+      <span class='id identifier rubyid_file_arr'>file_arr</span><span class='op'>=</span><span class='id identifier rubyid_k'>k</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_c'>c</span> <span class='op'>=</span> <span class='id identifier rubyid_file_arr'>file_arr</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
+      <span class='kw'>while</span> <span class='id identifier rubyid_c'>c</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+        <span class='id identifier rubyid_c'>c</span> <span class='op'>-=</span> <span class='int'>1</span>
+        <span class='id identifier rubyid_files_and_dirs'>files_and_dirs</span><span class='lbracket'>[</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_source_root'>source_root</span><span class='comma'>,</span> <span class='id identifier rubyid_file_arr'>file_arr</span><span class='rparen'>)</span><span class='rbracket'>]</span><span class='op'>=</span><span class='kw'>true</span>
+        <span class='id identifier rubyid_file_arr'>file_arr</span><span class='period'>.</span><span class='id identifier rubyid_delete_at'>delete_at</span><span class='lparen'>(</span><span class='op'>-</span><span class='int'>1</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+    <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_glob'>glob</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_source_root'>source_root</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>**/*</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_file'>file</span><span class='op'>|</span>
+      <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_files_and_dirs'>files_and_dirs</span><span class='lbracket'>[</span><span class='id identifier rubyid_file'>file</span><span class='rbracket'>]</span>
+        <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_directory?'>directory?</span><span class='lparen'>(</span><span class='id identifier rubyid_file'>file</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Directory</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>File</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='tstring_content'> '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_file'>file</span><span class='rbrace'>}</span><span class='tstring_content'>' exists, but it should not exist!</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="write_files-class_method">
+  
+    + (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>write_files</strong>(dest_root, files = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Writes defined files to target directory</p>
+<ul><li>
+<p>note: dest_root and target directories are automatically created</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code><span class='id identifier rubyid_src'>src</span> <span class='op'>=</span> <span class='const'>Tester</span><span class='period'>.</span><span class='id identifier rubyid_write_files'>write_files</span><span class='lparen'>(</span><span class='ivar'>@tester</span><span class='period'>.</span><span class='id identifier rubyid_tmpdir'>tmpdir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>file.txt</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>aa</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>dir/my.txt</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>bb</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>dest_root</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>target directory path</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>files</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>map of files and their contents</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>dest_root directory</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 239</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_write_files'>write_files</span><span class='lparen'>(</span><span class='id identifier rubyid_dest_root'>dest_root</span><span class='comma'>,</span> <span class='id identifier rubyid_files'>files</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_files'>files</span><span class='period'>.</span><span class='id identifier rubyid_each_pair'>each_pair</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_file_path'>file_path</span><span class='comma'>,</span> <span class='id identifier rubyid_content'>content</span><span class='op'>|</span>
+    <span class='id identifier rubyid_dir'>dir</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='id identifier rubyid_file_path'>file_path</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_dir'>dir</span> <span class='op'>!=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>.</span><span class='tstring_end'>&quot;</span></span>
+      <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_mkdir_p'>mkdir_p</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_dest_root'>dest_root</span><span class='comma'>,</span> <span class='id identifier rubyid_dir'>dir</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+    <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_safe_write'>safe_write</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_dest_root'>dest_root</span><span class='comma'>,</span> <span class='id identifier rubyid_file_path'>file_path</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_content'>content</span><span class='rparen'>)</span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_dest_root'>dest_root</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="after-instance_method">
+  
+    - <strong>after</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+<p>Executes all pending cleanup operations</p>
+<ul><li>
+<p>cleaners lists all procs that will be executed</p>
+</li><li>
+<p>all exceptions from procs are caught and raised together</p>
+</li><li>
+<p>Tester helper methods schedule cleanup operations to cleaners if needed</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>RSpec test</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='id identifier rubyid_describe'>describe</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>My tests</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_before'>before</span> <span class='kw'>do</span>
+    <span class='ivar'>@tester</span> <span class='op'>=</span> <span class='const'>Tester</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_after'>after</span> <span class='kw'>do</span>
+    <span class='ivar'>@tester</span><span class='period'>.</span><span class='id identifier rubyid_after'>after</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_it'>it</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>should export files</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_dest'>dest</span> <span class='op'>=</span> <span class='ivar'>@tester</span><span class='period'>.</span><span class='id identifier rubyid_tmpdir'>tmpdir</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Tests can add their own cleanup procs. This reduces the need to write
+exception management in tests</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='id identifier rubyid_it'>it</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>should combine ...</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_dao'>dao</span> <span class='op'>=</span> <span class='const'>DAO</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@tester</span><span class='period'>.</span><span class='id identifier rubyid_cleaners'>cleaners</span> <span class='op'>&lt;&lt;</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='id identifier rubyid_dao'>dao</span><span class='period'>.</span><span class='id identifier rubyid_rollback'>rollback</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_dao'>dao</span><span class='period'>.</span><span class='id identifier rubyid_do_something_that_does_not_cleanup_environment_and_might_raise_exception'>do_something_that_does_not_cleanup_environment_and_might_raise_exception</span>
+<span class='kw'>end</span></code></pre>
+    
+  </div>
+
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li>cleaners</li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 187</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_after'>after</span>
+  <span class='id identifier rubyid_catcher'>catcher</span> <span class='op'>=</span> <span class='const'>ExceptionCatcher</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@cleaners</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_after_block'>after_block</span><span class='op'>|</span>
+    <span class='id identifier rubyid_catcher'>catcher</span><span class='period'>.</span><span class='id identifier rubyid_catch'>catch</span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_after_block'>after_block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='ivar'>@cleaners</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+  <span class='id identifier rubyid_catcher'>catcher</span><span class='period'>.</span><span class='id identifier rubyid_check'>check</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="catch_stdio-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>catch_stdio</strong>(&amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Redirects $stdin, $stdout, $stderr streams to the Tester instance</p>
+<ul><li>
+<p>if called without block, streams are restored when after is called</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code><span class='ivar'>@tester</span><span class='period'>.</span><span class='id identifier rubyid_catch_stdio'>catch_stdio</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>foo</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span>
+<span class='ivar'>@tester</span><span class='period'>.</span><span class='id identifier rubyid_stdio'>stdio</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>foo\n</span><span class='tstring_end'>&quot;</span></span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>block</span>
+      
+      
+        <span class='type'>(<tt>Proc</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>if block is defined, restores streams once the block ends</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>self which is useful when catch_stdio is called with block because stdin,
+stdout and stderr are available after the block</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li>stdin, stdout, stderr</li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 113</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_catch_stdio'>catch_stdio</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_original_streams'>original_streams</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='gvar'>$stdin</span><span class='comma'>,</span> <span class='gvar'>$stdout</span><span class='comma'>,</span> <span class='gvar'>$stderr</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_cleanup'>cleanup</span> <span class='op'>=</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='gvar'>$stdin</span><span class='comma'>,</span> <span class='gvar'>$stdout</span><span class='comma'>,</span> <span class='gvar'>$stderr</span> <span class='op'>=</span> <span class='id identifier rubyid_original_streams'>original_streams</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_stdin'>stdin</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+  <span class='id identifier rubyid_stdout'>stdout</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+  <span class='id identifier rubyid_stderr'>stderr</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+  <span class='gvar'>$stdin</span> <span class='op'>=</span> <span class='id identifier rubyid_stdin'>stdin</span>
+  <span class='gvar'>$stdout</span> <span class='op'>=</span> <span class='id identifier rubyid_stdout'>stdout</span>
+  <span class='gvar'>$stderr</span> <span class='op'>=</span> <span class='id identifier rubyid_stderr'>stderr</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_block'>block</span>
+    <span class='kw'>begin</span>
+      <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+    <span class='kw'>ensure</span>
+      <span class='id identifier rubyid_cleanup'>cleanup</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='ivar'>@cleaners</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_cleanup'>cleanup</span>
+  <span class='kw'>end</span>
+  <span class='kw'>self</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="chdir-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>chdir</strong>(dest, &amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Changes working directory to target</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code><span class='ivar'>@tester</span><span class='period'>.</span><span class='id identifier rubyid_chdir'>chdir</span><span class='lparen'>(</span><span class='id identifier rubyid_dest'>dest</span><span class='rparen'>)</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>dest</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>target directory</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>block</span>
+      
+      
+        <span class='type'>(<tt>Proc</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>if block is defined, restores working directory after block ends</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>if block is defined returns block’s return value</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 140</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_chdir'>chdir</span><span class='lparen'>(</span><span class='id identifier rubyid_dest'>dest</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_block'>block</span>
+    <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_chdir'>chdir</span><span class='lparen'>(</span><span class='id identifier rubyid_dest'>dest</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>else</span>
+    <span class='kw'>if</span> <span class='op'>!</span><span class='kw'>defined?</span> <span class='ivar'>@original_dir</span>
+      <span class='ivar'>@original_dir</span> <span class='op'>=</span> <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_pwd'>pwd</span>
+      <span class='ivar'>@cleaners</span> <span class='op'>&lt;&lt;</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_chdir'>chdir</span><span class='lparen'>(</span><span class='ivar'>@original_dir</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='ivar'>@original_dir</span><span class='op'>=</span><span class='kw'>nil</span> <span class='rbrace'>}</span>
+    <span class='kw'>end</span>
+    <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_chdir'>chdir</span><span class='lparen'>(</span><span class='id identifier rubyid_dest'>dest</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="clear?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>clear?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+198
+199
+200</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 198</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_clear?'>clear?</span>
+  <span class='ivar'>@cleaners</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="env-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>env</strong>(key, value) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+152
+153
+154
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 152</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_env'>env</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_current'>current</span> <span class='op'>=</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span>
+  <span class='ivar'>@cleaners</span> <span class='op'>&lt;&lt;</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span><span class='const'>ENV</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span><span class='op'>=</span><span class='id identifier rubyid_current'>current</span><span class='rbrace'>}</span>
+  <span class='const'>ENV</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span><span class='op'>=</span><span class='id identifier rubyid_value'>value</span>
+  <span class='kw'>self</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="restore_extensions-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>restore_extensions</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+326
+327
+328
+329
+330
+331
+332</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 326</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_restore_extensions'>restore_extensions</span>
+  <span class='id identifier rubyid_original_commands'>original_commands</span> <span class='op'>=</span> <span class='const'>KiCommand</span><span class='op'>::</span><span class='const'>KiExtensions</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span>
+  <span class='id identifier rubyid_cleaners'>cleaners</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_lambda'>lambda</span> <span class='kw'>do</span>
+    <span class='const'>KiCommand</span><span class='op'>::</span><span class='const'>KiExtensions</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+    <span class='const'>KiCommand</span><span class='op'>::</span><span class='const'>KiExtensions</span><span class='period'>.</span><span class='id identifier rubyid_register'>register</span><span class='lparen'>(</span><span class='id identifier rubyid_original_commands'>original_commands</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="tmpdir-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>tmpdir</strong>(src = nil, &amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Creates a temporary directory</p>
+<ul><li>
+<p>if called without a block removes directory when after is called</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code><span class='id identifier rubyid_tmp_source'>tmp_source</span> <span class='op'>=</span> <span class='ivar'>@tester</span><span class='period'>.</span><span class='id identifier rubyid_tmpdir'>tmpdir</span>
+<span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_touch'>touch</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_tmp_source'>tmp_source</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>file.txt</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+<span class='ivar'>@tester</span><span class='period'>.</span><span class='id identifier rubyid_tmpdir'>tmpdir</span><span class='lparen'>(</span><span class='id identifier rubyid_tmp_source'>tmp_source</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_dest_2'>dest_2</span><span class='op'>|</span>
+
+<span class='kw'>end</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>src</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>tmpdir copies contents of src path if src is defined. note: only visible
+files are copied. files and directories starting with . are excluded</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>block</span>
+      
+      
+        <span class='type'>(<tt>Proc</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>if a block is defined, passes the temporary directory path to the block as
+parameter and removes the directory when the block ends</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>If block is not defined, returns the path of the temporary directory. If
+block is defined, returns the value the block returns.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="#copy_visible_files-class_method" title="Ki::Tester.copy_visible_files (method)">copy_visible_files</a></span></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/util/test.rb', line 74</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_tmpdir'>tmpdir</span><span class='lparen'>(</span><span class='id identifier rubyid_src'>src</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_dest'>dest</span> <span class='op'>=</span> <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_mktmpdir'>mktmpdir</span>
+  <span class='id identifier rubyid_cleanup'>cleanup</span> <span class='op'>=</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_remove_entry_secure'>remove_entry_secure</span><span class='lparen'>(</span><span class='id identifier rubyid_dest'>dest</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_src'>src</span>
+    <span class='id identifier rubyid_catcher'>catcher</span> <span class='op'>=</span> <span class='const'>ExceptionCatcher</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+    <span class='id identifier rubyid_catcher'>catcher</span><span class='period'>.</span><span class='id identifier rubyid_catch'>catch</span> <span class='kw'>do</span>
+      <span class='const'>Tester</span><span class='period'>.</span><span class='id identifier rubyid_copy_visible_files'>copy_visible_files</span><span class='lparen'>(</span><span class='id identifier rubyid_src'>src</span><span class='comma'>,</span> <span class='id identifier rubyid_dest'>dest</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+    <span class='comment'># if there is a problem copying files, cleanup and raise original exception
+</span>    <span class='kw'>if</span> <span class='id identifier rubyid_catcher'>catcher</span><span class='period'>.</span><span class='id identifier rubyid_exceptions?'>exceptions?</span>
+      <span class='id identifier rubyid_catcher'>catcher</span><span class='period'>.</span><span class='id identifier rubyid_catch'>catch</span> <span class='kw'>do</span>
+        <span class='id identifier rubyid_cleanup'>cleanup</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+      <span class='kw'>end</span>
+      <span class='id identifier rubyid_catcher'>catcher</span><span class='period'>.</span><span class='id identifier rubyid_check'>check</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_block'>block</span>
+    <span class='kw'>begin</span>
+      <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_dest'>dest</span><span class='rparen'>)</span>
+    <span class='kw'>ensure</span>
+      <span class='id identifier rubyid_cleanup'>cleanup</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='ivar'>@cleaners</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_cleanup'>cleanup</span>
+    <span class='id identifier rubyid_dest'>dest</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Fri Aug  9 12:57:02 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

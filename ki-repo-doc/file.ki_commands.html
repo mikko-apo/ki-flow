@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />
+<title>
+  File: Ki: Command line utilities
+  
+    &mdash; Documentation by YARD 0.8.7
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: Ki: Command line utilities</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1>Command line utilities for Ki Repository v0.1.1</h1>
+
+<p>"ki" is the main command line tool that starts all other Ki processes. Whenever ki command line tools
+are executed, ki goes through the following startup process</p>
+
+<ol>
+<li>Common command line parameters are parsed. These can used to set execution parameters for this invocation.</li>
+<li>Extension scripts are loaded from repository. Version configuration is from either -u or user preferences</li>
+<li>Find command by name</li>
+<li>Execute the command and pass rest of the command line parameters</li>
+</ol>
+
+
+<p>Examples</p>
+
+<pre class="code ruby"><code class="ruby">ki build-version *.txt
+ki -u my/tools compile
+ki -u my/tools:scripts,tools compile
+</code></pre>
+
+<p>note: By default only files with tag "ki" are used. Use the 'my/tools:scripts,tools' to define additional tags.</p>
+
+<p>Common parameters:</p>
+
+<pre class="code ruby"><code class="ruby">-h, --home                       Path to Ki root directory
+-u, --use                        Use defined scripts
+    --require                    Require Ruby files, comma separated list
+</code></pre>
+
+<h2>help: Displays help for given Ki command</h2>
+
+<p>"ki help" shows information Ki and its commands.</p>
+
+<h3>Examples</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_ki'>ki</span> <span class='id identifier rubyid_help'>help</span>
+<span class='id identifier rubyid_ki'>ki</span> <span class='id identifier rubyid_help'>help</span> <span class='id identifier rubyid_version'>version</span><span class='op'>-</span><span class='id identifier rubyid_build'>build</span>
+</code></pre>
+
+<h2>ki-info: Show information about Ki</h2>
+
+<p>"ki ki-info" shows information about Ki.</p>
+
+<h3>Examples</h3>
+
+<pre class="code ruby"><code class="ruby">ki ki-info -c
+ki ki-info -r
+</code></pre>
+
+<h3>Parameters</h3>
+
+<pre class="code ruby"><code class="ruby">-c, --commands                   List commands
+-r, --registered                 List all registered extensions
+</code></pre>
+
+<h2>version-build: Create version metadata file</h2>
+
+<p>"ki version-build" can be used to generate version metadata files. Version metadata files
+contain information about files (size, permission bits, hash checksums), version origins
+and dependencies.</p>
+
+<p>After version metadata file is ready, it can be imported to repository using version-import.</p>
+
+<h3>Usage</h3>
+
+<pre class="code ruby"><code class="ruby">ki version-build &lt;parameters&gt; file_pattern1*.* file_pattern2*.*
+</code></pre>
+
+<h3>Examples</h3>
+
+<pre class="code ruby"><code class="ruby">ki version-build test.sh
+ki version-build readme* -t doc
+ki version-build -d my/component/1,name=comp,path=doc,internal -O &quot;mv doc/test.sh helloworld.sh&quot;
+ki version-import
+</code></pre>
+
+<h3>Parameters</h3>
+
+<pre class="code ruby"><code class="ruby">-f, --file FILE                  Version file target
+-i, --input-directory INPUT-DIR  Input directory
+-v, --version-id VERSION-ID      Version's id
+    --source-url URL             Build source parameter url
+    --source-tag-url TAG-URL     Build source parameter tag-url
+    --source-author AUTHOR       Build source parameter author
+    --source-repotype REPOTYPE   Build source parameter repotype
+-t, --tags TAGS                  Tag files with keywords
+    --hashes HASHES              Calculate checksums using defined hash algos. Default: sha1. Available: sha1, sha2, md5
+-d, --dependency DEPENDENCY      Dependency definition my/component/123[,name=AA][,path=aa][,internal]
+-o, --operation OP               Add operation to previous dependency
+-O, --version-operation OP       Add operation to version
+</code></pre>
+
+<h2>version-test: Tests versions and their dependencies</h2>
+
+<p>"ki version-test" tests versions, their files and their dependencies. Can also test version that has not been imported yet.</p>
+
+<h3>Examples</h3>
+
+<pre class="code ruby"><code class="ruby">ki version-test -r my/product other/product
+ki version-test -f ki-version.json -i file-directory
+</code></pre>
+
+<h3>Parameters</h3>
+
+<pre class="code ruby"><code class="ruby">-f, --file FILE                  Version source file. By default uses file's directory as source for binary files.'
+-i, --input-directory INPUT-DIR  Binary file input directory
+-r, --recursive                  Tests version's dependencies also.'
+</code></pre>
+
+<h2>version-import: Imports version metadata and files to repository</h2>
+
+<p>"ki version-import" imports version and its files to repository.</p>
+
+<p>Version name can be defined either during "version-build",
+or generated automatically for component at import (with -c my/component) or defined to be a specific version (-v).
+Can also move files (-m), test dependencies before import (-t).</p>
+
+<h3>Examples</h3>
+
+<pre class="code ruby"><code class="ruby">ki version-import -m -t -c my/product
+ki version-import -f ki-version.json -i file-directory
+</code></pre>
+
+<h3>Parameters</h3>
+
+<pre class="code ruby"><code class="ruby">-f, --file FILE                  Version source file. By default uses file's directory as source for binary files.'
+-i, --input-directory INPUT-DIR  Input directory
+-t, --test-recursive             Tests version's dependencies before importing.'
+-m, --move                       Moves files to repository'
+-c COMPONENT,                    Creates new version number for defined component'
+    --create-new-version
+-v, --version-id VERSION         Imports version with defined version id'
+</code></pre>
+
+<h2>version-export: Export version to a directory</h2>
+
+<p>"ki version-export" exports version and its dependencies to target directory.</p>
+
+<h3>Usage</h3>
+
+<pre class="code ruby"><code class="ruby">ki version-export &lt;parameters&gt; &lt;file_export_pattern*.*&gt;
+</code></pre>
+
+<h3>Examples</h3>
+
+<pre class="code ruby"><code class="ruby">ki version-export -o export-dir --tags -c bin my/product
+ki version-export -o scripts -c -t my/admin-tools '*.sh'
+</code></pre>
+
+<h3>Parameters</h3>
+
+<pre class="code ruby"><code class="ruby">-o, --output-directory INPUT-DIR Input directory
+    --tags TAGS                  Select files with matching tag
+-t, --test                       Test version before export
+-c, --copy                       Exported files are copied instead of linked
+</code></pre>
+
+<h2>version-status: Add status values to version</h2>
+
+<p>"ki version-status" sets status values to versions and sets status value order to component.</p>
+
+<p>Status value order is used to determine which statuses match version queries:</p>
+
+<pre class="code ruby"><code class="ruby">my/component:maturity&gt;alpha
+</code></pre>
+
+<h3>Examples</h3>
+
+<pre class="code ruby"><code class="ruby">ki version-status add my/component/1.2.3 Smoke=Green action=path/123
+ki version-status order my/component maturity alpha,beta,gamma
+</code></pre>
+
+<h2>version-show: Prints information about version or versions</h2>
+
+<p>"ki version-show" prints information about version or versions and their dependencies</p>
+
+<h3>Examples</h3>
+
+<pre class="code ruby"><code class="ruby">ki version-show -r -d my/component/23 my/product/127
+ki version-show -f ki-version.json -i binary-dir
+</code></pre>
+
+<h3>Parameters</h3>
+
+<pre class="code ruby"><code class="ruby">-r, --recursive                  Shows version's dependencies.
+-d, --dirs                       Shows version's directories.
+-f, --file FILE                  Version source file. By default uses file's directory as source for binary files.
+-i, --input-directory INPUT-DIR  Binary file input directory
+</code></pre>
+
+<h2>version-search: Searches for versions and components</h2>
+
+<p>"ki version-search" searches for versions and components.</p>
+
+<h3>Examples</h3>
+
+<pre class="code ruby"><code class="ruby">ki version-search my/component
+ki version-search my/*
+</code></pre>
+
+<h2>pref: Sets user preferences</h2>
+
+<p>Sets user preferences
+Syntax: ki pref prefix|use parameters...</p>
+
+<h3>Examples for command prefixes:</h3>
+
+<pre class="code ruby"><code class="ruby">ki pref prefix
+- shows command prefixes, when a &quot;ki command&quot; is executed ki looks for the command with all prefix combinations
+ki pref prefix version package
+- sets two command prefixes, looks for &quot;command&quot;, &quot;version-command&quot; and &quot;package-command&quot;
+ki pref prefix + foo
+- adds one command prefix to existing ones, looks for &quot;command&quot;, &quot;version-command&quot;, &quot;package-command&quot;, &quot;foo-command&quot;
+ki pref prefix - package foo
+- removes two command prefixes from list
+ki pref prefix -c
+- clears command prefix list
+</code></pre>
+
+<h3>Examples for default script loading:</h3>
+
+<pre class="code ruby"><code class="ruby">ki pref use
+- shows list of automatically loading scripts. when ki starts up, it looks for all defined versions and loads all files tagged with &quot;ki&quot;
+ki pref use ki/http ki/ftp/123:ki-extra
+- scripts are loaded from two different version. ki/http uses latest available version and files tagged with &quot;ki&quot;, ki/ftp uses specific version and files tagged with &quot;ki-extra&quot;
+ki pref use + ki/scp
+- adds one more script package version
+ki pref use - ki/scp ki/ftp/123:ki-extra
+- removes two configurations
+ki pref use -c
+- clear use list
+</code></pre>
+
+<h3>Examples for default Ruby file requiring:</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_ki'>ki</span> <span class='id identifier rubyid_pref'>pref</span> <span class='id identifier rubyid_require'>require</span>
+<span class='id identifier rubyid_ki'>ki</span> <span class='id identifier rubyid_pref'>pref</span> <span class='id identifier rubyid_require'>require</span> <span class='id identifier rubyid_hooves'>hooves</span><span class='op'>/</span><span class='id identifier rubyid_default'>default</span>
+<span class='id identifier rubyid_ki'>ki</span> <span class='id identifier rubyid_pref'>pref</span> <span class='id identifier rubyid_require'>require</span> <span class='op'>+</span> <span class='id identifier rubyid_hooves'>hooves</span><span class='op'>/</span><span class='id identifier rubyid_default'>default</span>
+<span class='id identifier rubyid_ki'>ki</span> <span class='id identifier rubyid_pref'>pref</span> <span class='id identifier rubyid_require'>require</span> <span class='op'>-</span> <span class='id identifier rubyid_hooves'>hooves</span><span class='op'>/</span><span class='id identifier rubyid_default'>default</span>
+<span class='id identifier rubyid_ki'>ki</span> <span class='id identifier rubyid_pref'>pref</span> <span class='id identifier rubyid_require'>require</span> <span class='op'>-</span><span class='id identifier rubyid_c'>c</span>
+</code></pre>
+
+<h2>web: Starts Ki web server and uses code from Ki packages</h2>
+
+<p>ki-repo has a built in web server.</p>
+
+<h3>Usage</h3>
+
+<pre class="code ruby"><code class="ruby">ki web - Starts Ki web server
+</code></pre>
+
+<h3>Parameters</h3>
+
+<pre class="code ruby"><code class="ruby">    --handler HANDLER            Use specified Rack Handler
+    --development                Development mode, resource urls are reloaded
+-p, --port PORT                  Use specified port
+</code></pre>
+</div></div>
+
+    <div id="footer">
+  Generated on Fri Aug  9 12:57:02 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

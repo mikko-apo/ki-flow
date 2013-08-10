@@ -186,10 +186,9 @@ Uninstall ki gem
 
 The CI implementation is quite immature. Following features are next on the backlog:
 
+* Daemon process that automatically triggers builds
 * Logs for builds
 * Test result handling
-* Product build for collection versions from different components
-* Daemon process that automatically triggers builds
 
 --
 08.08.2013 @ Olari

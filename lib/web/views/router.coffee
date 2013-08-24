@@ -26,7 +26,7 @@ typeIsArray = ( value ) ->
   typeof value.splice is 'function' and
   not ( value.propertyIsEnumerable 'length' )
 
-class SinatraJavascriptRouteParser
+class JavascriptRouteParser
   constructor: (route) ->
     @keys = []
     route = route.substring(1)
@@ -63,14 +63,14 @@ class SinatraJavascriptRouteParser
         i+=1
       ret
 
-class SinatraJavascriptRoutes
+class JavascriptRoutes
   routes: []
   debug: false
   log: =>
     if @debug
       console.log.apply(this, arguments)
   add: (route, fn) =>
-    @routes.push({route: new SinatraJavascriptRouteParser(route), fn: fn})
+    @routes.push({route: new JavascriptRouteParser(route), fn: fn})
   exec: (path) =>
     for candidate in @routes
       params = candidate.route.parse(path)
@@ -117,4 +117,4 @@ class SinatraJavascriptRoutes
     else
       window.location.hash
 
-this.sinatra_routes = -> new SinatraJavascriptRoutes()
+this.javascript_routes = -> new JavascriptRoutes()

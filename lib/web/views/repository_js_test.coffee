@@ -22,9 +22,9 @@ $.ajaxSetup(async: false)
 this.test = true
 window.router.disableUrlUpdate=true
 
-describe "SinatraJavascriptRoutes", ->
+describe "JavascriptRoutes", ->
   it "should execute operation based on matched route", ->
-    router = sinatra_routes()
+    router = javascript_routes()
     router.add("/one-name/:name", (params) -> ["one-name", params.name] )
     router.exec("/one-name/mikko").should.deep.equal [ 'one-name', 'mikko' ]
     router.add("/two-name/:nameA/:nameB", (params) -> ["two-name", params.nameA, params.nameB] )

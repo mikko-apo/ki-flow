@@ -11,7 +11,7 @@ url route configuration API. I rewrote the pushState support so that it has a si
 Also the old templating code was replaced with Handlebars.
 
 These changes worked out pretty well. The javascript view rendering code got a lot cleaner. There is no more .click()
-binding in javascript! Instead the links between views are rendered as <a> tags. Centralized routing makes it also
+binding in javascript! Instead the links between views are rendered as &lt;a> tags. Centralized routing makes it also
 a lot easier to understand how the application is structured. The change is visible in this
 [commit](https://github.com/mikko-apo/ki-flow/commit/fda63d5df5c593b7e1381bc0dc7096f4751234ca),
 especially in file lib/web/views/repository.coffee

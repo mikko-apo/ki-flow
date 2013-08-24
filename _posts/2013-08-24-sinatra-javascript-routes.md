@@ -16,7 +16,8 @@ a lot easier to understand how the application is structured. The change is visi
 [commit](https://github.com/mikko-apo/ki-flow/commit/fda63d5df5c593b7e1381bc0dc7096f4751234ca),
 especially in file lib/web/views/repository.coffee
 
-The related files are
+The files related to the single page app are:
+
 * [lib/web/views/router.coffee](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/router.coffee) - JavascriptRoutes
 * [lib/web/views/repository.coffee](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/repository.coffee) - front code for ajax calls and view rendering
 * [lib/web/views/repository_page.erb](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/repository_page.erb) - Handlebar templates

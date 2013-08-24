@@ -59,6 +59,7 @@ initPushState()
 * Clear control structure for the application
 * Clear HTML
 * Gracefully degrading web app (pushState -> hashBang -> no javascript)
+* Supports ctrl, shift, alt and meta keys so users can open new tabs and windows easily
 
 --
 24.08.2013 @ Etu-Töölö

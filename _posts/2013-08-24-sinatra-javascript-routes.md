@@ -16,6 +16,13 @@ a lot easier to understand how the application is structured. The change is visi
 [commit](https://github.com/mikko-apo/ki-flow/commit/fda63d5df5c593b7e1381bc0dc7096f4751234ca),
 especially in file lib/web/views/repository.coffee
 
+The related files are
+* [lib/web/views/router.coffee](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/router.coffee) - JavascriptRoutes
+* [lib/web/views/repository.coffee](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/repository.coffee) - front code for ajax calls and view rendering
+* [lib/web/views/repository_page.erb](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/repository_page.erb) - Handlebar templates
+* [lib/web/repository.rb](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/repository.rb) - last two Sinatra controller methods serve the pages and trigger init_router()
+* [lib/web/views/ki-flow.coffee](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/ki-flow.coffee) - Handlebars rendering
+
 The work is still in progress, but here's preliminary documentation for JavascriptRoutes:
 
 # Sinatra routing for single page Javascript apps

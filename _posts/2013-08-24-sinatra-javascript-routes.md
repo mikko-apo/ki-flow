@@ -7,8 +7,8 @@ author: Mikko Apo
 # Refactoring the web app
 
 Ki-flow web application got refactored quite a bit. [Sinatra](http://www.sinatrarb.com/) has a wonderful
-url route configuration API. I rewrote the pushState so that it supports a similar syntax.
-The old templating code was replaced with Handlebars.
+url route configuration API. I rewrote the pushState support so that it has a similar syntax.
+Also the old templating code was replaced with Handlebars.
 
 These changes worked out pretty well. The javascript view rendering code got a lot cleaner. There is no more .click()
 binding in javascript! Instead the links between views are rendered as <a> tags. Centralized routing makes it also

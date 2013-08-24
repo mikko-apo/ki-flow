@@ -61,15 +61,15 @@ describe RepositoryWeb do
     rack_command = RackCommand.new
     url = "http://localhost:#{port}/repository"
     @tester.cleaners << -> {rack_command.stop_server}
-    chrome = ChromeDelegator.init
+    browser = FirefoxDelegator.init
     @tester.catch_stdio do
       Thread.new do
         rack_command.execute(RackCommand.web_ctx, %W(-p #{port}))
       end
       RackCommand.wait_until_url_responds(url)
-      chrome.navigate.to url
+      browser.navigate.to url
     end
-    chrome.execute_script <<EOF
+    browser.execute_script <<EOF
 $("head").append('<link rel="stylesheet" href="/file/web/50efd9a1/Ki::RepositoryWeb:js-test/mocha.css" type="text/css" />');
 $("head").append('<script type="text/javascript" src="/file/web/50efd9a1/Ki::RepositoryWeb:js-test/mocha.js"/>');
 $("head").append('<script type="text/javascript" src="/file/web/50efd9a1/Ki::RepositoryWeb:js-test/chai.js"/>');
@@ -80,10 +80,10 @@ $("head").append('<script type="text/javascript" src="/file/web/50efd9a1/Ki::Rep
 mocha.run();
 EOF
     sleep 1
-    if chrome.find_element(css: ".failures em").text != "0"
-      puts chrome.find_element(css: "#mocha-report").text
+    if browser.find_element(css: ".failures em").text != "0"
+      puts browser.find_element(css: "#mocha-report").text
     end
-    [chrome.find_element(css: ".passes em").text, chrome.find_element(css: ".failures em").text].should eq ["3","0"]
+    [browser.find_element(css: ".passes em").text, browser.find_element(css: ".failures em").text].should eq ["4","0"]
   end
 
   it "/routes" do

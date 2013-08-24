@@ -21,59 +21,41 @@ limitations under the License.
 clear = ->
   $("#content").empty()
 
-pushState = (restore, push_command, push_args, title, url) ->
-  if !restore && !test?
-    stateObj = { restore: push_command, args: push_args }
-    history.pushState(stateObj, title, url)
-  document.title = title
-
-this.show_components = (restore) ->
+this.show_components = ->
   $.get "/repository/json/components", (data) ->
     clear()
-    pushState restore, "show_components", [], "All components", "/repository"
-    renderElements "#content", "#t-components-top",
-      components: (n) -> n.click -> show_components()
-    renderElements "#component-list", "#t-components", data.map (component) ->
-      "a.name": [component, (n) -> n.click -> show_component(component)]
+    document.title = "All components"
+    renderElements "#content", "#t-all-components", data
 
-this.show_component = (component, restore) ->
+this.show_component = (component) ->
   $.get "/repository/json/component/#{component}/versions", (data) ->
     clear()
-    pushState restore, "show_component", [component], component, "/repository/component/#{component}"
-    # #fi-component template contains two elements:
-    # - .componentName
-    # - .components is a link back to main page
+    document.title = component
     renderElements "#content", "#t-component",
-      componentName: component
-      components: (n) -> n.click -> show_components()
-    # data is a list of versions: {"id": "2","time": "2013-01-03 00:31:33 +0200"}
-    renderElements "#version-list", "#t-version", data, (k, v, n) -> n.click -> show_version(component, v)
+      componentName: component,
+      versions: data
 
-this.show_version = (component, version, restore) ->
+this.show_version = (component, version) ->
   if !version
     arr = component.split("/")
     component = arr[0..-2].join("/")
     version = arr[arr.length-1]
   $.get "/repository/json/version/#{component}/#{version}/metadata", (metadata) ->
-    clear()
-    pushState restore, "show_version", [component, version], "#{component}/#{version}", "/repository/version/#{component}/#{version}"
-    renderElements "#content", "#t-version-top",
-      versionName: version
-      componentName: [component, (n) -> n.click -> show_component(component)]
-      components: (n) -> n.click -> show_components()
-      version_id: metadata.version_id
-    if metadata.files
-      renderElements "#version-files", "#t-version-file", metadata.files
-    if metadata.dependencies
-      renderElements "#dependencies", "#t-version-dependency", metadata.dependencies.map (d) ->
-        id = d.version_id
-        d.version_id = [id, (n) -> n.click -> show_version(id)]
-        d
     $.get "/repository/json/version/#{component}/#{version}/status", (status) ->
-      renderElements "#statuses", "#t-version-status", status.map (s) ->
-        status: s[0]
+      clear()
+      document.title = "#{component}/#{version}"
+      metadata.versionName = version
+      metadata.componentName = component
+      metadata.status = status.map (s) ->
+        status: s[0],
         value: s[1]
+      renderElements "#content", "#t-version-top", metadata
 
-window.onpopstate = (event) ->
-  if (event.state)
-    window[event.state.restore](event.state.args..., true);
+this.init_router = ->
+  router = sinatra_routes()
+  router.add("/repository/component/*", (params) -> show_component( params.splat ))
+  router.add("/repository/version/*", (params) -> show_version( params.splat ))
+  router.add("/repository", (params) -> show_components( ))
+  router.initPushState("/repository")
+#  router.debug = true
+  window.router = router

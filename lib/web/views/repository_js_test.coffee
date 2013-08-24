@@ -20,9 +20,28 @@ limitations under the License.
 
 $.ajaxSetup(async: false)
 this.test = true
+window.router.disableUrlUpdate=true
+
+describe "SinatraJavascriptRoutes", ->
+  it "should execute operation based on matched route", ->
+    router = sinatra_routes()
+    router.add("/one-name/:name", (params) -> ["one-name", params.name] )
+    router.exec("/one-name/mikko").should.deep.equal [ 'one-name', 'mikko' ]
+    router.add("/two-name/:nameA/:nameB", (params) -> ["two-name", params.nameA, params.nameB] )
+    router.exec("/two-name/mikko/apo").should.deep.equal [ 'two-name', 'mikko', "apo" ]
+    router.add("/double-name/:name/:name", (params) -> ["double-name", params.name] )
+    router.exec("/double-name/mikko/apo").should.deep.equal [ 'double-name', ['mikko', "apo"] ]
+    router.add("/foo/*", (params) -> ["foo", params.splat] )
+    router.add("/multi/:name/*", (params) -> ["multi", params.name, params.splat] )
+    router.add("/reverse-multi/*/:name", (params) -> ["reverse-multi", params.splat, params.name] )
+    router.exec("/foo/mikko").should.deep.equal [ 'foo', 'mikko' ]
+    router.exec("/foo/mikko/bar").should.deep.equal [ 'foo', 'mikko/bar' ]
+    router.exec("/multi/mikko/bar").should.deep.equal [ 'multi', 'mikko', 'bar' ]
+    router.exec("/multi/mikko/foo/bar").should.deep.equal [ 'multi', 'mikko', 'foo/bar' ]
+    router.exec("/reverse-multi/bar/mikko").should.deep.equal [ 'reverse-multi', 'bar', 'mikko' ]
+    router.exec("/reverse-multi/foo/bar/mikko").should.deep.equal [ 'reverse-multi', 'foo/bar' ,'mikko' ]
 
 describe '/repository', ->
-
   it "/components", ->
     show_components()
     document.title.should.equal "All components"
@@ -44,7 +63,7 @@ describe '/repository', ->
     assertElements
       "componentName": "my/product"
       "#version-list .id": "2"
-    $("#version-list .id").click()
+    $("#version-list a").click()
     document.title.should.equal "my/product/2"
 
   it "/version/X", ->
@@ -59,7 +78,7 @@ describe '/repository', ->
         "name": "comp"
         "path": "comp"
     # check dependency and status
-    $(".version_id").click()
+    $("#dependencies a").click()
     document.title.should.equal "my/component/23"
     assertElements
       "#version-files":

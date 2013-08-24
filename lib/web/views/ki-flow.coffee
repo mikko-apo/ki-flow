@@ -56,82 +56,19 @@ this.assertElements = (source, assert_map) ->
       else
         assertElements(element, a)
 
-# simple templating mechanism that handles
-# - templates from script tags
-# - fills templates based on key-value pairs from parameter object, lookup either class (property name) or jquery selector string (string)
-# - renders single object or list of objects based on parameter count
-# - supports modifier function for named fields
-# - gFun is a global function applied to all matched element
-this.renderElements = (destId, templateId, data = {}, gFun = null) ->
+handlebarsCache = {}
+
+getCompiledTemplate = (templateId) ->
+  compiledTemplate = handlebarsCache[templateId]
+  if compiledTemplate
+    return compiledTemplate
+  template = $(templateId)
+  if template.size() == 0
+    throw "Could not locate template '#{templateId}'"
+  handlebarsCache[templateId] = Handlebars.compile(template.html())
+
+this.renderElements = (destId, templateId, data) ->
   dest = $(destId)
   if dest.size() == 0
     throw "Could not locate destination '#{destId}'"
-
-  if !Array.isArray(data)
-    data = [data]
-
-  original_template = document.createElement(dest[0].tagName)
-  original_template.innerHTML = getTemplate(templateId)
-  clone = data.length > 1
-  # repeat for every item in data, good for rendering a list
-  fragment = document.createDocumentFragment()
-  for item in data
-    template = original_template
-    if clone
-      template = original_template.cloneNode(true)
-    fillTemplate($(template), item, gFun)
-    while template.hasChildNodes()
-      fragment.appendChild( template.removeChild(template.firstChild))
-  dest.append(fragment)
-  if clone
-    dest
-  else
-    template
-
-templateCache = {}
-getTemplate = (templateId) ->
-  cached = templateCache[templateId]
-  if !cached?
-    template_source = $(templateId)
-    if !template_source.is("script")
-      throw "Template '#{templateId}' is not a script tag!"
-    if template_source.size() == 0
-      throw "Could not locate template script tag for '#{templateId}'"
-    templateCache[templateId] = cached = template_source.html()
-  cached
-
-fillTemplate = (template, item, gFun) ->
-  # go throug every named key-value pair in item
-  for key, values of item
-    if !Array.isArray(values)
-      values = [values]
-    nodes = template.find(key)
-    if nodes.size() == 0
-      nodes = template.find(".#{key}")
-    # repeat for every matching node
-    for node in nodes
-      fillNode(key, node, values, gFun)
-
-fillNode = (key, node, values, gFun) ->
-  node = jQuery(node)
-  for value in values
-    type = $.type(value)
-    # modifier function is applied to the selected node
-    if type == "function"
-      value(node)
-    # object's values are applied to the selected node
-#    if type == "object"
-#      fillNode(node, value)
-     # each item in array generates a new child
-#    if type == "array"
-#      parent = node.parent()
-#      node.detach()
-#      for data in value
-#        newNode = node.clone()
-#        fillNode(newNode, data)
-#        parent.append(newNode)
-    # other values are set as text
-    else
-      node.text value
-    if gFun
-      gFun(key, value, node)
+  dest.html(getCompiledTemplate(templateId)(data));

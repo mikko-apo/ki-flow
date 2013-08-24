@@ -16,14 +16,9 @@
 
 # Web
 
-* packages web ui
-** show
-** browse
-* renderElements - fix for multi-dest, now uses hardcoded element from dest[0]
 * optimize static file serving, headers and compress static files with gz and store to cache
 * assertElements: functions
 * assertElement: for list data collect all values in one
-* pushstate improvements - https://github.com/olivernn/davis.js
 
 # Future releases
 

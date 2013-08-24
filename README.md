@@ -18,5 +18,6 @@ For more information, see http://ki-flow.org and https://github.com/mikko-apo/ki
 
 ## Javascript
 * http://jquery.com/
+* http://handlebarsjs.com/
 * http://visionmedia.github.com/mocha - Javascript testing framework
 * http://chaijs.com/ - Javascript assertions

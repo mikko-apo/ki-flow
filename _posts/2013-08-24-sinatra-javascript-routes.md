@@ -42,6 +42,7 @@ Routing configuration defines different urls and how they are rendered
     router.add("/repository/component/*", (params) -> show_component( params.splat ))
     router.add("/repository/version/*", (params) -> show_version( params.splat ))
     router.add("/repository", (params) -> show_components( ))
+    router.add("/say/*/to/:name", (params) -> say_hello( params.splat, params.name ))
     router.initPushState("/repository")
 
 initPushState()

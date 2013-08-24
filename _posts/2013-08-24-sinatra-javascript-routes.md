@@ -4,6 +4,8 @@ title: Sinatra Javascript Routes and Handlebars
 author: Mikko Apo
 ---
 
+# Refactoring the web app
+
 Ki-flow web application got refactored quite a bit. [Sinatra](http://www.sinatrarb.com/) has a wonderful
 url route configuration and I rewrote the pushState support so that it supports similar mechanism.
 The old templating code was replaced with Handlebars.

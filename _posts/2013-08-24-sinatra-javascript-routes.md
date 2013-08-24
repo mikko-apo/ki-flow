@@ -28,7 +28,7 @@ The work is still in progress and here's preliminary documentation for Javascrip
 
 # Sinatra routing for single page Javascript apps
 
-Sinatra uses a powerful url based routing mechanism to identify different views from the application. Javascript
+Sinatra uses a powerful url based routing mechanism to identify different views in the application. Javascript
 single page apps can benefit from the same by using JavascriptRoutes
 
 Web application's HTML uses regular links to link between views

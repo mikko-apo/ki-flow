@@ -85,7 +85,7 @@ class JavascriptRoutes
     # attach click listener
     $("body").click (event) =>
       target = event.target
-      if target.nodeName == "A"
+      if target.nodeName == "A" && !(event.shiftKey || event.ctrlKey || event.altKey || event.metaKey)
         href = target.attributes.href.nodeValue
         @log("Click for", href)
         try

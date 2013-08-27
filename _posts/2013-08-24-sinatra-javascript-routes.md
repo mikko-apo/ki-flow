@@ -57,7 +57,7 @@ initPushState()
 * Supports history.pushState and hashbang (#!). Is able to convert urls between those two formats if urls are copied between browsers.
 * Bookmarkable urls are easy to implement
 * Provides a centralized control structure for the application
-* Removes need to bind view change listeners in javascript
+* Removes the need to bind view change listeners in javascript
 * Plain HTML with regular a href links
 * Gracefully degrading web app (pushState -> hashBang -> no javascript)
 * Supports ctrl, shift, alt and meta keys so users can open new tabs and windows easily

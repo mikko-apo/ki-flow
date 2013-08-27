@@ -38,7 +38,7 @@ Web application's HTML uses regular links to link between views
 
 Routing configuration defines different urls and how they are rendered
 
-    router = javascript_routes()
+    router = KiRouter.router()
     router.add("/repository/component/*", (params) -> show_component( params.splat ))
     router.add("/repository/version/*", (params) -> show_version( params.splat ))
     router.add("/repository", (params) -> show_components( ))

@@ -19,10 +19,11 @@ limitations under the License.
 "use strict"
 
 this.init_router = ->
-  router = javascript_routes()
+  router = KiRouter.router()
   router.add("/repository/component/*", (params) -> show_component( params.splat ))
   router.add("/repository/version/*", (params) -> show_version( params.splat ))
   router.add("/repository", (params) -> show_components( ))
+  router.fallbackRoute = -> alert("Unknown route " + router.getCurrentUrl());
   router.initPushState("/repository")
   #  router.debug = true
   window.router = router

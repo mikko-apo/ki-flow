@@ -18,15 +18,88 @@ limitations under the License.
 
 "use strict"
 
-typeIsArray = ( value ) ->
-  value and
-  typeof value is 'object' and
-  value instanceof Array and
-  typeof value.length is 'number' and
-  typeof value.splice is 'function' and
-  not ( value.propertyIsEnumerable 'length' )
+# Missing features:
+# - copy build configs from bacon.js
+# - finish hashbang support
+# - hashbang <-> pushState conversion
+# - relative url support
+# - querystring parameters as part of params
+# - split to own repository
+# - more complete sinatra path parsing, JavascriptRouteParser
 
-class JavascriptRouteParser
+if module?
+  module.exports = KiRouter = {} # for KiRouter = require 'KiRouterjs'
+  KiRouter.KiRouter = KiRouter # for {KiRouter} = require 'KiRouterjs'
+else
+  if define? and define.amd?
+    define (-> KiRouter)
+  @KiRouter = KiRouter = {} # otherwise for execution context
+
+KiRouter.router = -> new KiRoutes()
+
+class KiRoutes
+  routes: []
+  debug: false
+  log: =>
+    if @debug
+      console.log.apply(this, arguments)
+  add: (route, fn) =>
+    @routes.push({route: new SinatraRouteParser(route), fn: fn})
+  exec: (path) =>
+    for candidate in @routes
+      params = candidate.route.parse(path)
+      if params
+        @log("Found route for", path, " Calling function with params ", params)
+        return candidate.fn(params)
+
+  pushStateSupport: history && history.pushState
+  disableUrlUpdate: false
+  fallbackRoute: false
+  initPushState: (hashFallBack) =>
+    # check if current url needs to be changed pushState <-> hashbang
+    # attach click listener
+    $(document).on "click", "a", (event) =>
+      target = event.target
+      if !(event.shiftKey || event.ctrlKey || event.altKey || event.metaKey)
+        href = target.attributes.href.nodeValue
+        @log("Rendering click", href)
+        if @exec(href)
+          event.preventDefault();
+          if !@disableUrlUpdate
+            if @pushStateSupport
+              history.pushState({ }, document.title, href)
+            else
+              window.location.hash=href
+    # attach pushstateListener
+    if @pushStateSupport
+      window.onpopstate = (event) =>
+        @log("Rendering onpopstate", @getCurrentUrl())
+        @renderCurrentUrl()
+    @log("Rendering initial page")
+    @renderCurrentUrl()
+
+  renderUrl: (url) =>
+    try
+      if ret = @exec(url)
+        return ret
+      else
+        if @fallbackRoute
+          return @fallbackRoute()
+        else
+          @log("Could not resolve route for", url)
+    catch err
+      @log("Could not resolve route for", url, " exception", err)
+
+  renderCurrentUrl: =>
+    @renderUrl(@getCurrentUrl())
+
+  getCurrentUrl: =>
+    if @pushStateSupport
+      window.location.pathname
+    else
+      window.location.hash
+
+class SinatraRouteParser
   constructor: (route) ->
     @keys = []
     route = route.substring(1)
@@ -42,7 +115,7 @@ class JavascriptRouteParser
           "([^\/?#]+)"
       else
         segment
-    pattern = "^/" + segments.join("/")
+    pattern = "^/" + segments.join("/") + "$"
     #    console.log("Pattern", pattern)
     @pattern = new RegExp(pattern)
   parse: (path) =>
@@ -63,58 +136,10 @@ class JavascriptRouteParser
         i+=1
       ret
 
-class JavascriptRoutes
-  routes: []
-  debug: false
-  log: =>
-    if @debug
-      console.log.apply(this, arguments)
-  add: (route, fn) =>
-    @routes.push({route: new JavascriptRouteParser(route), fn: fn})
-  exec: (path) =>
-    for candidate in @routes
-      params = candidate.route.parse(path)
-      if params
-        @log("Found route for", path, " Calling function with params ", params)
-        return candidate.fn(params)
-
-  pushStateSupport: history && history.pushState
-  disableUrlUpdate: false
-  initPushState: (hashFallBack) =>
-    # check if current url needs to be changed pushState <-> hashbang
-    # attach click listener
-    $("body").click (event) =>
-      target = event.target
-      if target.nodeName == "A" && !(event.shiftKey || event.ctrlKey || event.altKey || event.metaKey)
-        href = target.attributes.href.nodeValue
-        @log("Click for", href)
-        try
-          if @exec(href)
-            event.preventDefault();
-            @log("Click for", href, "rendered")
-            if !@disableUrlUpdate
-              if @pushStateSupport
-                history.pushState({ }, document.title, href)
-              else
-                window.location.hash=href
-          else
-            @log("Could not resolve route for", href)
-        catch err
-          @log("Could not resolve route for", href, " exception", err)
-    # attach pushstateListener
-    if @pushStateSupport
-      window.onpopstate = (event) =>
-        @log("Rendering pushState change", @getCurrentUrl())
-        @renderCurrentUrl()
-    @renderCurrentUrl()
-
-  renderCurrentUrl: =>
-    @exec(@getCurrentUrl())
-
-  getCurrentUrl: =>
-    if @pushStateSupport
-      window.location.pathname
-    else
-      window.location.hash
-
-this.javascript_routes = -> new JavascriptRoutes()
+typeIsArray = ( value ) ->
+  value and
+  typeof value is 'object' and
+  value instanceof Array and
+  typeof value.length is 'number' and
+  typeof value.splice is 'function' and
+  not ( value.propertyIsEnumerable 'length' )

@@ -25,7 +25,7 @@ this.init_router = ->
   router.add("/repository", (params) -> show_components( ))
   router.fallbackRoute = (url) -> alert("Unknown route: " + url);
   router.hashBaseUrl="/repository"
-  router.pushStateSupport = false
+#  router.pushStateSupport = false
 #  router.debug = true
   router.initPushState()
   window.router = router

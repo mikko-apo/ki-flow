@@ -19,13 +19,14 @@ limitations under the License.
 "use strict"
 
 # Missing features:
-# - copy build configs from bacon.js
-# - finish hashbang support
-# - hashbang <-> pushState conversion
-# - relative url support
 # - querystring parameters as part of params
+# - relative url support
+# - copy build configs from bacon.js
 # - split to own repository
 # - more complete sinatra path parsing, JavascriptRouteParser
+# Known issues:
+# - hashbang urls don't work in a href tags -> won't fix, use /plain/urls
+# - does not resolve situation where both window.location.pathname and window.location.hash are defined
 
 if module?
   module.exports = KiRouter = {} # for KiRouter = require 'KiRouterjs'
@@ -51,32 +52,67 @@ class KiRoutes
       if params
         @log("Found route for", path, " Calling function with params ", params)
         return candidate.fn(params)
+  find: (path) =>
+    for candidate in @routes
+      params = candidate.route.parse(path)
+      if params
+        return candidate
 
   pushStateSupport: history && history.pushState
+  hashchangeSupport: "onhashchange" of window
+  hashBaseUrl: false
   disableUrlUpdate: false
   fallbackRoute: false
-  initPushState: (hashFallBack) =>
+  initPushState: () =>
     # check if current url needs to be changed pushState <-> hashbang
-    # attach click listener
+    @attachClickListener()
+    @attachLocationChangeListener()
+    @renderInitialView()
+
+  attachClickListener: =>
     $(document).on "click", "a", (event) =>
       target = event.target
       if !(event.shiftKey || event.ctrlKey || event.altKey || event.metaKey)
         href = target.attributes.href.nodeValue
-        @log("Rendering click", href)
-        if @exec(href)
-          event.preventDefault();
-          if !@disableUrlUpdate
-            if @pushStateSupport
-              history.pushState({ }, document.title, href)
-            else
-              window.location.hash=href
-    # attach pushstateListener
+        @log("Processing click", href)
+        if @pushStateSupport
+          if @exec(href)
+            event.preventDefault();
+            @updateUrl(href)
+        else
+          if @find(href)
+            @log("Updating hash with", href)
+            event.preventDefault();
+            @updateUrl(href)
+
+  attachLocationChangeListener: =>
     if @pushStateSupport
       window.onpopstate = (event) =>
-        @log("Rendering onpopstate", @getCurrentUrl())
-        @renderCurrentUrl()
+        href = window.location.pathname
+        @log("Rendering onpopstate", href)
+        @renderUrl(href)
+    else
+      if @hashchangeSupport
+        window.onhashchange = (event) =>
+          href = window.location.hash.substring(2)
+          @log("Rendering onhashchange", href)
+          @renderUrl(href)
+
+  renderInitialView: =>
     @log("Rendering initial page")
-    @renderCurrentUrl()
+    initialUrl = window.location.pathname
+    forceUrlUpdate = false
+    if @pushStateSupport
+      if window.location.hash.substring(0, 2) == "#!"
+        forceUrlUpdate = initialUrl = window.location.hash.substring(2)
+    else
+      if @hashBaseUrl && @hashBaseUrl != window.location.pathname && window.location.hash == "" && @find(window.location.pathname)
+        window.location.pathname = @hashBaseUrl + "#!" + window.location.pathname
+      if window.location.hash.substring(0, 2) == "#!"
+        initialUrl = window.location.hash.substring(2)
+    @renderUrl(initialUrl)
+    if forceUrlUpdate
+      @updateUrl(forceUrlUpdate)
 
   renderUrl: (url) =>
     try
@@ -84,20 +120,18 @@ class KiRoutes
         return ret
       else
         if @fallbackRoute
-          return @fallbackRoute()
+          return @fallbackRoute(url)
         else
           @log("Could not resolve route for", url)
     catch err
       @log("Could not resolve route for", url, " exception", err)
 
-  renderCurrentUrl: =>
-    @renderUrl(@getCurrentUrl())
-
-  getCurrentUrl: =>
-    if @pushStateSupport
-      window.location.pathname
-    else
-      window.location.hash
+  updateUrl: (href) =>
+    if !@disableUrlUpdate
+      if @pushStateSupport
+        history.pushState({ }, document.title, href)
+      else
+        window.location.hash = "!" + href
 
 class SinatraRouteParser
   constructor: (route) ->

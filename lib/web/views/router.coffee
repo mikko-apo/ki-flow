@@ -19,6 +19,7 @@ limitations under the License.
 "use strict"
 
 # Missing features:
+# - chrome fails when converting plain url to hashbang: %23
 # - querystring parameters as part of params
 # - relative url support
 # - copy build configs from bacon.js

@@ -40,17 +40,18 @@ Routing configuration defines different urls and how they are rendered
 
     router = KiRouter.router()
     router.add("/repository/component/*", (params) -> show_component( params.splat ))
-    router.add("/repository/version/*", (params) -> show_version( params.splat ))
     router.add("/repository", (params) -> show_components( ))
     router.add("/say/*/to/:name", (params) -> say_hello( params.splat, params.name ))
-    router.initPushState("/repository")
+    router.fallbackRoute = (url) -> alert("Unknown route: " + url);
+    router.hashBaseUrl = "/repository"
+    router.initPushState()
 
 initPushState()
 
 * registers a click handler that handles all clicks to known links
 * if pushState is supported registers a window.onpopstate handler otherwise registers a handler for the hashbang links
-* on start renders a view based on current url
-* switches browser url between pushState and hashBang
+* switches browser url between pushState and hashBang if needed
+* renders a view based on current url
 
 # Features
 

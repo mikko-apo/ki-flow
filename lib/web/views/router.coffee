@@ -104,7 +104,7 @@ class KiRoutes
     initialUrl = window.location.pathname
     forceUrlUpdate = false
     if @pushStateSupport
-      if window.location.hash.substring(0, 2) == "#!"
+      if window.location.hash.substring(0, 2) == "#!" && @find(window.location.hash.substring(2))
         forceUrlUpdate = initialUrl = window.location.hash.substring(2)
     else
       if @hashBaseUrl && @hashBaseUrl != window.location.pathname && window.location.hash == "" && @find(window.location.pathname)

@@ -19,7 +19,7 @@ limitations under the License.
 "use strict"
 
 # Missing features:
-# - chrome fails when converting plain url to hashbang: %23
+# - chrome fails when converting plain url to hashbang url: %23
 # - querystring parameters as part of params
 # - relative url support
 # - copy build configs from bacon.js
@@ -27,7 +27,7 @@ limitations under the License.
 # - more complete sinatra path parsing, JavascriptRouteParser
 # Known issues:
 # - hashbang urls don't work in a href tags -> won't fix, use /plain/urls
-# - does not resolve situation where both window.location.pathname and window.location.hash are defined
+# - does not resolve situation hashbang url needs to be converted and both window.location.pathname and window.location.hash are defined
 
 if module?
   module.exports = KiRouter = {} # for KiRouter = require 'KiRouterjs'

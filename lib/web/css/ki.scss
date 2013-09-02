@@ -46,11 +46,8 @@ table {
     background: #fafafa;
   }
   tr {
-    &.even td {
-      background: #f6f6f6;
-    }
     &:hover td {
-      background: #f2f2f2;
+      background: #eaebec;
     }
   }
 }

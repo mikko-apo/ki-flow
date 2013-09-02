@@ -63,7 +63,7 @@ class KiRoutes
   pushStateSupport: history && history.pushState
   hashchangeSupport: "onhashchange" of window
   hashBaseUrl: false
-  hashPreviousView: false
+  previousView: false
   disableUrlUpdate: false
   fallbackRoute: false
   initPushState: () =>
@@ -77,16 +77,11 @@ class KiRoutes
       if !(event.shiftKey || event.ctrlKey || event.altKey || event.metaKey)
         href = target.attributes.href.nodeValue
         @log("Processing click", href)
-        if @pushStateSupport
-          if @exec(href)
-            event.preventDefault();
-            @updateUrl(href)
-        else
-          if @exec(href)
-            @log("Updating hash with", href)
-            event.preventDefault();
-            @hashPreviousView = href
-            @updateUrl(href)
+        if @exec(href)
+          @log("New url", href)
+          event.preventDefault();
+          @previousView = href
+          @updateUrl(href)
 
   attachLocationChangeListener: =>
     if @pushStateSupport
@@ -99,7 +94,7 @@ class KiRoutes
         window.onhashchange = (event) =>
           if window.location.hash.substring(0, 2) == "#!"
             href = window.location.hash.substring(2)
-            if href != @hashPreviousView
+            if href != @previousView
               @log("Rendering onhashchange", href)
               @renderUrl(href)
 

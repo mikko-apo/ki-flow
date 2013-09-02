@@ -25,6 +25,7 @@ limitations under the License.
 # - copy build configs from bacon.js
 # - split to own repository
 # - more complete sinatra path parsing, JavascriptRouteParser
+# - test suite
 # Known issues:
 # - hashbang urls don't work in a href tags -> won't fix, use /plain/urls
 # - does not resolve situation hashbang url needs to be converted and both window.location.pathname and window.location.hash are defined
@@ -62,10 +63,10 @@ class KiRoutes
   pushStateSupport: history && history.pushState
   hashchangeSupport: "onhashchange" of window
   hashBaseUrl: false
+  hashPreviousView: false
   disableUrlUpdate: false
   fallbackRoute: false
   initPushState: () =>
-    # check if current url needs to be changed pushState <-> hashbang
     @attachClickListener()
     @attachLocationChangeListener()
     @renderInitialView()
@@ -81,9 +82,10 @@ class KiRoutes
             event.preventDefault();
             @updateUrl(href)
         else
-          if @find(href)
+          if @exec(href)
             @log("Updating hash with", href)
             event.preventDefault();
+            @hashPreviousView = href
             @updateUrl(href)
 
   attachLocationChangeListener: =>
@@ -95,9 +97,11 @@ class KiRoutes
     else
       if @hashchangeSupport
         window.onhashchange = (event) =>
-          href = window.location.hash.substring(2)
-          @log("Rendering onhashchange", href)
-          @renderUrl(href)
+          if window.location.hash.substring(0, 2) == "#!"
+            href = window.location.hash.substring(2)
+            if href != @hashPreviousView
+              @log("Rendering onhashchange", href)
+              @renderUrl(href)
 
   renderInitialView: =>
     @log("Rendering initial page")

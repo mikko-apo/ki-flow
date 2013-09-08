@@ -78,7 +78,7 @@ class StewardRoutes
   attachClickListener: =>
     $(document).on "click", "a", (event) =>
       target = event.target
-      if !(event.shiftKey || event.ctrlKey || event.altKey || event.metaKey)
+      if !(event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) && @targetAttributeIsCurrentWindow(target)
         href = target.attributes.href.nodeValue
         @log("Processing click", href)
         if @exec(href)
@@ -86,6 +86,18 @@ class StewardRoutes
           event.preventDefault();
           @previousView = href
           @updateUrl(href)
+
+  targetAttributeIsCurrentWindow: (target) =>
+    if !target.attributes.target
+      return true
+    val = target.attributes.target.nodeValue
+    if ["_blank", "_parent"].indexOf(val) != -1
+      return false
+    if val == "_self"
+      return true
+    if val == "_top"
+      return window.self == window.top
+    return val == window.name
 
   attachLocationChangeListener: =>
     if @pushStateSupport

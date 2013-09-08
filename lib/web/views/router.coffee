@@ -20,7 +20,6 @@ limitations under the License.
 
 # Missing features:
 # - should route only internal addresses and skip external urls
-# - should skip clicks with new window defined, target=""
 # - remove jquery dependency - what's the correct way to listen to events?
 # - relative url support
 # - implement support for older browsers: setInterval and check urls

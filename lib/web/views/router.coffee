@@ -69,10 +69,15 @@ class StewardRoutes
   previousView: false
   disableUrlUpdate: false
   fallbackRoute: false
+  init: false
   initRouting: () =>
-    @attachClickListener()
-    @attachLocationChangeListener()
-    @renderInitialView()
+    @init = true
+    try
+      @attachClickListener()
+      @attachLocationChangeListener()
+      @renderInitialView()
+    finally
+      @init = false
 
   attachClickListener: =>
     $(document).on "click", "a", (event) =>

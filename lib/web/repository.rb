@@ -65,11 +65,11 @@ EOF
     end
 
     get '/' do
-      erb :repository_page, :locals => {js: "init_router();"}
+      erb :repository_page
     end
 
     get '/*' do
-      erb :repository_page, :locals => {js: "init_router();"}
+      erb :repository_page
     end
   end
 

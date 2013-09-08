@@ -123,13 +123,13 @@
     <script type="text/javascript" src="<%= res_url("js-test/mocha.js")%>"></script>
     <script type="text/javascript" src="<%= res_url("js-test/chai.js")%>"></script>
     <script type="text/javascript">mocha.setup('bdd');chai.should();</script>
-    <script type="text/javascript">init_router();router.disableUrlUpdate=true;</script>
+    <script type="text/javascript">initRouter();router.disableUrlUpdate=true;</script>
     <script type="text/javascript" src="<%= res_url("views/repository_js_test.coffee")%>"></script>
     <script type="text/javascript">mocha.run();</script>
 <% else %>
     <script type="text/javascript">
         $(document).ready(function() {
-            <%=js%>
+            initRouter()
         });
     </script>
 <% end %>

@@ -19,11 +19,14 @@ limitations under the License.
 "use strict"
 
 # Missing features:
+# - should route only internal addresses and skip external urls
+# - should skip clicks with new window defined, target=""
+# - remove jquery dependency - what's the correct way to listen to events?
+# - relative url support
 # - implement support for older browsers: setInterval and check urls
 # - chrome fails when converting plain url to hashbang url: %23
 # - clarify when fallbackRoute is used
 # - querystring parameters as part of params
-# - relative url support
 # - copy build configs from bacon.js
 # - split to own repository
 # - more complete sinatra path parsing, JavascriptRouteParser
@@ -34,34 +37,32 @@ limitations under the License.
 # - does not resolve situation hashbang url needs to be converted and both window.location.pathname and window.location.hash are defined
 
 if module?
-  module.exports = KiRouter = {} # for KiRouter = require 'KiRouterjs'
-  KiRouter.KiRouter = KiRouter # for {KiRouter} = require 'KiRouterjs'
+  module.exports = Steward = {} # for KiRouter = require 'KiRouterjs'
+  Steward.Steward = Steward # for {KiRouter} = require 'KiRouterjs'
 else
   if define? and define.amd?
-    define (-> KiRouter)
-  @KiRouter = KiRouter = {} # otherwise for execution context
+    define (-> Steward)
+  @Steward = Steward = {} # otherwise for execution context
 
-KiRouter.router = -> new KiRoutes()
+Steward.router = -> new StewardRoutes()
 
-class KiRoutes
+class StewardRoutes
   routes: []
   debug: false
   log: =>
     if @debug
       console.log.apply(this, arguments)
-  add: (route, fn) =>
-    @routes.push({route: new SinatraRouteParser(route), fn: fn})
+  add: (urlPattern, fn) =>
+    @routes.push({route: new SinatraRouteParser(urlPattern), fn: fn, urlPattern: urlPattern})
   exec: (path) =>
-    for candidate in @routes
-      params = candidate.route.parse(path)
-      if params
-        @log("Found route for", path, " Calling function with params ", params)
-        return candidate.fn(params)
+    if matchedRoute = @find(path)
+      @log("Found route for", path, " Calling function with params ", matchedRoute.params)
+      matchedRoute.result = matchedRoute.fn(matchedRoute.params)
+      return matchedRoute
   find: (path) =>
     for candidate in @routes
-      params = candidate.route.parse(path)
-      if params
-        return candidate
+      if params = candidate.route.parse(path)
+        return {params: params, route: candidate.matchedRoute, fn: candidate.fn, urlPattern: candidate.urlPattern}
 
   pushStateSupport: history && history.pushState
   hashchangeSupport: "onhashchange" of window
@@ -69,7 +70,7 @@ class KiRoutes
   previousView: false
   disableUrlUpdate: false
   fallbackRoute: false
-  initPushState: () =>
+  initRouting: () =>
     @attachClickListener()
     @attachLocationChangeListener()
     @renderInitialView()

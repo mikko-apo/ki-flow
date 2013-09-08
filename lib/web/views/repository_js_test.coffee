@@ -22,24 +22,24 @@ $.ajaxSetup(async: false)
 this.test = true
 window.router.disableUrlUpdate=true
 
-describe "KiRouter", ->
-  it "should execute operation based on matched route", ->
-    router = KiRouter.router()
+describe "Steward", ->
+  it "should execute operation based on matched matchedRoute", ->
+    router = Steward.router()
     router.add("/one-name/:name", (params) -> ["one-name", params.name] )
-    router.exec("/one-name/mikko").should.deep.equal [ 'one-name', 'mikko' ]
+    router.exec("/one-name/mikko").result.should.deep.equal [ 'one-name', 'mikko' ]
     router.add("/two-name/:nameA/:nameB", (params) -> ["two-name", params.nameA, params.nameB] )
-    router.exec("/two-name/mikko/apo").should.deep.equal [ 'two-name', 'mikko', "apo" ]
+    router.exec("/two-name/mikko/apo").result.should.deep.equal [ 'two-name', 'mikko', "apo" ]
     router.add("/double-name/:name/:name", (params) -> ["double-name", params.name] )
-    router.exec("/double-name/mikko/apo").should.deep.equal [ 'double-name', ['mikko', "apo"] ]
+    router.exec("/double-name/mikko/apo").result.should.deep.equal [ 'double-name', ['mikko', "apo"] ]
     router.add("/foo/*", (params) -> ["foo", params.splat] )
     router.add("/multi/:name/*", (params) -> ["multi", params.name, params.splat] )
     router.add("/reverse-multi/*/:name", (params) -> ["reverse-multi", params.splat, params.name] )
-    router.exec("/foo/mikko").should.deep.equal [ 'foo', 'mikko' ]
-    router.exec("/foo/mikko/bar").should.deep.equal [ 'foo', 'mikko/bar' ]
-    router.exec("/multi/mikko/bar").should.deep.equal [ 'multi', 'mikko', 'bar' ]
-    router.exec("/multi/mikko/foo/bar").should.deep.equal [ 'multi', 'mikko', 'foo/bar' ]
-    router.exec("/reverse-multi/bar/mikko").should.deep.equal [ 'reverse-multi', 'bar', 'mikko' ]
-    router.exec("/reverse-multi/foo/bar/mikko").should.deep.equal [ 'reverse-multi', 'foo/bar' ,'mikko' ]
+    router.exec("/foo/mikko").result.should.deep.equal [ 'foo', 'mikko' ]
+    router.exec("/foo/mikko/bar").result.should.deep.equal [ 'foo', 'mikko/bar' ]
+    router.exec("/multi/mikko/bar").result.should.deep.equal [ 'multi', 'mikko', 'bar' ]
+    router.exec("/multi/mikko/foo/bar").result.should.deep.equal [ 'multi', 'mikko', 'foo/bar' ]
+    router.exec("/reverse-multi/bar/mikko").result.should.deep.equal [ 'reverse-multi', 'bar', 'mikko' ]
+    router.exec("/reverse-multi/foo/bar/mikko").result.should.deep.equal [ 'reverse-multi', 'foo/bar' ,'mikko' ]
 
 describe '/repository', ->
   it "/components", ->

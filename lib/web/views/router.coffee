@@ -19,8 +19,8 @@ limitations under the License.
 "use strict"
 
 # Missing features:
+# - form support, catch form submits (how would this work?) get / post?
 # - should route only internal addresses and skip external urls
-# - remove jquery dependency - what's the correct way to listen to events?
 # - relative url support
 # - implement support for older browsers: setInterval and check urls
 # - chrome fails when converting plain url to hashbang url: %23
@@ -31,6 +31,8 @@ limitations under the License.
 # - more complete sinatra path parsing, JavascriptRouteParser
 # - test suite
 # - documentation
+# - navigate
+# - go
 # Known issues:
 # - hashbang urls don't work in a href tags -> won't fix, use /plain/urls
 # - does not resolve situation hashbang url needs to be converted and both window.location.pathname and window.location.hash are defined
@@ -80,16 +82,20 @@ class StewardRoutes
       @init = false
 
   attachClickListener: =>
-    $(document).on "click", "a", (event) =>
+    @addListener document, "click", (event) =>
       target = event.target
-      if !(event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) && @targetAttributeIsCurrentWindow(target)
-        href = target.attributes.href.nodeValue
-        @log("Processing click", href)
-        if @exec(href)
-          @log("New url", href)
-          event.preventDefault();
-          @previousView = href
-          @updateUrl(href)
+      if( target && target.tagName == "A")
+        if !@metakeyPressed(event) && @targetAttributeIsCurrentWindow(target)
+          href = target.attributes.href.nodeValue
+          @log("Processing click", href)
+          if @exec(href)
+            @log("New url", href)
+            event.preventDefault();
+            @previousView = href
+            @updateUrl(href)
+
+  metakeyPressed: (event) =>
+    (event.shiftKey || event.ctrlKey || event.altKey || event.metaKey)
 
   targetAttributeIsCurrentWindow: (target) =>
     if !target.attributes.target
@@ -105,13 +111,13 @@ class StewardRoutes
 
   attachLocationChangeListener: =>
     if @pushStateSupport
-      window.onpopstate = (event) =>
+      @addListener window, "popstate", (event) =>
         href = window.location.pathname
         @log("Rendering onpopstate", href)
         @renderUrl(href)
     else
       if @hashchangeSupport
-        window.onhashchange = (event) =>
+        @addListener window, "hashchange", (event) =>
           if window.location.hash.substring(0, 2) == "#!"
             href = window.location.hash.substring(2)
             if href != @previousView
@@ -155,6 +161,14 @@ class StewardRoutes
         history.pushState({ }, document.title, href)
       else
         window.location.hash = "!" + href
+
+  addListener: (element, event, fn) =>
+    if element.addEventListener  # W3C DOM
+      element.addEventListener(event, fn, false);
+    else if (element.attachEvent) # // IE DOM
+      element.attachEvent("on"+event, fn);
+    else
+      raise "addListener can not attach listeners!"
 
 class SinatraRouteParser
   constructor: (route) ->

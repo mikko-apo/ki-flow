@@ -19,18 +19,19 @@ limitations under the License.
 "use strict"
 
 # Missing features:
-# - form support, catch form submits (how would this work?) get / post?
 # - should route only internal addresses and skip external urls
 # - relative url support
 # - implement support for older browsers: setInterval and check urls
-# - chrome fails when converting plain url to hashbang url: %23
-# - clarify when fallbackRoute is used
 # - querystring parameters as part of params
 # - copy build configs from bacon.js
 # - split to own repository
 # - more complete sinatra path parsing, JavascriptRouteParser
 # - test suite
 # - documentation
+# Planned features
+# - form support, catch form submits (how would this work?) get / post?
+# - chrome fails when converting plain url to hashbang url: %23
+# - clarify when fallbackRoute is used
 # - navigate
 # - go
 # Known issues:
@@ -170,6 +171,22 @@ class StewardRoutes
     else
       raise "addListener can not attach listeners!"
 
+append = (h, key, value) ->
+  if old = h[key]
+    if !typeIsArray(old)
+      h[key] = [old]
+    h[key].push(value)
+  else
+    h[key]=value
+
+typeIsArray = ( value ) ->
+  value and
+  typeof value is 'object' and
+  value instanceof Array and
+  typeof value.length is 'number' and
+  typeof value.splice is 'function' and
+  not ( value.propertyIsEnumerable 'length' )
+
 class SinatraRouteParser
   constructor: (route) ->
     @keys = []
@@ -197,20 +214,8 @@ class SinatraRouteParser
       ret = {}
       matches.slice(1).map (match) =>
         key = @keys[i]
-        #        console.log("Found item", match, key)
-        if ret[key]
-          if !typeIsArray(ret[key])
-            ret[key] = [ret[key]]
-          ret[key].push(match)
-        else
-          ret[key]=match
         i+=1
+        #        console.log("Found item", match, key)
+        append(ret, key, match)
       ret
 
-typeIsArray = ( value ) ->
-  value and
-  typeof value is 'object' and
-  value instanceof Array and
-  typeof value.length is 'number' and
-  typeof value.splice is 'function' and
-  not ( value.propertyIsEnumerable 'length' )

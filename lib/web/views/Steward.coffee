@@ -115,7 +115,7 @@ class StewardRoutes
 
   targetHostSame: (t) =>
     l = window.location
-    t.protocol == l.protocol && t.username == l.username && t.password == t.password && t.host == l.host
+    t.host == l.host && t.protocol == l.protocol && t.username == l.username && t.password == t.password
 
   attachLocationChangeListener: =>
     if @pushStateSupport

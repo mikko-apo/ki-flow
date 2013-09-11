@@ -19,7 +19,6 @@ limitations under the License.
 "use strict"
 
 # Missing features:
-# - should route only internal addresses and skip external urls
 # - relative url support
 # - implement support for older browsers: setInterval and check urls
 # - querystring parameters as part of params
@@ -86,7 +85,7 @@ class StewardRoutes
     @addListener document, "click", (event) =>
       target = event.target
       if( target && target.tagName == "A")
-        if !@metakeyPressed(event) && @targetAttributeIsCurrentWindow(target)
+        if !@metakeyPressed(event) && @targetAttributeIsCurrentWindow(target) && @targetHostSame(target)
           href = target.attributes.href.nodeValue
           @log("Processing click", href)
           if @exec(href)
@@ -109,6 +108,10 @@ class StewardRoutes
     if val == "_top"
       return window.self == window.top
     return val == window.name
+
+  targetHostSame: (t) =>
+    l = window.location
+    t.protocol == l.protocol && t.username == l.username && t.password == t.password && t.host == l.host
 
   attachLocationChangeListener: =>
     if @pushStateSupport

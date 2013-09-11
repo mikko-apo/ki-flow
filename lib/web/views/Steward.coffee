@@ -19,8 +19,7 @@ limitations under the License.
 "use strict"
 
 # Missing features:
-# - relative url support
-# - implement support for older browsers: setInterval and check urls
+# - support for browsers without history & onhashchange -> disable
 # - querystring parameters as part of params
 # - copy build configs from bacon.js
 # - split to own repository
@@ -85,10 +84,15 @@ class StewardRoutes
     @addListener document, "click", (event) =>
       target = event.target
       if( target && target.tagName == "A")
+        target.href = target.href # fix for IE
         if !@metakeyPressed(event) && @targetAttributeIsCurrentWindow(target) && @targetHostSame(target)
           href = target.attributes.href.nodeValue
           @log("Processing click", href)
-          if @exec(href)
+          ret = @exec(href)
+          if !ret
+            href = target.pathname # try with full path name
+            ret = @exec(href)
+          if ret
             @log("New url", href)
             event.preventDefault();
             @previousView = href

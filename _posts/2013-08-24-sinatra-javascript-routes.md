@@ -19,7 +19,7 @@ especially in file lib/web/views/repository.coffee
 The files related to the single page app are:
 
 * [lib/web/views/repository.coffee](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/repository.coffee) - Route config, front code for ajax calls and view rendering
-* [lib/web/views/router.coffee](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/router.coffee) - JavascriptRoutes
+* [lib/web/views/Steward.coffee](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/Steward.coffee) - JavascriptRoutes
 * [lib/web/views/repository_page.erb](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/repository_page.erb) - Handlebar templates
 * [lib/web/repository.rb](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/repository.rb) - last two Sinatra controller methods serve the pages and trigger init_router()
 * [lib/web/views/ki-flow.coffee](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/ki-flow.coffee) - Handlebars rendering

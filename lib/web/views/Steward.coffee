@@ -20,13 +20,13 @@ limitations under the License.
 
 # Missing features:
 # - support for browsers without history & onhashchange -> disable
-# - querystring parameters as part of params
 # - copy build configs from bacon.js
 # - split to own repository
 # - more complete sinatra path parsing, JavascriptRouteParser
 # - test suite
 # - documentation
-# Planned features
+# Possible features
+# - querystring parameters as part of params
 # - form support, catch form submits (how would this work?) get / post?
 # - chrome fails when converting plain url to hashbang url: %23
 # - clarify when fallbackRoute is used
@@ -81,22 +81,23 @@ class StewardRoutes
       @init = false
 
   attachClickListener: =>
-    @addListener document, "click", (event) =>
-      target = event.target
-      if( target && target.tagName == "A")
-        target.href = target.href # fix for IE
-        if !@metakeyPressed(event) && @targetAttributeIsCurrentWindow(target) && @targetHostSame(target)
-          href = target.attributes.href.nodeValue
-          @log("Processing click", href)
-          ret = @exec(href)
-          if !ret
-            href = target.pathname # try with full path name
+    if @pushStateSupport || @hashchangeSupport
+      @addListener document, "click", (event) =>
+        target = event.target
+        if( target && target.tagName == "A")
+          target.href = target.href # fix for IE
+          if !@metakeyPressed(event) && @targetAttributeIsCurrentWindow(target) && @targetHostSame(target)
+            href = target.attributes.href.nodeValue
+            @log("Processing click", href)
             ret = @exec(href)
-          if ret
-            @log("New url", href)
-            event.preventDefault();
-            @previousView = href
-            @updateUrl(href)
+            if !ret
+              href = target.pathname # try with full path name
+              ret = @exec(href)
+            if ret
+              @log("New url", href)
+              event.preventDefault();
+              @previousView = href
+              @updateUrl(href)
 
   metakeyPressed: (event) =>
     (event.shiftKey || event.ctrlKey || event.altKey || event.metaKey)
@@ -140,13 +141,14 @@ class StewardRoutes
       if window.location.hash.substring(0, 2) == "#!" && @find(window.location.hash.substring(2))
         forceUrlUpdate = initialUrl = window.location.hash.substring(2)
     else
-      if window.location.hash == "" && @find(initialUrl)
-        if @hashBaseUrl && @hashBaseUrl != initialUrl
-          window.location.pathname = @hashBaseUrl + "#!" + initialUrl
-        else
-          window.location.hash = "!" + initialUrl
-      if window.location.hash.substring(0, 2) == "#!"
-        initialUrl = window.location.hash.substring(2)
+      if @hashchangeSupport
+        if window.location.hash == "" && @find(initialUrl)
+          if @hashBaseUrl && @hashBaseUrl != initialUrl
+            window.location.pathname = @hashBaseUrl + "#!" + initialUrl
+          else
+            window.location.hash = "!" + initialUrl
+        if window.location.hash.substring(0, 2) == "#!"
+          initialUrl = window.location.hash.substring(2)
     @renderUrl(initialUrl)
     if forceUrlUpdate
       @updateUrl(forceUrlUpdate)
@@ -168,7 +170,8 @@ class StewardRoutes
       if @pushStateSupport
         history.pushState({ }, document.title, href)
       else
-        window.location.hash = "!" + href
+        if @hashchangeSupport
+          window.location.hash = "!" + href
 
   addListener: (element, event, fn) =>
     if element.addEventListener  # W3C DOM

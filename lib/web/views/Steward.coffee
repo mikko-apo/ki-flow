@@ -19,17 +19,17 @@ limitations under the License.
 "use strict"
 
 # Missing features:
-# - support for browsers without history & onhashchange -> disable
 # - copy build configs from bacon.js
 # - split to own repository
 # - more complete sinatra path parsing, JavascriptRouteParser
 # - test suite
 # - documentation
 # Possible features
-# - querystring parameters as part of params
-# - form support, catch form submits (how would this work?) get / post?
-# - chrome fails when converting plain url to hashbang url: %23
 # - clarify when fallbackRoute is used
+# - relative url support is tricky to get right. What if application is served urls with splat?
+# - querystring parameters as part of params. How should they interract with #! support?
+# - form support, catch form submits (how would this work?) get / post?
+# - chrome fails when converting plain url to hashbang url: %23, window.location.hash escaping
 # - navigate
 # - go
 # Known issues:
@@ -85,15 +85,10 @@ class StewardRoutes
       @addListener document, "click", (event) =>
         target = event.target
         if( target && target.tagName == "A")
-          target.href = target.href # fix for IE
           if !@metakeyPressed(event) && @targetAttributeIsCurrentWindow(target) && @targetHostSame(target)
             href = target.attributes.href.nodeValue
             @log("Processing click", href)
-            ret = @exec(href)
-            if !ret
-              href = target.pathname # try with full path name
-              ret = @exec(href)
-            if ret
+            if @exec(href)
               @log("New url", href)
               event.preventDefault();
               @previousView = href

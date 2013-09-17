@@ -23,38 +23,53 @@ limitations under the License.
 # - Hash key is used as jquery selector
 # - value can contain either one item or a list of values. selector needs to find the same number of elements
 # - value can contain either strings or regex objects
-this.assertElements = (source, assert_map) ->
+# TODO:
+# - support for function assertions
+# - documentation
+# - split to own repo
+# - tests
+@assertElements = (source, assert_map) ->
   if !assert_map?
     assert_map = source
-    source = $("body")
-  else
-    source = $(source)
+    source = "body"
+  source = $(source)
   for key, asserts of assert_map
-    if !Array.isArray(asserts)
-      asserts = [asserts]
     nodes = source.find(key)
-    selector = key
+    selector = original_key = key
     if nodes.size() == 0
       selector = ".#{key}"
-      nodes = source.find(selector)
-    if asserts.length != nodes.size()
-      if nodes.size() == 0
-        throw "Selector '#{selector}' did not match any nodes! There are #{asserts.length} asserts."
-      else
-        throw "Selector '#{selector}' matched #{nodes.size()} but there are #{asserts.length} asserts."
-    for i in [0..(asserts.length-1)]
+      try
+        nodes = source.find(selector)
+      catch error
+      finally
+        if nodes.size() == 0
+          selector = original_key
+    if !Array.isArray(asserts)
+      asserts = [asserts]
+    assertCount = asserts.length
+    nodeCount = nodes.size()
+    if assertCount > 0 && nodeCount == 0
+      throw "Selector '#{selector}' did not match any elements! There are #{assertCount} asserts!"
+    numberOfCompared = Math.min(assertCount, nodeCount)
+    for i in [0..numberOfCompared-1]
       a = asserts[i]
       element = nodes.get(i)
       type = $.type(a)
       text = $(element).text()
+      err = "Selector '#{selector}' returned #{nodeCount} elements. Item at index #{i} '#{text}' does not match "
       if type == "regexp"
         if !a.test(text)
-          throw "Selector #{selector} returned #{nodes.size()} elements, item at index #{i} '#{text}' does not match RegEx '#{a}'"
+          throw  err + "RegEx '#{a}'"
       else if type == "string"
         if a != text
-          throw "Selector #{selector} returned #{nodes.size()} elements, item at index #{i} '#{text}' does not match '#{a}'"
+          throw err + "String '#{a}'"
       else
         assertElements(element, a)
+    diff = nodeCount - assertCount
+    if diff != 0
+      verb = if diff > 0 then "add" else "remove"
+      throw "Selector '#{selector}' returned #{nodeCount} elements. There were #{assertCount} asserts. #{numberOfCompared} elements were ok, but you need to #{verb} #{Math.abs(diff)} asserts!"
+  null # cleaner javascript
 
 handlebarsCache = {}
 

@@ -63,7 +63,7 @@ describe '/repository', ->
     assertElements
       "componentName": "my/product"
       "#version-list .id": "2"
-    $("#version-list a").click()
+    $("#version-list a")[0].click()
     document.title.should.equal "my/product/2"
 
   it "/version/X", ->
@@ -78,7 +78,7 @@ describe '/repository', ->
         "name": "comp"
         "path": "comp"
     # check dependency and status
-    $("#dependencies a").click()
+    $("#dependencies a")[0].click()
     document.title.should.equal "my/component/23"
     assertElements
       "#version-files":

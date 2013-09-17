@@ -56,15 +56,21 @@ limitations under the License.
       element = nodes.get(i)
       type = $.type(a)
       text = $(element).text()
-      err = "Selector '#{selector}' returned #{nodeCount} elements. Item at index #{i} '#{text}' does not match "
+      err = "Selector '#{selector}' returned #{nodeCount} elements. Item at index #{i} '#{text}' "
       if type == "regexp"
         if !a.test(text)
-          throw  err + "RegEx '#{a}'"
+          throw  err + "does not match RegEx '#{a}'"
       else if type == "string"
         if a != text
-          throw err + "String '#{a}'"
+          throw err + "does not match String '#{a}'"
+      else if type == "function"
+        try
+          a(text)
+        catch error
+          error.message = err + "does not pass function: " + error.message
+          throw error
       else
-        assertElements(element, a)
+        throw "Unsupported assert type: " + a
     diff = nodeCount - assertCount
     if diff != 0
       verb = if diff > 0 then "add" else "remove"

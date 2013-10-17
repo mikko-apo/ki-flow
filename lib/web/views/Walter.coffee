@@ -64,7 +64,7 @@ class WalterRoutes
       return matchedRoute
   find: (path) =>
     for candidate in @routes
-      if params = candidate.route.parse(path)
+      if params = candidate.route.parse(path, @paramVerifier)
         return {params: params, route: candidate.matchedRoute, fn: candidate.fn, urlPattern: candidate.urlPattern}
 
   pushStateSupport: history && history.pushState
@@ -74,6 +74,7 @@ class WalterRoutes
   disableUrlUpdate: false
   fallbackRoute: false
   init: false
+  paramVerifier: false
   initRouting: () =>
     @init = true
     try
@@ -187,22 +188,6 @@ class WalterRoutes
     else
       raise "addListener can not attach listeners!"
 
-append = (h, key, value) ->
-  if old = h[key]
-    if !typeIsArray(old)
-      h[key] = [old]
-    h[key].push(value)
-  else
-    h[key]=value
-
-typeIsArray = ( value ) ->
-  value and
-  typeof value is 'object' and
-  value instanceof Array and
-  typeof value.length is 'number' and
-  typeof value.splice is 'function' and
-  not ( value.propertyIsEnumerable 'length' )
-
 class SinatraRouteParser
   constructor: (route) ->
     @keys = []
@@ -222,16 +207,32 @@ class SinatraRouteParser
     pattern = "^/" + segments.join("/") + "$"
     #    console.log("Pattern", pattern)
     @pattern = new RegExp(pattern)
-  parse: (path) =>
-    i = 0
+  parse: (path, paramVerify) =>
     matches = path.match(@pattern)
     #    console.log("Parse", path, matches)
     if matches
+      i = 0
       ret = {}
-      matches.slice(1).map (match) =>
+      for match in matches.slice(1)
+        if paramVerify && !paramVerify(match)
+          return null # parameter did not pass verifier -> abort
         key = @keys[i]
         i+=1
         #        console.log("Found item", match, key)
-        append(ret, key, match)
+        @append(ret, key, match)
       ret
+  append: (h, key, value) ->
+    if old = h[key]
+      if !@typeIsArray(old)
+        h[key] = [old]
+      h[key].push(value)
+    else
+      h[key]=value
+  typeIsArray: ( value ) ->
+    value and
+    typeof value is 'object' and
+    value instanceof Array and
+    typeof value.length is 'number' and
+    typeof value.splice is 'function' and
+    not ( value.propertyIsEnumerable 'length' )
 

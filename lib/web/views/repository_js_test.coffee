@@ -22,9 +22,9 @@ $.ajaxSetup(async: false)
 this.test = true
 window.router.disableUrlUpdate=true
 
-describe "Steward", ->
+describe "Walter", ->
   it "should execute operation based on matched matchedRoute", ->
-    router = Steward.router()
+    router = Walter.router()
     router.add("/one-name/:name", (params) -> ["one-name", params.name] )
     router.exec("/one-name/mikko").result.should.deep.equal [ 'one-name', 'mikko' ]
     router.add("/two-name/:nameA/:nameB", (params) -> ["two-name", params.nameA, params.nameB] )
@@ -42,6 +42,20 @@ describe "Steward", ->
     router.exec("/reverse-multi/foo/bar/mikko").result.should.deep.equal [ 'reverse-multi', 'foo/bar' ,'mikko' ]
 
 describe "assertElements", ->
+  it "should support 2 parameters: selector + (assert array)", ->
+    assertElements "h3", "Components"
+    assertElements "#component-list a", ["ki/sbt", /demo/,"ki/product"]
+    (-> assertElements "#component-list a", "ki/sbt", "demo2").should.throw("Selector \'h3\' returned 3 elements. Item at index 0 \'Components\' does not match String \'demo2\'")
+  it "should support n parameters: selector + asserts", ->
+    assertElements "h3", "Components"
+    assertElements "#component-list a", "ki/sbt", /demo/,"ki/product"
+    (-> assertElements "#component-list a", "ki/sbt", "demo2").should.throw("Selector \'h3\' returned 3 elements. Item at index 0 \'Components\' does not match String \'demo2\'")
+  it "should support two parameters: source + assertMap", ->
+    assertElements "#component-list", {a: ["ki/sbt", /demo/,"ki/product"]}
+  it "should support nested assertMaps", ->
+    assertElements
+      "#component-list":
+        a: ["ki/sbt", /demo/,"ki/product"]
   it "should support property as selector", ->
     assertElements h3: "Components"
     (-> assertElements h3: "aa").should.throw("Selector \'h3\' returned 1 elements. Item at index 0 \'Components\' does not match String \'aa\'")

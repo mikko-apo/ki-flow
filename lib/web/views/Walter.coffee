@@ -20,6 +20,8 @@ limitations under the License.
 
 # Missing features:
 # - $("a").click does not register but $("a")[0].click does
+# - detect right mouse button and ignore
+# - keyboard navigation
 # - copy build configs from bacon.js
 # - split to own repository
 # - more complete sinatra path parsing, JavascriptRouteParser
@@ -38,16 +40,16 @@ limitations under the License.
 # - does not resolve situation hashbang url needs to be converted and both window.location.pathname and window.location.hash are defined
 
 if module?
-  module.exports = Steward = {} # for KiRouter = require 'KiRouterjs'
-  Steward.Steward = Steward # for {KiRouter} = require 'KiRouterjs'
+  module.exports = Walter = {} # for KiRouter = require 'KiRouterjs'
+  Walter.Walter = Walter # for {KiRouter} = require 'KiRouterjs'
 else
   if define? and define.amd?
-    define (-> Steward)
-  @Steward = Steward = {} # otherwise for execution context
+    define (-> Walter)
+  @Walter = Walter = {} # otherwise for execution context
 
-Steward.router = -> new StewardRoutes()
+Walter.router = -> new WalterRoutes()
 
-class StewardRoutes
+class WalterRoutes
   routes: []
   debug: false
   log: =>
@@ -85,9 +87,10 @@ class StewardRoutes
     if @pushStateSupport || @hashchangeSupport
       @addListener document, "click", (event) =>
         target = event.target
-        if( target && target.tagName == "A")
-          if !@metakeyPressed(event) && @targetAttributeIsCurrentWindow(target) && @targetHostSame(target)
-            href = target.attributes.href.nodeValue
+        if target
+          aTag = @findATag(target)
+          if aTag && !@metakeyPressed(event) && @targetAttributeIsCurrentWindow(aTag) && @targetHostSame(aTag)
+            href = aTag.attributes.href.nodeValue
             @log("Processing click", href)
             if @exec(href)
               @log("New url", href)
@@ -95,13 +98,20 @@ class StewardRoutes
               @previousView = href
               @updateUrl(href)
 
+  findATag: (target) =>
+    while target
+      if target.tagName == "A"
+        return target
+      target = target.parentElement
+    null
+
   metakeyPressed: (event) =>
     (event.shiftKey || event.ctrlKey || event.altKey || event.metaKey)
 
-  targetAttributeIsCurrentWindow: (target) =>
-    if !target.attributes.target
+  targetAttributeIsCurrentWindow: (aTag) =>
+    if !aTag.attributes.target
       return true
-    val = target.attributes.target.nodeValue
+    val = aTag.attributes.target.nodeValue
     if ["_blank", "_parent"].indexOf(val) != -1
       return false
     if val == "_self"
@@ -110,9 +120,9 @@ class StewardRoutes
       return window.self == window.top
     return val == window.name
 
-  targetHostSame: (t) =>
+  targetHostSame: (aTag) =>
     l = window.location
-    t.host == l.host && t.protocol == l.protocol && t.username == l.username && t.password == t.password
+    aTag.host == l.host && aTag.protocol == l.protocol && aTag.username == l.username && aTag.password == aTag.password
 
   attachLocationChangeListener: =>
     if @pushStateSupport

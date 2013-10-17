@@ -45,7 +45,11 @@ limitations under the License.
         if nodes.size() == 0
           selector = original_key
     if !Array.isArray(asserts)
-      asserts = [asserts]
+      if asserts.callee?
+        # convert argument parameters to an array
+        asserts = Array.prototype.slice.call(asserts)
+      else
+        asserts = [asserts]
     assertCount = asserts.length
     nodeCount = nodes.size()
     if assertCount > 0 && nodeCount == 0
@@ -70,7 +74,7 @@ limitations under the License.
           error.message = err + "does not pass function: " + error.message
           throw error
       else
-        throw "Unsupported assert type: " + a
+        throw "Unsupported assert type: (#{type}) #{a} "
     diff = nodeCount - assertCount
     if diff != 0
       verb = if diff > 0 then "add" else "remove"

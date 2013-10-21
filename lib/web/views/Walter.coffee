@@ -151,7 +151,7 @@ class WalterRoutes
       if @hashchangeSupport
         if window.location.hash == "" && @find(initialUrl)
           if @hashBaseUrl && @hashBaseUrl != initialUrl
-            window.location.pathname = @hashBaseUrl + "#!" + initialUrl
+            window.location.href = @hashBaseUrl + "#!" + initialUrl
           else
             window.location.hash = "!" + initialUrl
         if window.location.hash.substring(0, 2) == "#!"

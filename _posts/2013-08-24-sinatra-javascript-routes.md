@@ -44,6 +44,7 @@ Routing configuration defines different urls and how they are rendered
     router.add("/say/*/to/:name", (params) -> say_hello( params.splat, params.name ))
     router.fallbackRoute = (url) -> alert("Unknown route: " + url);
     router.hashBaseUrl = "/repository"
+    router.paramVerifier = (s) -> /^[a-z0-9\/]+$/i.test(s)
     router.initPushState()
 
 initPushState()

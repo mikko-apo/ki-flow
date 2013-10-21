@@ -74,7 +74,7 @@ limitations under the License.
           error.message = err + "does not pass function: " + error.message
           throw error
       else
-        throw "Unsupported assert type: (#{type}) #{a} "
+        assertElements(element, a)
     diff = nodeCount - assertCount
     if diff != 0
       verb = if diff > 0 then "add" else "remove"

@@ -22,9 +22,9 @@ $.ajaxSetup(async: false)
 this.test = true
 window.router.disableUrlUpdate=true
 
-describe "Walter", ->
+describe "KiRouter", ->
   it "should execute operation based on matched matchedRoute", ->
-    router = Walter.router()
+    router = KiRouter.router()
     router.add("/one-name/:name", (params) -> ["one-name", params.name] )
     router.exec("/one-name/mikko").result.should.deep.equal [ 'one-name', 'mikko' ]
     router.add("/two-name/:nameA/:nameB", (params) -> ["two-name", params.nameA, params.nameB] )

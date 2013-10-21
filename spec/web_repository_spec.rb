@@ -79,11 +79,11 @@ chai.should();
 $("head").append('<script type="text/javascript" src="/file/web/50efd9a1/Ki::RepositoryWeb:views/repository_js_test.coffee">');
 mocha.run();
 EOF
-    sleep 120
+    sleep 1
     if browser.find_element(css: ".failures em").text != "0"
       puts browser.find_element(css: "#mocha-report").text
     end
-    [browser.find_element(css: ".passes em").text, browser.find_element(css: ".failures em").text].should eq ["4","0"]
+    [browser.find_element(css: ".passes em").text, browser.find_element(css: ".failures em").text].should eq ["10","0"]
   end
 
   it "/routes" do

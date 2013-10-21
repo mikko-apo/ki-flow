@@ -38,16 +38,16 @@ limitations under the License.
 # - does not resolve situation hashbang url needs to be converted and both window.location.pathname and window.location.hash are defined
 
 if module?
-  module.exports = Walter = {} # for KiRouter = require 'KiRouterjs'
-  Walter.Walter = Walter # for {KiRouter} = require 'KiRouterjs'
+  module.exports = KiRouter = {} # for KiRouter = require 'KiRouterjs'
+  KiRouter.KiRouter = KiRouter # for {KiRouter} = require 'KiRouterjs'
 else
   if define? and define.amd?
-    define (-> Walter)
-  @Walter = Walter = {} # otherwise for execution context
+    define (-> KiRouter)
+  @KiRouter = KiRouter = {} # otherwise for execution context
 
-Walter.router = -> new WalterRoutes()
+KiRouter.router = -> new KiRoutes()
 
-class WalterRoutes
+class KiRoutes
   routes: []
   debug: false
   log: =>

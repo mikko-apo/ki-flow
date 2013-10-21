@@ -90,7 +90,7 @@ class WalterRoutes
         target = event.target
         if target
           aTag = @findATag(target)
-          if aTag && !@metakeyPressed(event) && @targetAttributeIsCurrentWindow(aTag) && @targetHostSame(aTag)
+          if aTag && @leftMouseButton(event) && !@metakeyPressed(event) && @targetAttributeIsCurrentWindow(aTag) && @targetHostSame(aTag)
             href = aTag.attributes.href.nodeValue
             @log("Processing click", href)
             if @exec(href)
@@ -98,6 +98,9 @@ class WalterRoutes
               event.preventDefault();
               @previousView = href
               @updateUrl(href)
+
+  leftMouseButton: (event) =>
+    event.which? && event.which == 1 || event.button == 0
 
   findATag: (target) =>
     while target

@@ -20,8 +20,6 @@ limitations under the License.
 
 # Missing features:
 # - $("a").click does not register but $("a")[0].click does
-# - copy build configs from bacon.js
-# - split to own repository
 # - more complete sinatra path parsing, JavascriptRouteParser
 # - test suite
 # - documentation
@@ -37,13 +35,14 @@ limitations under the License.
 # - hashbang urls don't work in a href tags -> won't fix, use /plain/urls
 # - does not resolve situation hashbang url needs to be converted and both window.location.pathname and window.location.hash are defined
 
+KiRouter = {}
 if module?
-  module.exports = KiRouter = {} # for KiRouter = require 'KiRouterjs'
+  module.exports = KiRouter # for KiRouter = require 'KiRouterjs'
   KiRouter.KiRouter = KiRouter # for {KiRouter} = require 'KiRouterjs'
 else
   if define? and define.amd?
-    define (-> KiRouter)
-  @KiRouter = KiRouter = {} # otherwise for execution context
+    define [], -> KiRouter
+  @KiRouter = KiRouter # otherwise for execution context
 
 KiRouter.router = -> new KiRoutes()
 
@@ -73,7 +72,7 @@ class KiRoutes
   fallbackRoute: false
   init: false
   paramVerifier: false
-  initRouting: () =>
+  transparentRouting: () =>
     @init = true
     try
       @attachClickListener()
@@ -81,6 +80,11 @@ class KiRoutes
       @renderInitialView()
     finally
       @init = false
+  hashbangRouting: () =>
+    @pushStateSupport = false
+    if !@hashchangeSupport
+      throw new Error("No hashchange support!")
+    @transparentRouting()
 
   attachClickListener: =>
     if @pushStateSupport || @hashchangeSupport

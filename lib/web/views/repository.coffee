@@ -26,9 +26,9 @@ this.initRouter = ->
   router.fallbackRoute = (url) -> alert("Unknown matchedRoute: " + url);
   router.hashBaseUrl="/repository"
 #  router.pushStateSupport = false
-  router.debug = true
+#  router.debug = true
   router.paramVerifier = (s) -> /^[a-z0-9\/]+$/i.test(s)
-  router.initRouting()
+  router.transparentRouting()
   window.router = router
 
 clear = ->

@@ -88,6 +88,7 @@ EOF
     KiCommand.new.execute(%W(ci-build -d #{build_dir} -h #{home.path}))
 
     v = home.version("test/result")
+    v.version_id.should eq("test/result/1")
     IO.read(v.binaries.path("result.txt")).should eq("Before install
 ANT
 Before script 1
@@ -96,6 +97,10 @@ SBT 1000
 INFO
 After script
 ")
+    log_path = home.repository("logs").version("test/result/1").path("ki_logs.json")
+    logs = KiJSONFile.load_json(log_path)
+    logs["name"].should eq("Build")
+    logs["logs"].map{|l| l["name"]}.should eq(["before_install", "install", "before_script", "before_script", "script", "after_script"])
   end
 
   it "should execute build only if remote git changes" do

@@ -29,3 +29,22 @@
 * hierarchic properties
 * js-testing: xunit output
 * version license metadata
+
+# Structure
+* Component - Version
+* Action List/History - Action
+* Environment - Environment version
+* Action
+** Versions
+** Environment version
+** Action Parameters
+* Resource
+
+# Views
+* Action
+** overview
+** stats
+** test results
+* Component history
+* Environment
+*

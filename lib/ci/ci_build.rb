@@ -149,16 +149,27 @@ EOF
 
     class CiBuild
       attr_chain :ki_home, :require
+      include HashLog
 
       def build(dir)
-        build_config = load_config(dir)
-        build_config.export_dependencies
-        build_config.execute_build
-#        build_config.check_test_results
-        build_config.build_versions
-        build_config.import_versions
-#        build_config.store_test_results
-#        build_config.store_logs
+        root_log = nil
+        imported_version = nil
+        begin
+          log("Build") do |log|
+            root_log = log
+            build_config = load_config(dir)
+            build_config.root_log(self)
+            build_config.export_dependencies
+            build_config.execute_build
+    #        build_config.check_test_results
+            build_config.build_versions
+            imported_version = build_config.import_versions
+    #        build_config.store_test_results
+    #        build_config.store_logs
+          end
+        ensure
+          store_logs(imported_version, root_log)
+        end
       end
 
       def load_config(dir)
@@ -173,6 +184,11 @@ EOF
           end
         end
         raise "Could not resolve build config for directory '#{dir}'! Tried with different build configs(#{configs.size}): '#{configs.service_names.join("', '")}'"
+      end
+
+      def store_logs(imported_version, root_logs)
+        path = VersionImporter.create_version_dir(ki_home, "logs", imported_version.component.component_id, imported_version.name).path("ki_logs.json")
+        File.safe_write(path, JSON.pretty_generate(root_logs))
       end
     end
 
@@ -191,6 +207,9 @@ EOF
           opts.banner = ""
           opts.on("-d", "--directory INPUT-DIR", "Build directory") do |v|
             dir(v)
+          end
+          opts.on("-l", "--logs LOG-DIR", "Root directory for logs") do |v|
+            log_root(v)
           end
         end
       end

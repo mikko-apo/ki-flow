@@ -27,8 +27,10 @@ module Ki
       class YmlBuildConfig
         attr_chain :ki_home, :require
         attr_chain :build_dir, :require
+        attr_chain :metadata_file, -> {build_dir.path("ki-version.json")}
         attr_chain :config, -> {read_config}
-        attr_chain :sh, -> {HashLogShell.new.chdir(build_dir.path)}
+        attr_chain :root_log, :require
+        attr_chain :sh, -> {HashLogShell.new.chdir(build_dir.path).root_log(root_log)}
 
         def handles_build_directory?(dir)
           dir.exists?("ki.yml")
@@ -66,20 +68,22 @@ module Ki
         def build_versions
           if (build_version_commands = config.fetch("build_version", nil))
             build_version_commands.each do |c|
-              KiCommand.new.execute(%W(version-build --file #{build_dir.path("ki-version.json")} #{c}))
+              KiCommand.new.execute(%W(version-build --file #{metadata_file} #{c}))
             end
           end
         end
 
         def import_versions
           if (import_component = config.fetch("import_component", nil))
-            KiCommand.new.execute(%W(version-import -h #{ki_home.path} -i #{build_dir.path} --move -c #{import_component}))
+            VersionImporter.new.ki_home(ki_home).move_files(true).create_new_version(import_component).import(metadata_file, build_dir.path)
           end
         end
 
         def run_commands(command_id)
           Array(config.fetch(command_id, nil)).each do |c|
-            run_command(c)
+            root_log.log(command_id) do
+              run_command(c)
+            end
           end
         end
 

@@ -59,7 +59,9 @@ cat info.txt >> result.txt"
 build_dependencies:
   - ki/ant
   - ki/sbt
-before_install: echo Before install >> result.txt
+before_install:
+  - echo Before install >> result.txt
+  - echo Test output
 install: ./ant.sh
 after_install:
   - echo After install 1 >> result.txt
@@ -100,7 +102,14 @@ After script
     log_path = home.repository("logs").version("test/result/1").path("ki_logs.json")
     logs = KiJSONFile.load_json(log_path)
     logs["name"].should eq("Build")
-    logs["logs"].map{|l| l["name"]}.should eq(["before_install", "install", "before_script", "before_script", "script", "after_script"])
+    logs["logs"].map{|l| l["name"]}.should eq(["before_install", "install", "before_script", "script", "after_script"])
+    first_shell_cmd = logs["logs"][0]["logs"][0]
+    first_shell_cmd["name"].should eq("echo")
+    first_shell_cmd["cmd"].should eq("echo Before install >> result.txt")
+    second_shell_cmd = logs["logs"][0]["logs"][1]
+    second_shell_cmd["name"].should eq("echo")
+    second_shell_cmd["cmd"].should eq("echo Test output")
+    second_shell_cmd["stdout"].should eq("Test output\n")
   end
 
   it "should execute build only if remote git changes" do
@@ -121,7 +130,7 @@ env:
 EOF
 
     git_dir = @tester.tmpdir
-    git_sh = HashLogShell.new.chdir(git_dir)
+    git_sh = HashLogShell.new.chdir(git_dir).root_log(DummyHashLog.new)
     git_sh.spawn("git init")
 
     # create 1st version
@@ -154,7 +163,6 @@ EOF
     IO.read(v2.binaries.path("result.txt")).should eq("SBT 1000\nWARN\n")
     KiCommand.new.execute(%W(ci-build-on-change -h #{home.path}))
     home.version("test/result").name.should eq("2")
-
   end
 
   it "should execute product there are new components" do

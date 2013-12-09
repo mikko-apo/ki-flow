@@ -80,9 +80,12 @@ module Ki
         end
 
         def run_commands(command_id)
-          Array(config.fetch(command_id, nil)).each do |c|
-            root_log.log(command_id) do
-              run_command(c)
+          sh_commands = Array(config.fetch(command_id, nil))
+          if sh_commands.size > 0
+            root_log.log(command_id) do |l|
+              sh_commands.each do |c|
+                run_command(c)
+              end
             end
           end
         end

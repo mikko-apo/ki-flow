@@ -59,6 +59,7 @@ module Ki
           remote_url = build_config.fetch("remote_url")
           exceptions.catch(remote_url) do
             git = VersionControl::Git.new
+            git.sh(HashLogShell.new.root_log(DummyHashLog.new))
             remote_revision = git.get_revision(remote_url)
             local_revision = build_config["last_revision"]
             if (remote_revision != local_revision)

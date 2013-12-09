@@ -22,7 +22,7 @@ module Ki
         attr_chain :branch
       end
       class Git
-        attr_chain :sh, -> {HashLogShell.new}
+        attr_chain :sh, :require
         def get_revision(url)
           path = unpack_url(url)
           result = sh.spawn("git ls-remote --heads #{path.url} #{path.branch}")

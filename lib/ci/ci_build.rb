@@ -169,7 +169,11 @@ EOF
     #        build_config.store_logs
           end
         ensure
-          store_logs(imported_version, root_log)
+          if imported_version
+            root_log["version"]=imported_version.version_id
+            root_log["ki-version"]=KiHome.ki_version
+            store_logs(imported_version, root_log)
+          end
         end
       end
 

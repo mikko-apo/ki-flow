@@ -101,12 +101,15 @@ After script
 ")
     log_path = home.repository("logs").version("test/result/1").path("ki_logs.json")
     logs = KiJSONFile.load_json(log_path)
+    logs["version"].should eq("test/result/1")
+    logs["ki-version"].should eq(KiHome.ki_version)
     logs["name"].should eq("Build")
-    logs["logs"].map{|l| l["name"]}.should eq(["before_install", "install", "before_script", "script", "after_script"])
-    first_shell_cmd = logs["logs"][0]["logs"][0]
+    logs["logs"].map{|l| l["name"]}.should eq(["build_dependencies", "before_install", "install", "before_script", "script", "after_script"])
+    logs["logs"][0]["logs"].map{|l| l["version"]}.should eq(["ki/ant/1", "ki/sbt/1"])
+    first_shell_cmd = logs["logs"][1]["logs"][0]
     first_shell_cmd["name"].should eq("echo")
     first_shell_cmd["cmd"].should eq("echo Before install >> result.txt")
-    second_shell_cmd = logs["logs"][0]["logs"][1]
+    second_shell_cmd = logs["logs"][1]["logs"][1]
     second_shell_cmd["name"].should eq("echo")
     second_shell_cmd["cmd"].should eq("echo Test output")
     second_shell_cmd["stdout"].should eq("Test output\n")

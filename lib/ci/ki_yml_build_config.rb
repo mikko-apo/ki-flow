@@ -42,8 +42,17 @@ module Ki
         end
 
         def export_dependencies
-          Array(config.fetch("build_dependencies", nil)).each do |dep|
-            VersionExporter.new.ki_home(ki_home).export(dep, build_dir.path)
+          dependencies = Array(config.fetch("build_dependencies", nil))
+          if(dependencies.size > 0)
+            root_log.log("build_dependencies") do
+              dependencies.each do |dep|
+                root_log.log("foo") do |ver_log|
+                  ver = VersionExporter.new.ki_home(ki_home).export(dep, build_dir.path)
+                  ver_log.delete("name")
+                  ver_log["version"]=ver.version_id
+                end
+              end
+            end
           end
         end
 

@@ -192,8 +192,8 @@ EOF
       end
 
       def store_logs(imported_version, root_logs)
-        path = VersionImporter.create_version_dir(ki_home, "logs", imported_version.component.component_id, imported_version.name).path("ki_logs.json")
-        File.safe_write(path, JSON.pretty_generate(root_logs))
+        version = VersionImporter.create_version_dir(ki_home, "build", imported_version.component.component_id, imported_version.name)
+        version.build_logs.save(root_logs)
       end
     end
 

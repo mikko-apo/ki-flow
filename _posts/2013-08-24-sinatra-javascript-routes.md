@@ -24,7 +24,9 @@ The files related to the single page app are:
 * [lib/web/repository.rb](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/repository.rb) - last two Sinatra controller methods serve the pages and trigger init_router()
 * [lib/web/views/ki-flow.coffee](https://github.com/mikko-apo/ki-flow/blob/master/lib/web/views/ki-flow.coffee) - Handlebars rendering
 
-The work is still in progress and here's preliminary documentation for JavascriptRoutes:
+UPDATE: The router has been released as a project of its own: [ki-router.js](https://github.com/mikko-apo/ki-router.js)
+
+Here's preliminary documentation for JavascriptRoutes:
 
 # Sinatra routing for single page Javascript apps
 

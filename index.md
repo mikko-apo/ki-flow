@@ -33,4 +33,7 @@ A Continuous Integration and Continuous Delivery platform.
     ki-flow uses <a href="https://github.com/mikko-apo/ki-repo">ki-repo</a> extensively.
     ki-repo is a file system based package repository, more information is available here: <a href="/ki-repo-doc">ki-repo documentation</a>
   </li>
+  <li>
+    [ki-router.js](https://github.com/mikko-apo/ki-router.js) is the javascript controller used by the web pages
+  </li>
 </ul>

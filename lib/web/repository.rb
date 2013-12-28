@@ -37,6 +37,16 @@ module Ki
       IO.read(ki_home.finder.version(params[:splat].first).metadata.path)
     end
 
+    get '/json/version/*/build_info' do
+      content_type :json
+      IO.read(ki_home.finder.version(params[:splat].first).build_info.path)
+    end
+
+    get '/json/version/*/build_logs' do
+      content_type :json
+      IO.read(ki_home.finder.version(params[:splat].first).build_logs.path)
+    end
+
     get '/json/version/*/status' do
       content_type :json
       ki_home.finder.version(params[:splat].first).statuses.to_json

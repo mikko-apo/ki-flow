@@ -24,7 +24,9 @@ limitations under the License.
 # - test suite
 # - documentation
 # Possible features
-# - clarify when fallbackRoute is used
+# - clarify when fallbackRoute is used or if it is needed
+# - postExecutionListener gets access to exception during exec
+# - executed function gets access to full matched information
 # - relative url support is tricky to get right. What if application is served urls with splat?
 # - querystring parameters as part of params. How should they interract with #! support?
 # - form support, catch form submits (how would this work?) get / post?
@@ -36,6 +38,8 @@ limitations under the License.
 # - does not resolve situation hashbang url needs to be converted and both window.location.pathname and window.location.hash are defined
 
 KiRouter = {}
+KiRouter.version = '<version>'
+
 if module?
   module.exports = KiRouter # for KiRouter = require 'KiRouterjs'
   KiRouter.KiRouter = KiRouter # for {KiRouter} = require 'KiRouterjs'
@@ -48,26 +52,32 @@ KiRouter.router = -> new KiRoutes()
 
 class KiRoutes
   routes: []
+  postExecutionListeners: []
   debug: false
   log: =>
     if @debug
       console.log.apply(this, arguments)
-  add: (urlPattern, fn) =>
-    @routes.push({route: new SinatraRouteParser(urlPattern), fn: fn, urlPattern: urlPattern})
+  add: (urlPattern, fn, metadata) =>
+    @routes.push({route: new SinatraRouteParser(urlPattern), fn: fn, urlPattern: urlPattern, metadata: metadata})
   exec: (path) =>
-    if matchedRoute = @find(path)
-      @log("Found route for", path, " Calling function with params ", matchedRoute.params)
-      matchedRoute.result = matchedRoute.fn(matchedRoute.params)
-      return matchedRoute
+    if matched = @find(path)
+      @log("Found route for", path, " Calling function with params ", matched.params)
+      matched.result = matched.fn(matched.params)
+      for listener in @postExecutionListeners
+        listener(matched, @previous)
+      @previous = matched
+      return matched
   find: (path) =>
     for candidate in @routes
       if params = candidate.route.parse(path, @paramVerifier)
-        return {params: params, route: candidate.matchedRoute, fn: candidate.fn, urlPattern: candidate.urlPattern}
+        return {params: params, route: candidate.matchedRoute, fn: candidate.fn, urlPattern: candidate.urlPattern, path: path, metadata: candidate.metadata}
+  addPostExecutionListener: (fn) =>
+    @postExecutionListeners.push(fn)
 
   pushStateSupport: history && history.pushState
   hashchangeSupport: "onhashchange" of window
   hashBaseUrl: false
-  previousView: false
+  previous: false
   disableUrlUpdate: false
   fallbackRoute: false
   init: false
@@ -102,7 +112,6 @@ class KiRoutes
             if @exec(href)
               @log("New url", href)
               event.preventDefault();
-              @previousView = href
               @updateUrl(href)
 
   leftMouseButton: (event) =>
@@ -132,7 +141,11 @@ class KiRoutes
 
   targetHostSame: (aTag) =>
     l = window.location
-    aTag.host == l.host && aTag.protocol == l.protocol && aTag.username == l.username && aTag.password == aTag.password
+    # Firefox 26 sets window.location.username to undefined by default
+    locationUserName = l.username
+    if !locationUserName
+      locationUserName = ""
+    aTag.host == l.host && aTag.protocol == l.protocol && aTag.username == locationUserName && aTag.password == aTag.password
 
   attachLocationChangeListener: =>
     if @pushStateSupport
@@ -145,7 +158,7 @@ class KiRoutes
         @addListener window, "hashchange", (event) =>
           if window.location.hash.substring(0, 2) == "#!"
             href = window.location.hash.substring(2)
-            if href != @previousView
+            if !@previous || href != @previous.path
               @log("Rendering onhashchange", href)
               @renderUrl(href)
 

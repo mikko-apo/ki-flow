@@ -48,7 +48,7 @@ describe RepositoryWeb do
     get '/json/component/my/component/versions'
     [last_response.status, last_response.body, last_response.content_type].should eq [200, IO.read(@home.repository("local").component("my/component").versions.path), "application/json;charset=utf-8"]
     get '/json/version/my/component/23/metadata'
-    [last_response.status, last_response.body, last_response.content_type].should eq [200, IO.read(@home.repository("local").version("my/component/23").metadata.path), "application/json;charset=utf-8"]
+    [last_response.status, last_response.body, last_response.content_type].should eq [200, IO.read(@home.repository("local").version!("my/component/23").metadata.path), "application/json;charset=utf-8"]
     get '/json/version/my/component/23/status'
     [last_response.status, last_response.body, last_response.content_type].should eq [200, "[[\"Smoke\",\"Green\"]]", "application/json;charset=utf-8"]
   end

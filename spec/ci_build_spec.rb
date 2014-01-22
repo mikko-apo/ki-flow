@@ -99,7 +99,7 @@ SBT 1000
 INFO
 After script
 ")
-    log_path = home.repository("build").version("test/result/1").path("ki-build-logs.json")
+    log_path = home.repository("build").version!("test/result/1").path("ki-build-logs.json")
     logs = KiJSONFile.load_json(log_path)
     logs["version"].should eq("test/result/1")
     logs["ki-version"].should eq(KiHome.ki_version)

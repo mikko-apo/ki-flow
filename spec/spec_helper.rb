@@ -33,7 +33,7 @@ SimpleCov.start do
   add_filter "/spec/"
 end
 
-if File.exists?(local_ki_repo = File.expand_path(File.join(__FILE__, "../../../ki-repo/lib/ki_repo_all.rb")))
+if File.exist?(local_ki_repo = File.expand_path(File.join(__FILE__, "../../../ki-repo/lib/ki_repo_all.rb")))
   require local_ki_repo
 else
   require 'ki_repo_all'

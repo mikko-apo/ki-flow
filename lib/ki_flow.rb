@@ -22,3 +22,5 @@ require_relative 'web/static_files'
 require_relative 'ci/ci_git'
 require_relative 'ci/ci_build'
 require_relative 'ci/ki_yml_build_config'
+
+require_relative 'util/scheduler'

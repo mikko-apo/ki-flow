@@ -14,14 +14,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'sinatra'
+module Ki
+  class MonitorApp < Sinatra::Base
+    def initialize(id, block = nil)
+      super()
+      @id = id
+      @block = block
+    end
 
-require_relative 'web/repository'
-require_relative 'web/static_files'
-require_relative 'web/web_util'
+    get '/id' do
+      @id
+    end
 
-require_relative 'ci/ci_git'
-require_relative 'ci/ci_build'
-require_relative 'ci/ki_yml_build_config'
-
-require_relative 'util/scheduler'
+    get '/alive' do
+      if @block
+        @block.call
+      else
+        halt 400, "/alive not supported!"
+      end
+    end
+  end
+end

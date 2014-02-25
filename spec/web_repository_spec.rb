@@ -57,7 +57,7 @@ describe RepositoryWeb do
     create_product_component
 
     RackCommand.web_ctx.ki_home=@home
-    port = RackCommand.find_free_tcp_port
+    port = WebUtil.find_free_tcp_port
     rack_command = RackCommand.new
     url = "http://localhost:#{port}/repository"
     @tester.cleaners << -> {rack_command.stop_server}
@@ -66,7 +66,7 @@ describe RepositoryWeb do
       Thread.new do
         rack_command.execute(RackCommand.web_ctx, %W(-p #{port}))
       end
-      RackCommand.wait_until_url_responds(url)
+      WebUtil.wait_until_url_responds(url)
       browser.navigate.to url
     end
     browser.execute_script <<EOF

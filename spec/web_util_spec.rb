@@ -36,6 +36,12 @@ describe Ki::MonitorApp do
       WebUtil.wait_until_url_responds("http://localhost:#{port}/id") do |response|
         [response.code, response.body].should eq ["200", "123"]
       end
+      WebUtil.wait_until_url_responds("http://localhost:#{port}/id/123") do |response|
+        [response.code, response.body].should eq ["200", "123"]
+      end
+      WebUtil.wait_until_url_responds("http://localhost:#{port}/id/124") do |response|
+        [response.code, response.body].should eq ["400", "Running process with id '123', not /alive/124"]
+      end
       WebUtil.wait_until_url_responds("http://localhost:#{port}/alive") do |response|
         [response.code, response.body].should eq ["400", "/alive not supported!"]
       end

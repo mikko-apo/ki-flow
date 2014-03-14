@@ -26,6 +26,13 @@ module Ki
       @id
     end
 
+    get '/id/:id' do
+      if params[:id] != @id
+        halt 400, "Running process with id '#{@id}', not /alive/#{params[:id]}"
+      end
+      @id
+    end
+
     get '/alive' do
       if @block
         @block.call

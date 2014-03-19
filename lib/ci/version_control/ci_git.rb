@@ -49,7 +49,7 @@ module Ki
         end
 
       end
-      KiCommand.register("/ci/build/version_control/git", Git)
+      KiCommand.register("/ci/version_control/git", Git)
     end
   end
 end

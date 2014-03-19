@@ -181,7 +181,6 @@ EOF
     v1.name.should eq("1")
     v1.metadata.dependencies.should eq([{"name"=>"sbt", "path"=>"build", "version_id"=>"ki/sbt/1"}])
     build_config_with_state = {
-        "builds" => [],
         "products" => [
             {
                 "component" => "ki/product",

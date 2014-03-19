@@ -20,9 +20,11 @@ require_relative 'web/repository'
 require_relative 'web/static_files'
 require_relative 'web/web_util'
 
-require_relative 'ci/ci_git'
+require_relative 'ci/version_control/ci_git'
 require_relative 'ci/ci_build'
 require_relative 'ci/ci_build_on_change'
+require_relative 'ci/builders/git_builds_builder'
+require_relative 'ci/builders/product_builds_builder'
 require_relative 'ci/ki_yml_build_config'
 
 require_relative 'util/scheduler'

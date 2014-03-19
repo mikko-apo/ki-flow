@@ -52,7 +52,7 @@ module Ki
       ki_home.finder.version(params[:splat].first).statuses.to_json
     end
 
-    get '/routes' do
+    get '/routes2' do
       routes = []
       settings.routes.each_pair do |method, actions|
         actions.each do |a_regexp, splat_arr, empty_arr, proc|
@@ -66,6 +66,23 @@ module Ki
 <tr><th>Path</th><th>Method</th><th>Params</th></tr>
 <% routes.each do |action, method, splat_arr, empty_arr, proc| %>
   <tr><td><%=action%></td><td><%=method%></td><td><%=splat_arr.join(" ")%></td></tr>
+<% end %>
+</table>
+</body>
+</html>
+EOF
+      erb output, :locals => {routes: routes}
+    end
+
+    get '/registered' do
+      routes =  KiCommand::KiExtensions.keys.sort.map { |key| [key, KiCommand::KiExtensions[key] ] }
+      output = <<EOF
+<html>
+<body>
+<table>
+<tr><th>Path</th><th>Object</th></tr>
+<% routes.each do |key, object| %>
+  <tr><td><%=key%></td><td><%=object%></td></tr>
 <% end %>
 </table>
 </body>

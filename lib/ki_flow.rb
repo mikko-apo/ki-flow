@@ -22,6 +22,7 @@ require_relative 'web/web_util'
 
 require_relative 'ci/ci_git'
 require_relative 'ci/ci_build'
+require_relative 'ci/ci_build_on_change'
 require_relative 'ci/ki_yml_build_config'
 
 require_relative 'util/scheduler'

@@ -14,18 +14,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'sinatra'
+module Ki
+  class QueueRest < Sinatra::Base
+    include KiWebBase
 
-require_relative 'web/repository'
-require_relative 'web/static_files'
-require_relative 'web/web_util'
-require_relative 'web/queue_rest'
+    def queue_dir
+      ki_home.mkdir("queues")
+    end
 
-require_relative 'ci/version_control/ci_git'
-require_relative 'ci/ci_build'
-require_relative 'ci/ci_build_on_change'
-require_relative 'ci/builders/git_builds_builder'
-require_relative 'ci/builders/product_builds_builder'
-require_relative 'ci/ki_yml_build_config'
+    def get_queue(name)
+      KiJSONListFile.new(name + ".json").parent(queue_dir)
+    end
 
-require_relative 'util/scheduler'
+    get '/:name' do
+      content_type :json
+      IO.read(get_queue(params[:name]).path)
+    end
+
+    post '/:name/*' do
+      get_queue(params[:name]).add_item(params[:splat])
+    end
+
+    delete '/:name' do
+      get_queue(params[:name]).pop
+    end
+
+  end
+  KiCommand.register("/web/queue", QueueRest)
+end

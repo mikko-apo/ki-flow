@@ -145,7 +145,7 @@ EOF
     git_sh.spawn("git add *.*")
     git_sh.spawn("git commit -m 'initial commit'")
 
-    Tester.write_files(build_dir, "ki-builds.json" => JSON.pretty_generate({builds: [{remote_url: git_dir + ":master"}]}))
+    Tester.write_files(build_dir, "ki-builds.json" => JSON.pretty_generate({git: [{remote_url: git_dir + ":master"}]}))
     KiCommand.new.execute(%W(ci-build-on-change -h #{home.path}))
     v1 = home.version("test/result")
     v1.name.should eq("1")

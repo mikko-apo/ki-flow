@@ -16,6 +16,8 @@
 
 require 'sinatra'
 
+require_relative 'env/env'
+
 require_relative 'web/repository'
 require_relative 'web/static_files'
 require_relative 'web/web_util'

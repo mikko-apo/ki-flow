@@ -20,26 +20,30 @@ module Ki
 
     class VCBuilder
       attr_chain :ki_home, :require
+      attr_chain :log, -> {DummyHashLog.new}
+      attr_chain :sh, -> {HashLogShell.new.root_log(log)}
 
       def check(builds, exceptions)
         builds.each do |build_config|
           remote_url = build_config.fetch("remote_url")
           exceptions.catch(remote_url) do
             vc = KiCommand::KiExtensions.find("/ci/version_control/" + vc_name).new
-            vc.sh(HashLogShell.new.root_log(DummyHashLog.new))
-            update_and_execute_if_changes(build_config, vc, remote_url)
+            vc.sh(sh)
+            if changes?(build_config, vc)
+              local_path = local_path(build_config, remote_url)
+              vc.update_or_clone_repository_to_local_path(remote_url, local_path)
+              execute_build(local_path)
+            end
           end
         end
       end
 
-      def update_and_execute_if_changes(build_config, vc, remote_url)
+      def changes?(build_config, vc)
+        remote_url = build_config.fetch("remote_url")
         remote_revision = vc.get_revision(remote_url)
         local_revision = build_config["last_revision"]
         if (remote_revision != local_revision)
-          local_path = local_path(build_config, remote_url)
-          vc.update_or_clone_repository_to_local_path(remote_url, local_path)
           build_config["last_revision"] = remote_revision
-          execute_build(local_path)
         end
       end
 

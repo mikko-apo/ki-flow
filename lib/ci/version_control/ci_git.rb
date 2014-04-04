@@ -48,6 +48,15 @@ module Ki
           GitPath.new.branch(arr.delete_at(-1)).url(arr.join(":"))
         end
 
+        def update_or_clone_repository_to_local_path(remote_url, local_path)
+          if (local_path.empty?)
+            download_remote_repo_to_local(remote_url, local_path)
+          else
+            reset_local_repo(local_path)
+            update_local_repo(local_path)
+          end
+        end
+
       end
       KiCommand.register("/ci/version_control/git", Git)
     end

@@ -18,7 +18,7 @@ require_relative 'spec_helper'
 
 describe Ki::Env do
   before do
-    @env = Ki::Ci::Env.new(nil)
+    @env = Ki::Env.new(nil)
     @a = {
         "names" => ["a"],
         "tags" => ["t1","t2","t3"]

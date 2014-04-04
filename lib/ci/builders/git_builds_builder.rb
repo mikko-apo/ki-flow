@@ -37,19 +37,14 @@ module Ki
         local_revision = build_config["last_revision"]
         if (remote_revision != local_revision)
           local_path = local_path(build_config, remote_url)
-          update_or_clone_repository_to_local_path(vc, remote_url, local_path)
+          vc.update_or_clone_repository_to_local_path(remote_url, local_path)
           build_config["last_revision"] = remote_revision
-          CiBuild.new.ki_home(ki_home).build(local_path.path)
+          execute_build(local_path)
         end
       end
 
-      def update_or_clone_repository_to_local_path(vc, remote_url, local_path)
-        if (local_path.empty?)
-          vc.download_remote_repo_to_local(remote_url, local_path)
-        else
-          vc.reset_local_repo(local_path)
-          vc.update_local_repo(local_path)
-        end
+      def execute_build(local_path)
+        CiBuild.new.ki_home(ki_home).build(local_path.path)
       end
 
       def local_path(build_config, remote_url)

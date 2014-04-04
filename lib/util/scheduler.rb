@@ -173,7 +173,7 @@ module Ki
       def resources_available(resource_list)
         resource_list.each do |resource_name|
           limited_resource = @resources.fetch(resource_name)
-          if limited_resource.max_tasks == limited_resource.current_tasks
+          if limited_resource.full?
             return false
           end
         end
@@ -182,8 +182,7 @@ module Ki
 
       def modify_resources(resource_list, count)
         resource_list.each do |resource_name|
-          limited_resource = @resources.fetch(resource_name)
-          limited_resource.current_tasks = limited_resource.current_tasks + count
+          @resources.fetch(resource_name).modify_use(count)
         end
       end
 
@@ -224,6 +223,14 @@ module Ki
       class LimitedResource
         attr_chain :max_tasks, -> {1}
         attr_chain :current_tasks, -> { 0 }
+
+        def full?
+          max_tasks == current_tasks
+        end
+
+        def modify_use(count)
+          current_tasks(current_tasks + count)
+        end
       end
 
     end

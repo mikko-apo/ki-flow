@@ -17,13 +17,18 @@
 module Ki
   class QueueRest < Sinatra::Base
     include KiWebBase
+    Files = {}
 
     def queue_dir
       ki_home.mkdir("queues")
     end
 
     def get_queue(name)
-      KiJSONListFile.new(name + ".json").parent(queue_dir)
+      if file = Files[name]
+        file
+      else
+        KiJSONListFile.new(name + ".json").parent(queue_dir)
+      end
     end
 
     get '/:name' do
@@ -32,7 +37,7 @@ module Ki
     end
 
     post '/:name/*' do
-      get_queue(params[:name]).add_item(params[:splat])
+      get_queue(params[:name]).add_item(*params[:splat])
     end
 
     delete '/:name' do

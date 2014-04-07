@@ -28,6 +28,8 @@ module Ki
     #
     # * A simple syntax/way to define tasks that are executed inside a task
     class RealtimeTaskScheduler
+      attr_accessor :exception_catcher
+
       # If a task throws an exception, don't start new tasks and stop once all tasks are finished. Default behaviour
       STOP_GRACEFULLY = :stop_gracefully
       # If a task throws an exception, stop all processing
@@ -46,7 +48,6 @@ module Ki
         @resources = Hash.new
         @on_error_default = STOP_GRACEFULLY
 
-        @exception_catcher = ExceptionCatcher.new
         @stop_gracefully = false
         @stop_now = false
       end
@@ -69,6 +70,9 @@ module Ki
       end
 
       def run_all_tasks
+        if @exception_catcher.nil?
+          @exception_catcher = ExceptionCatcher.new
+        end
         check_integrity
         @exception_catcher.catch do
           execute_available_tasks

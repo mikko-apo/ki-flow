@@ -33,7 +33,7 @@ module Ki
         attr_chain :sh, -> {HashLogShell.new.chdir(build_dir.path).root_log(root_log)}
 
         def handles_build_directory?(dir)
-          dir.exists?("ki.yml")
+          dir.exist?("ki.yml")
         end
 
         def read_config

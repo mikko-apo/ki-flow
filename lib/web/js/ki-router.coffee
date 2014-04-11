@@ -18,12 +18,18 @@ limitations under the License.
 
 "use strict"
 
+# Known bugs:
+# - chrome fires one onpopstate when page has loaded, firefox doesn't
+# - browser tests don't work on safari
 # Missing features:
+# - three modes: transparentRouting, hashbangRouting and historyApiRouting
+# - four modes: transparentRouting, hashbangRouting, hashRouting and historyApiRouting
 # - $("a").click does not register but $("a")[0].click does
 # - more complete sinatra path parsing, JavascriptRouteParser
 # - test suite
 # - documentation
 # Possible features
+# - regexp special chars should be escaped
 # - clarify when fallbackRoute is used or if it is needed
 # - postExecutionListener gets access to exception during exec
 # - executed function gets access to full matched information
@@ -53,9 +59,10 @@ KiRouter.router = -> new KiRoutes()
 class KiRoutes
   routes: []
   postExecutionListeners: []
+  exceptionListeners: []
   debug: false
   log: =>
-    if @debug && console && console.log
+    if @debug && window.console && console && console.log
       if JSON.stringify
         console.log("ki-router: " + JSON.stringify(arguments))
       else
@@ -65,9 +72,16 @@ class KiRoutes
   exec: (path) =>
     if matched = @find(path)
       @log("Found route for", path, " Calling function with params ", matched.params)
-      matched.result = matched.fn(matched.params)
-      for listener in @postExecutionListeners
-        listener(matched, @previous)
+      @renderCount += 1
+      try
+        matched.result = matched.fn(matched.params)
+        for listener in @postExecutionListeners
+          listener(matched, @previous)
+      catch error
+        matched.error = error
+        for exceptionListener in @exceptionListeners
+          exceptionListener(matched, @previous)
+        throw error
       @previous = matched
       return matched
   find: (path) =>
@@ -76,6 +90,8 @@ class KiRoutes
         return {params: params, route: candidate.matchedRoute, fn: candidate.fn, urlPattern: candidate.urlPattern, path: path, metadata: candidate.metadata}
   addPostExecutionListener: (fn) =>
     @postExecutionListeners.push(fn)
+  addExceptionListener: (fn) =>
+    @exceptionListeners.push(fn)
 
   pushStateSupport: history && history.pushState
   hashchangeSupport: "onhashchange" of window
@@ -84,7 +100,11 @@ class KiRoutes
   disableUrlUpdate: false
   fallbackRoute: false
   init: false
+  initDone: false
   paramVerifier: false
+  renderCount: 0
+  clickCount: 0
+
   transparentRouting: () =>
     @init = true
     try
@@ -93,16 +113,21 @@ class KiRoutes
       @renderInitialView()
     finally
       @init = false
+      @initDone = true
   hashbangRouting: () =>
     @pushStateSupport = false
     if !@hashchangeSupport
       throw new Error("No hashchange support!")
     @transparentRouting()
+  historyApiRouting: () =>
+    @hashchangeSupport = false
+    @transparentRouting()
 
   attachClickListener: =>
     if @pushStateSupport || @hashchangeSupport
       @addListener document, "click", (event) =>
-        target = event.target
+        event = event || window.event
+        target = event.target || event.srcElement
         if target
           @log("Checking if click event should be rendered")
           aTag = @findATag(target)
@@ -112,16 +137,25 @@ class KiRoutes
           @blog("- Target attribute is current window", @targetAttributeIsCurrentWindow(aTag)) &&
           @blog("- Link host same as current window", @targetHostSame(aTag))
             href = aTag.attributes.href.nodeValue
-            @log("Click event passed all checks, rendering ", href)
+            @log("Click event passed all checks")
             if !@pushStateSupport && @hashchangeSupport && @hashBaseUrl && @hashBaseUrl != window.location.pathname
-              @log("Using hashbang change to trigger rendering")
-              event.preventDefault();
+              @log("Using hashbang change to trigger rendering for", href)
+              @disableEventDefault(event)
               window.location.href = @hashBaseUrl + "#!" + href
-              return
-            if @exec(href)
-              @log("New url", href)
-              event.preventDefault();
+            else if @exec(href)
+              @log("Rendered", href)
+              @disableEventDefault(event)
+              @clickCount += 1
               @updateUrl(href)
+            else
+              @log("Letting browser render url because no matching route", href)
+            return
+
+  disableEventDefault: (ev) =>
+    if ev.preventDefault
+      ev.preventDefault()
+    else
+      ev.returnValue = false
 
   blog: (str, v) =>
     @log(str + ", result: " + v)
@@ -168,8 +202,8 @@ class KiRoutes
   # IE9 sets port to "443" even if protocol is https
   fixTargetPort: (port, protocol) =>
     protocolPorts =
-      "http": "80"
-      "https": "443"
+      "http:" : "80"
+      "https:" : "443"
     if port != "" && port == protocolPorts[protocol]
       ""
     else
@@ -178,17 +212,17 @@ class KiRoutes
   attachLocationChangeListener: =>
     if @pushStateSupport
       @addListener window, "popstate", (event) =>
-        href = window.location.pathname
-        @log("Rendering onpopstate", href)
-        @renderUrl(href)
+        if @clickCount > 0
+          href = window.location.pathname
+          @log("Rendering popstate", href)
+          @renderUrl(href)
     else
       if @hashchangeSupport
         @addListener window, "hashchange", (event) =>
           if window.location.hash.substring(0, 2) == "#!"
             href = window.location.hash.substring(2)
-            if !@previous || href != @previous.path
-              @log("Rendering onhashchange", href)
-              @renderUrl(href)
+            @log("Rendering hashchange", href)
+            @renderUrl(href)
 
   renderInitialView: =>
     @log("Rendering initial page")
@@ -203,16 +237,13 @@ class KiRoutes
     @renderUrl(initialUrl)
 
   renderUrl: (url) =>
-    try
-      if ret = @exec(url)
-        return ret
+    if ret = @exec(url)
+      return ret
+    else
+      if @fallbackRoute
+        return @fallbackRoute(url)
       else
-        if @fallbackRoute
-          return @fallbackRoute(url)
-        else
-          @log("Could not resolve route for", url)
-    catch err
-      @log("Could not resolve route for", url, " exception", err)
+        @log("Could not resolve route for", url)
 
   updateUrl: (href) =>
     if !@disableUrlUpdate
@@ -234,18 +265,21 @@ class SinatraRouteParser
   constructor: (route) ->
     @keys = []
     route = route.substring(1)
-    segments = route.split("/").map (segment) =>
+    segments = []
+    routeItems = route.split("/")
+    for segment in routeItems
       match = segment.match(/((:\w+)|\*)/)
       if match
         firstMatch = match[0]
         if firstMatch == "*"
           @keys.push "splat"
-          "(.*)"
+          segment = "(.*)"
         else
           @keys.push firstMatch.substring(1)
-          "([^\/?#]+)"
+          segment = "([^\/?#]+)"
       else
-        segment
+        segment = segment.replace(".","\\.")
+      segments.push segment
     pattern = "^/" + segments.join("/") + "$"
     #    console.log("Pattern", pattern)
     @pattern = new RegExp(pattern)

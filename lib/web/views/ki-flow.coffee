@@ -97,3 +97,9 @@ this.renderElements = (destId, templateId, data) ->
   if dest.size() == 0
     throw "Could not locate destination '#{destId}'"
   dest.html(getCompiledTemplate(templateId)(data));
+
+this.appendElement = (destId, templateId, data) ->
+  dest = $(destId)
+  if dest.size() == 0
+    throw "Could not locate destination '#{destId}'"
+  dest.after(getCompiledTemplate(templateId)(data));

@@ -18,6 +18,10 @@ require 'sinatra'
 
 require_relative 'env/env'
 
+require_relative 'actions/action_log_dir'
+require_relative 'actions/action_base'
+require_relative 'actions/action_log_web'
+
 require_relative 'web/repository'
 require_relative 'web/static_files'
 require_relative 'web/web_util'
@@ -31,3 +35,4 @@ require_relative 'ci/builders/product_builds_builder'
 require_relative 'ci/ki_yml_build_config'
 
 require_relative 'util/scheduler'
+require_relative 'util/gzip'

@@ -1,0 +1,149 @@
+<% # -*- coding: UTF-8 -*- %>
+<!DOCTYPE html>
+<%
+   # Copyright 2012-2013 Mikko Apo
+   #
+   # Licensed under the Apache License, Version 2.0 (the "License");
+   # you may not use this file except in compliance with the License.
+   # You may obtain a copy of the License at
+   #
+   #    http://www.apache.org/licenses/LICENSE-2.0
+   #
+   # Unless required by applicable law or agreed to in writing, software
+   # distributed under the License is distributed on an "AS IS" BASIS,
+   # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   # See the License for the specific language governing permissions and
+   # limitations under the License.
+%><html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="<%= res_url("css/ki.scss", RepositoryWeb) %>"/>
+    <% if params[:test] %>
+        <link rel="stylesheet" href="<%= res_url("js-test/mocha.css") %>"/>
+    <% end %>
+</head>
+<body>
+
+<script id="t-log-roots" type="text/x-handlebars-template">
+    <a href="/logs/{{base}}">Logs for {{base}}</a>
+    <hr/>
+    <h3>Logs</h3>
+
+    <table id="component-list">
+        {{#each data}}
+        <tr><td><a class="name" href="/logs/{{../base}}/{{this}}">{{this}}</a></td></tr>
+        {{/each}}
+    </table>
+</script>
+
+<script id="t-logs" type="text/x-handlebars-template">
+    <a href="/logs/{{base}}">Logs for {{base}}</a> &gt;
+    <a href="/logs/{{base}}/{{name}}">{{name}}</a>
+    <hr/>
+    <h3>Logs for actions</h3>
+
+    <table id="version-list">
+        {{#each data}}
+        <tr><td class="id"><a href="/logs/show/{{../base}}/{{../name}}/{{this}}">{{this}}</a></td></tr>
+        {{/each}}
+    </table>
+</script>
+
+<script id="t-show-log" type="text/x-handlebars-template">
+    <a href="/logs/{{base}}">Logs for {{base}}</a> &gt;
+    <a href="/logs/{{base}}/{{name}}">{{name}}</a> &gt;
+    <a href="/logs/show/{{base}}/{{name}}/{{id}}">{{id}}</a>
+    <hr/>
+
+    <h3>Info</h3>
+    <table border="0">
+        {{#with data}}
+        <tr><td>Name</td><td>{{name}}</td></tr>
+        <tr><td>Date</td><td>{{date}}</td></tr>
+        <tr><td>Duration</td><td>{{time}}</td></tr>
+        {{#if exception}}
+        <tr>
+            <td>Exception</td>
+            <td>
+                {{exception}}
+                {{#if backtrace}}
+                <pre>{{backtrace}}</pre>
+                {{/if}}
+            </td>
+        </tr>
+        {{/if}}
+        {{/with}}
+    </table>
+
+    <h3>Logs</h3>
+
+    <table id="log" border="1">
+        <tr>
+            <th>Date</th>
+            <th>Duration</th>
+            <th>Name</th>
+            <th>Info</th>
+        </tr>
+    </table>
+</script>
+
+<script id="t-log-line" type="text/x-handlebars-template">
+    {{#if cmd}}
+    <tr>
+        <td style="padding-left: {{indent}}" class="noWrap">{{date}}</td>
+        <td>{{time}}</td>
+        <td class="noWrap">{{name}}</td>
+        <td>
+            <pre>{{cmd}}</pre>
+            {{#if exitstatus}}
+                Failed! Exitstatus: {{exitstatus}}
+            {{else}}
+                {{exception}}
+                {{#if backtrace}}
+                <pre>{{backtrace}}</pre>
+                {{/if}}
+            {{/if}}
+            {{#if stdout}}
+            stdout:
+                <pre>{{stdout}}</pre>
+            {{/if}}
+            {{#if stderr}}
+            stderr:
+            <pre>{{stderr}}</pre>
+            {{/if}}
+        </td>
+    </tr>
+    {{else}}
+    <tr>
+        <td style="padding-left: {{indent}}">{{date}}</td>
+        <td>{{time}}</td>
+        <td class="noWrap">{{name}}</td>
+        <td>
+            {{#if exception}}
+                Exception: {{exception}}
+                {{#if backtrace}}
+                <pre>{{backtrace}}</pre>
+                {{/if}}
+            {{/if}}
+        </td>
+    </tr>
+    {{/if}}
+</script>
+
+<div id="content"></div>
+
+<script type="text/javascript" src="<%= res_url("js/jquery-1.9.0.js", RepositoryWeb) %>"></script>
+<script type="text/javascript" src="<%= res_url("js/handlebars.js", RepositoryWeb) %>"></script>
+<script type="text/javascript" src="<%= res_url("js/ki-router.coffee", RepositoryWeb) %>"></script>
+<script type="text/javascript" src="<%= res_url("views/ki-flow.coffee", RepositoryWeb) %>"></script>
+<script type="text/javascript" src="<%= res_url("views/logs.coffee") %>"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            initRouter()
+        });
+    </script>
+</body>
+</html>
+
+

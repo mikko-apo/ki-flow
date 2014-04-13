@@ -43,6 +43,7 @@ this.show_log = (base, name, id) ->
     if data.logs
       for log in data.logs
         renderLog(log, 0)
+    showMore()
 
 this.renderLog = (data, level) ->
   data.date = new Date(data.start * 1000).toLocaleFormat("%Y-%m-%d %H:%M:%S")
@@ -50,7 +51,34 @@ this.renderLog = (data, level) ->
   if indent < 4
     indent = 4
   data.indent = "" + (indent) + "px"
+  if data.exception
+    data.classes = "exception"
   appendElement "#log tr:last", "#t-log-line", data
   if data.logs
     for log in data.logs
       renderLog(log, level + 1)
+
+this.showMore = ->
+  for i in $(".showMore")
+    item = $(i)
+    text = item.text()
+    arr = text.split("\n")
+    if arr.length > 2
+      new_text = arr[0] + "\n(" + (arr.length - 1) + " lines hidden)"
+      showOnClick(i, item, text, new_text)
+  for i in $(".showMoreLine")
+    item = $(i)
+    text = item.text()
+    if text.length > 117
+      new_text = text.substring(0, 100) + "... (show more)"
+      showOnClick(i, item, text, new_text)
+
+
+this.showOnClick = (i, item, text, new_text) ->
+  i.long_text = text
+  item.text(new_text)
+  item.attr("title", text)
+  item.click ->
+    $(this).attr("title", null)
+    $(this).text(this.long_text)
+    this.long_text = null

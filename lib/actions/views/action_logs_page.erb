@@ -18,6 +18,7 @@
 <head>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" type="text/css" href="<%= res_url("css/ki.scss", RepositoryWeb) %>"/>
+    <link rel="stylesheet" type="text/css" href="<%= res_url("css/logs.scss") %>"/>
     <% if params[:test] %>
         <link rel="stylesheet" href="<%= res_url("js-test/mocha.css") %>"/>
     <% end %>
@@ -30,6 +31,7 @@
     <h3>Logs</h3>
 
     <table id="component-list">
+        <tr><th>Count: {{data.length}}</th></tr>
         {{#each data}}
         <tr><td><a class="name" href="/logs/{{../base}}/{{this}}">{{this}}</a></td></tr>
         {{/each}}
@@ -40,9 +42,10 @@
     <a href="/logs/{{base}}">Logs for {{base}}</a> &gt;
     <a href="/logs/{{base}}/{{name}}">{{name}}</a>
     <hr/>
-    <h3>Logs for actions</h3>
+    <h3>Logs</h3>
 
     <table id="version-list">
+        <tr><th>Count: {{data.length}}</th></tr>
         {{#each data}}
         <tr><td class="id"><a href="/logs/show/{{../base}}/{{../name}}/{{this}}">{{this}}</a></td></tr>
         {{/each}}
@@ -62,12 +65,12 @@
         <tr><td>Date</td><td>{{date}}</td></tr>
         <tr><td>Duration</td><td>{{time}}</td></tr>
         {{#if exception}}
-        <tr>
+        <tr class="exception">
             <td>Exception</td>
             <td>
                 {{exception}}
                 {{#if backtrace}}
-                <pre>{{backtrace}}</pre>
+                <pre class="showMore">{{backtrace}}</pre>
                 {{/if}}
             </td>
         </tr>
@@ -89,40 +92,40 @@
 
 <script id="t-log-line" type="text/x-handlebars-template">
     {{#if cmd}}
-    <tr>
+    <tr class="{{classes}}">
         <td style="padding-left: {{indent}}" class="noWrap">{{date}}</td>
         <td>{{time}}</td>
         <td class="noWrap">{{name}}</td>
         <td>
-            <pre>{{cmd}}</pre>
+            <pre class="showMoreLine">{{cmd}}</pre>
             {{#if exitstatus}}
                 Failed! Exitstatus: {{exitstatus}}
             {{else}}
-                {{exception}}
+                <span class="showMoreLine">{{exception}}</span>
                 {{#if backtrace}}
-                <pre>{{backtrace}}</pre>
+                <pre class="showMore">{{backtrace}}</pre>
                 {{/if}}
             {{/if}}
             {{#if stdout}}
             stdout:
-                <pre>{{stdout}}</pre>
+                <pre class="showMore">{{stdout}}</pre>
             {{/if}}
             {{#if stderr}}
             stderr:
-            <pre>{{stderr}}</pre>
+            <pre class="showMore">{{stderr}}</pre>
             {{/if}}
         </td>
     </tr>
     {{else}}
-    <tr>
+    <tr class="{{classes}}">
         <td style="padding-left: {{indent}}">{{date}}</td>
         <td>{{time}}</td>
         <td class="noWrap">{{name}}</td>
         <td>
             {{#if exception}}
-                Exception: {{exception}}
+                <span class="showMoreLine">Exception: {{exception}}</span>
                 {{#if backtrace}}
-                <pre>{{backtrace}}</pre>
+                <pre class="showMore">{{backtrace}}</pre>
                 {{/if}}
             {{/if}}
         </td>
@@ -145,5 +148,3 @@
     </script>
 </body>
 </html>
-
-

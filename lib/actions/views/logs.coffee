@@ -5,7 +5,7 @@ this.initRouter = ->
   router.add("/logs/show/:base/*/:id", (params) -> show_log( params.base, params.splat, params.id ))
   router.add("/logs/:base/*", (params) -> show_logs( params.base, params.splat ))
   router.add("/logs/:base", (params) -> show_log_root_base( params.base))
-  router.paramVerifier = (s) -> /^[a-z0-9\/]+$/i.test(s)
+  router.paramVerifier = (s) -> /^[a-z0-9\/\-]+$/i.test(s)
   router.debug = true
   router.transparentRouting()
   window.router = router

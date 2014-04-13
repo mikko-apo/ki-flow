@@ -36,4 +36,4 @@ require_relative 'ci/ki_yml_build_config'
 
 require_relative 'util/scheduler'
 require_relative 'util/gzip'
-require 'util/resource_pool'
+require_relative 'util/resource_pool'

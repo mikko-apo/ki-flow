@@ -5,8 +5,9 @@ module Ki
       include HashLog
     end
 
-    attr_chain :logger, -> {CiLogger.new}
-    attr_chain :exceptions, -> {ExceptionCatcher.new}
+    attr_chain :logger, -> { CiLogger.new }
+    attr_chain :exceptions, -> { ExceptionCatcher.new }
+    attr_chain :after_actions, -> { [] }
 
     def in_parallel(name, list, &block)
       logger.log(name) do |root|
@@ -39,25 +40,38 @@ module Ki
       end
     end
 
+    def after(name, &block)
+      after_actions << [name, block]
+    end
+
     def collect_logs_and_save(file, name, &block)
       log_root = nil
       begin
         logger.log(name) do |l|
           log_root = l
-          block.call(log_root)
-        end
-      ensure
-        begin
-          logger.log("cleanup") do
+          @exceptions.catch(name) do
+            block.call(log_root)
+          end
+          if at_exists.size > 0
+          go("after") do
+            after_actions.each do |name, block|
+              go(name) do
+                block.call
+              end
+            end
+          end
+          end
+          go("cleanup child processes") do
             HashLogShell.cleanup
           end
-        ensure
-          if file
-            puts "Logging to #{file}"
-            File.safe_write(file,  JSON.pretty_generate(log_root))
-          else
-            puts JSON.pretty_generate(log_root)
-          end
+          @exceptions.check
+        end
+      ensure
+        if file
+          puts "Logging to #{file}"
+          File.safe_write(file, JSON.pretty_generate(log_root))
+        else
+          puts JSON.pretty_generate(log_root)
         end
       end
     end

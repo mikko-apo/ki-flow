@@ -35,6 +35,7 @@ this.show_log = (base, name, id) ->
     clear()
     document.title = "Logs for " + base + "/" + name + "/" + id
     data.date = new Date(data.start * 1000).toLocaleFormat("%Y-%m-%d %H:%M:%S")
+    ignore_date = new Date(data.start * 1000).toLocaleFormat("%Y-%m-%d")
     renderElements "#content", "#t-show-log",
       base: base
       name: name
@@ -45,8 +46,11 @@ this.show_log = (base, name, id) ->
         renderLog(log, 0)
     showMore()
 
-this.renderLog = (data, level) ->
-  data.date = new Date(data.start * 1000).toLocaleFormat("%Y-%m-%d %H:%M:%S")
+this.renderLog = (data, level, ignore_date) ->
+  if ignore_date == new Date(data.start * 1000)
+    data.date = new Date(data.start * 1000).toLocaleFormat("%H:%M:%S")
+  else
+    data.date = new Date(data.start * 1000).toLocaleFormat("%Y-%m-%d %H:%M:%S")
   indent = level * 30
   if indent < 4
     indent = 4
@@ -56,7 +60,7 @@ this.renderLog = (data, level) ->
   appendElement "#log tr:last", "#t-log-line", data
   if data.logs
     for log in data.logs
-      renderLog(log, level + 1)
+      renderLog(log, level + 1, ignore_date)
 
 this.showMore = ->
   for i in $(".showMore")

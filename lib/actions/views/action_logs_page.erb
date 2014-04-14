@@ -82,9 +82,9 @@
 
     <table id="log" border="1">
         <tr>
+            <th>Name</th>
             <th>Date</th>
             <th>Duration</th>
-            <th>Name</th>
             <th>Info</th>
         </tr>
     </table>
@@ -93,9 +93,9 @@
 <script id="t-log-line" type="text/x-handlebars-template">
     {{#if cmd}}
     <tr class="{{classes}}">
+        <td class="noWrap">{{name}}</td>
         <td style="padding-left: {{indent}}" class="noWrap">{{date}}</td>
         <td>{{time}}</td>
-        <td class="noWrap">{{name}}</td>
         <td>
             <pre class="showMoreLine">{{cmd}}</pre>
             {{#if exitstatus}}
@@ -118,9 +118,9 @@
     </tr>
     {{else}}
     <tr class="{{classes}}">
+        <td class="noWrap">{{name}}</td>
         <td style="padding-left: {{indent}}">{{date}}</td>
         <td>{{time}}</td>
-        <td class="noWrap">{{name}}</td>
         <td>
             {{#if exception}}
                 <span class="showMoreLine">Exception: {{exception}}</span>

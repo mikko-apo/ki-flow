@@ -25,20 +25,33 @@ module Ki
       IO.read(LogBaseDirectories.fetch(params["base"]).log_roots.path)
     end
 
+    def log_roots
+      LogBaseDirectories.fetch(params["base"]).log_roots.reload
+    end
+
+    def log_dirs
+      log_roots.get(params["splat"].at(0)).log_dirs.reload
+    end
+
+    def action_log_dir
+      log_dirs.get(params["id"])
+    end
+
+    def action_log
+      action_log_dir.action_log
+    end
+
     get '/json/logs/:base/*' do
       content_type :json
-      log_dirs = LogBaseDirectories.fetch(params["base"]).log_roots.get(params["splat"].at(0)).log_dirs
       IO.read(log_dirs.path)
     end
 
     get '/json/log/:base/*/:id' do
       content_type :json
-      action_log = LogBaseDirectories.fetch(params["base"]).log_roots.get(params["splat"].at(0)).log_dirs.get(params["id"]).action_log
       IO.read(action_log.path)
     end
 
     get '/files/:base/*/:id/file/:file' do
-      action_log_dir = LogBaseDirectories.fetch(params["base"]).log_roots.get(params["splat"].at(0)).log_dirs.get(params["id"])
       if params["file"].include?("../")
         halt 404
       end

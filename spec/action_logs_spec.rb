@@ -24,4 +24,19 @@ describe ActionBaseDirectory do
     log.save
     action_logs.new_log_dir.path.should eq(File.join(tmp, "a/b/2"))
   end
+
+  class TestAction
+    include ActionBase
+  end
+
+  it "ActionBase should log files from log directory" do
+    action = TestAction.new
+    tmp = @tester.tmpdir
+    action.action_log_dir(ActionLogDir.new("123").parent(DirectoryBase.new(tmp)))
+    action.write_log_file({})
+    JSON.parse(IO.read(action.action_log_file.path)).should eq({})
+    Tester.write_files(tmp, "123/a" => "txt")
+    action.write_log_file({})
+    JSON.parse(IO.read(action.action_log_file.path)).should eq({"files"=>["a"]})
+  end
 end

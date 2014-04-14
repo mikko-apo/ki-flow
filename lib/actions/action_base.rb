@@ -5,6 +5,8 @@ module Ki
       include HashLog
     end
 
+    attr_chain :action_log_dir, :require
+    attr_chain :action_log_file, -> { action_log_dir.action_log }
     attr_chain :logger, -> { CiLogger.new }
     attr_chain :exceptions, -> { ExceptionCatcher.new }
     attr_chain :after_actions, -> { [] }
@@ -46,9 +48,13 @@ module Ki
 
     def collect_logs_and_save(file, name, &block)
       log_root = nil
+      background_write = BackgroundLooper.new
       begin
         logger.log(name) do |l|
           log_root = l
+          BackgroundLooper.new do
+            write_log_file(log_root)
+          end
           exceptions.catch(name) do
             block.call(log_root)
           end
@@ -67,12 +73,29 @@ module Ki
           @exceptions.check
         end
       ensure
-        if file
-          puts "Logging to #{file}"
-          File.safe_write(file, JSON.pretty_generate(log_root))
-        else
-          puts JSON.pretty_generate(log_root)
+        background_write.stop
+        write_log_file(log_root)
+      end
+    end
+
+    def write_log_file(log_root)
+      puts "Logging to #{action_log_file.path}"
+      collect_files_from_log_dir(log_root)
+      File.safe_write(action_log_file.path, JSON.pretty_generate(log_root.dup))
+    end
+
+    def collect_files_from_log_dir(log_root)
+      files = Dir.glob(action_log_dir.path("**/*")) - [action_log_file.path]
+      files.map! do |path|
+        short_path = path[action_log_dir.path.size..-1]
+        if short_path.start_with?("/")
+          short_path = short_path[1..-1]
         end
+        short_path
+      end
+      log_root.delete("files")
+      if files.size > 0
+        log_root["files"]=files
       end
     end
 

@@ -30,7 +30,7 @@
     <hr/>
     <h3>Logs</h3>
 
-    <table id="component-list">
+    <table>
         <tr><th>Count: {{data.length}}</th></tr>
         {{#each data}}
         <tr><td><a class="name" href="/logs/{{../base}}/{{this}}">{{this}}</a></td></tr>
@@ -44,7 +44,7 @@
     <hr/>
     <h3>Logs</h3>
 
-    <table id="version-list">
+    <table>
         <tr><th>Count: {{data.length}}</th></tr>
         {{#each data}}
         <tr><td class="id"><a href="/logs/show/{{../base}}/{{../name}}/{{this}}">{{this}}</a></td></tr>
@@ -74,6 +74,16 @@
                 {{/if}}
             </td>
         </tr>
+        {{/if}}
+        {{#if files}}
+            <tr>
+                <td>Files</td>
+                <td>
+                    {{#each files}}
+                       <a href="{{this}}">{{this}}</a>
+                    {{/each}}
+                </td>
+            </tr>
         {{/if}}
         {{/with}}
     </table>

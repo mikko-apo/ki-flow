@@ -83,6 +83,7 @@ this.showOnClick = (i, item, text, new_text) ->
   item.text(new_text)
   item.attr("title", text)
   item.click ->
-    $(this).attr("title", null)
-    $(this).text(this.long_text)
-    this.long_text = null
+    if this.long_text
+      $(this).attr("title", null)
+      $(this).text(this.long_text)
+      this.long_text = null

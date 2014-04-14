@@ -1,5 +1,5 @@
 module Ki
-  class BackgroundLooper < Thread
+  class BackgroundLooper
     attr_chain :exceptions, -> { ExceptionCatcher.new }
 
     def run(delay=20, &block)

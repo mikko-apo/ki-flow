@@ -48,11 +48,11 @@ module Ki
 
     def collect_logs_and_save(name, &block)
       log_root = nil
-      background_write = BackgroundLooper.new
+      background_writer = BackgroundLooper.new
       begin
         logger.log(name) do |l|
           log_root = l
-          BackgroundLooper.new do
+          background_writer.run do
             write_log_file(log_root)
           end
           exceptions.catch(name) do
@@ -73,7 +73,7 @@ module Ki
           @exceptions.check
         end
       ensure
-        background_write.stop
+        background_writer.stop
         write_log_file(log_root)
       end
     end

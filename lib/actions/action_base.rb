@@ -53,7 +53,9 @@ module Ki
         logger.log(name) do |l|
           log_root = l
           background_writer.run do
-            write_log_file(log_root)
+            @exceptions.catch do
+              write_log_file(log_root)
+            end
           end
           exceptions.catch(name) do
             block.call(log_root)

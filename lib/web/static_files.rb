@@ -15,17 +15,21 @@
 # limitations under the License.
 
 module Ki
-
-  class StaticFileWeb < Sinatra::Base
-    include KiWebBase
-
-    get '/web/*/*' do
+  module CacheHeaders
+    def set_cache_headers
       if web_ctx.development
         cache_control :no_cache
       else
         expires 3*30*24*3600, :public, :must_revalidate
       end
+    end
+  end
+  class StaticFileWeb < Sinatra::Base
+    include KiWebBase
+
+    get '/web/*/*' do
 #      show_errors do
+      set_cache_headers
       file = resolve_path(params[:splat].at(1))
       if file.end_with?(".scss")
         scss StaticFileWeb.read_file(file)

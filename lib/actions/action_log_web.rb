@@ -17,6 +17,8 @@
 module Ki
   class ActionLogWeb < Sinatra::Base
     include KiWebBase
+    include CacheHeaders
+
     LogBaseDirectories = {}
 
     get '/json/logs/:base' do
@@ -34,6 +36,14 @@ module Ki
       content_type :json
       action_log = LogBaseDirectories.fetch(params["base"]).log_roots.get(params["splat"].at(0)).log_dirs.get(params["id"]).action_log
       IO.read(action_log.path)
+    end
+
+    get '/files/:base/*/:id/file/:file' do
+      action_log_dir = LogBaseDirectories.fetch(params["base"]).log_roots.get(params["splat"].at(0)).log_dirs.get(params["id"])
+      if params["file"].include("../")
+        halt 404
+      end
+      send_file action_log_dir.path(params["file"])
     end
 
     get '/' do

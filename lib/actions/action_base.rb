@@ -52,14 +52,14 @@ module Ki
           exceptions.catch(name) do
             block.call(log_root)
           end
-          if at_exists.size > 0
-          go("after") do
-            after_actions.each do |name, block|
-              go(name) do
-                block.call
+          if after_actions.size > 0
+            go("after") do
+              after_actions.each do |name, block|
+                go(name) do
+                  block.call
+                end
               end
             end
-          end
           end
           go("cleanup child processes") do
             HashLogShell.cleanup

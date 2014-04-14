@@ -43,7 +43,7 @@ this.show_log = (base, name, id) ->
       data: data
     if data.logs
       for log in data.logs
-        renderLog(log, 0)
+        renderLog(log, 0, ignore_date)
     showMore()
 
 this.renderLog = (data, level, ignore_date) ->

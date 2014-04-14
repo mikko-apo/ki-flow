@@ -49,7 +49,7 @@ module Ki
       begin
         logger.log(name) do |l|
           log_root = l
-          @exceptions.catch(name) do
+          exceptions.catch(name) do
             block.call(log_root)
           end
           if at_exists.size > 0

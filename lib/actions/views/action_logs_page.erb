@@ -93,8 +93,8 @@
 <script id="t-log-line" type="text/x-handlebars-template">
     {{#if cmd}}
     <tr class="{{classes}}">
-        <td class="noWrap">{{name}}</td>
-        <td style="padding-left: {{indent}}" class="noWrap">{{date}}</td>
+        <td style="padding-left: {{indent}}" class="noWrap">{{name}}</td>
+        <td class="noWrap">{{date}}</td>
         <td>{{time}}</td>
         <td>
             <pre class="showMoreLine">{{cmd}}</pre>
@@ -118,8 +118,8 @@
     </tr>
     {{else}}
     <tr class="{{classes}}">
-        <td class="noWrap">{{name}}</td>
-        <td style="padding-left: {{indent}}">{{date}}</td>
+        <td style="padding-left: {{indent}}" class="noWrap">{{name}}</td>
+        <td class="noWrap">{{date}}</td>
         <td>{{time}}</td>
         <td>
             {{#if exception}}

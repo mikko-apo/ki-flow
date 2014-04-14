@@ -46,7 +46,7 @@ module Ki
       after_actions << [name, block]
     end
 
-    def collect_logs_and_save(file, name, &block)
+    def collect_logs_and_save(name, &block)
       log_root = nil
       background_write = BackgroundLooper.new
       begin

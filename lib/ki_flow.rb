@@ -18,14 +18,15 @@ require 'sinatra'
 
 require_relative 'env/env'
 
-require_relative 'actions/action_log_dir'
-require_relative 'actions/action_base'
-require_relative 'actions/action_log_web'
 
 require_relative 'web/repository'
 require_relative 'web/static_files'
 require_relative 'web/web_util'
 require_relative 'web/queue_rest'
+
+require_relative 'actions/action_log_dir'
+require_relative 'actions/action_base'
+require_relative 'actions/action_log_web'
 
 require_relative 'ci/version_control/ci_git'
 require_relative 'ci/ci_build'

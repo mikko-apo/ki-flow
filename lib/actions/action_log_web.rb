@@ -17,7 +17,6 @@
 module Ki
   class ActionLogWeb < Sinatra::Base
     include KiWebBase
-    include CacheHeaders
 
     LogBaseDirectories = {}
 

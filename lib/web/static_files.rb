@@ -24,8 +24,10 @@ module Ki
       end
     end
   end
+
   class StaticFileWeb < Sinatra::Base
     include KiWebBase
+    include CacheHeaders
 
     get '/web/*/*' do
 #      show_errors do

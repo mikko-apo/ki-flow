@@ -47,7 +47,7 @@ this.show_log = (base, name, id) ->
     showMore()
 
 this.renderLog = (data, level, ignore_date) ->
-  if ignore_date == new Date(data.start * 1000)
+  if ignore_date == new Date(data.start * 1000).toLocaleFormat("%Y-%m-%d")
     data.date = new Date(data.start * 1000).toLocaleFormat("%H:%M:%S")
   else
     data.date = new Date(data.start * 1000).toLocaleFormat("%Y-%m-%d %H:%M:%S")

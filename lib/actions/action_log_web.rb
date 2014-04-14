@@ -39,7 +39,7 @@ module Ki
 
     get '/files/:base/*/:id/file/:file' do
       action_log_dir = LogBaseDirectories.fetch(params["base"]).log_roots.get(params["splat"].at(0)).log_dirs.get(params["id"])
-      if params["file"].include("../")
+      if params["file"].include?("../")
         halt 404
       end
       send_file action_log_dir.path(params["file"])

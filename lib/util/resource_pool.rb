@@ -8,7 +8,7 @@ module Ki
     attr_chain :state, -> { ResourcePoolState.new(File.basename(path).gsub(".json", "")+"-state.json").parent(parent) }
 
     # returns a reservation key that can be claimed
-    def claim_for_other(duration, id)
+    def claim_for_other(id, duration)
       random_claim_id = rand(9999999).to_s
       claimed = lock_one({
                    "claimed_for" => id,
@@ -45,6 +45,7 @@ module Ki
           raise "Claim for resource #{key} claimed with id #{claim_id} is too old (now: #{now} until: #{res["until"]}!"
         end
         res["reserved_for"]=id
+        res.delete("claimed_for")
         res["start"] = Time.now.to_f
       end
       key
@@ -64,17 +65,16 @@ module Ki
       ret
     end
 
-    def free(key, id)
+    def free(id, key)
       key, claim_id = key.split(":")
       state.edit_data do |resource_state|
         resource = resource_state.cached_data[key]
         if resource
-          if resource["reserved_for"]!=id
-            if resource["claimed_for"]
-              raise "Can't free resource #{key}. It's claimed for '#{resource["claimed_for"]}'!"
-            else
+          if resource["reserved_for"] && resource["reserved_for"]!=id
               raise "Can't free resource #{key}. It's reserved for '#{resource["reserved_for"]}' and #{id} tried to free it!"
-            end
+          end
+          if resource["claimed_for"] && resource["claimed_for"]!=id
+            raise "Can't free resource #{key}. It's claimed for '#{resource["claimed_for"]}'!"
           end
           resource_state.cached_data.delete(key)
         end

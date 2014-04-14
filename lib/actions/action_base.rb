@@ -52,6 +52,9 @@ module Ki
           exceptions.catch(name) do
             block.call(log_root)
           end
+          after("cleanup child processes") do
+            HashLogShell.cleanup
+          end
           if after_actions.size > 0
             go("after") do
               after_actions.each do |name, block|
@@ -60,9 +63,6 @@ module Ki
                 end
               end
             end
-          end
-          go("cleanup child processes") do
-            HashLogShell.cleanup
           end
           @exceptions.check
         end

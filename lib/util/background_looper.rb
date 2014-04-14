@@ -7,22 +7,14 @@ module Ki
       @mutex = Mutex.new
       @resource = ConditionVariable.new
       Thread.new do
-        puts "BL: new thread"
-        while @loop
-          puts "LOOP"
-          exceptions.catch do
-            puts "Block start"
-            begin
-              block.call
-            rescue Exception => e
-              puts "Exception: #{e.message} #{e.backtrace}"
+        exceptions.catch do
+          while @loop
+            block.call
+            if @loop
+              @mutex.synchronize do
+                @resource.wait(@mutex, delay)
+              end
             end
-            puts "Block end"
-          end
-          if @loop
-            puts "before resource.wait"
-            @resource.wait(@mutex, delay)
-            puts "resource.wait ended"
           end
         end
       end

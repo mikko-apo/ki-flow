@@ -2,7 +2,7 @@ module Ki
   class BackgroundLooper
     attr_chain :exceptions, -> { ExceptionCatcher.new }
 
-    def run(delay=5, &block)
+    def run(delay=20, &block)
       @loop = true
       @mutex = Mutex.new
       @resource = ConditionVariable.new

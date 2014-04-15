@@ -52,7 +52,7 @@ module Ki
       begin
         logger.log(name) do |l|
           log_root = l
-          background_writer.run do
+          background_writer.run(60) do
             @exceptions.catch do
               write_log_file(log_root)
             end
@@ -76,12 +76,12 @@ module Ki
         end
       ensure
         background_writer.stop
+        puts "Logging to #{action_log_file.path}"
         write_log_file(log_root)
       end
     end
 
     def write_log_file(log_root)
-      puts "Logging to #{action_log_file.path}"
       collect_files_from_log_dir(log_root)
       File.safe_write(action_log_file.path, JSON.pretty_generate(log_root.dup))
     end

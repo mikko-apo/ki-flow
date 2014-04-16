@@ -35,7 +35,7 @@ this.show_log = (base, name, id) ->
     clear()
     document.title = "Logs for " + base + "/" + name + "/" + id
     data.date = ignore_date = TimeFormat.formatDateTime(data.start * 1000)
-    data.duration = if !data.time then TimeFormat.formatDuration(data.time * 1000) else "<i>&lt;running&gt;</i>"
+    data.duration = if data.time then TimeFormat.formatDuration(data.time * 1000) else "<i>&lt;running&gt;</i>"
     renderElements "#content", "#t-show-log",
       base: base
       name: name
@@ -51,7 +51,7 @@ this.renderLog = (data, level, ignore_date) ->
     data.date = TimeFormat.formatTime(data.start * 1000)
   else
     data.date = TimeFormat.formatDateTime(data.start * 1000)
-  data.duration = if !data.time then TimeFormat.formatDuration(data.time * 1000) else "<i>&lt;running&gt;</i>"
+  data.duration = if data.time then TimeFormat.formatDuration(data.time * 1000) else "<i>&lt;running&gt;</i>"
   indent = level * 30
   if indent < 4
     indent = 4

@@ -34,7 +34,8 @@ this.show_log = (base, name, id) ->
   $.get "/logs/json/log/" + base + "/" + name + "/" + id, (data) ->
     clear()
     document.title = "Logs for " + base + "/" + name + "/" + id
-    data.date = ignore_date = TimeFormat.formatDateTime(data.start * 1000)
+    data.date = TimeFormat.formatDateTime(data.start * 1000)
+    ignore_date = TimeFormat.formatDate(data.start * 1000)
     data.duration = if data.time then TimeFormat.formatDuration(data.time * 1000) else "<i>&lt;running&gt;</i>"
     renderElements "#content", "#t-show-log",
       base: base

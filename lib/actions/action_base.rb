@@ -52,7 +52,7 @@ module Ki
       begin
         logger.log(name) do |l|
           log_root = l
-          background_writer.run(60) do
+          background_writer.run(20) do
             @exceptions.catch do
               write_log_file(log_root)
             end

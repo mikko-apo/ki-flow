@@ -30,17 +30,17 @@ module Ki
         end
 
         def reset_local_repo(dir)
-          sh.spawn("git clean --force", chdir: dir.path)
-          sh.spawn("git reset --hard", chdir: dir.path)
+          sh.spawn("git clean -q --force", chdir: dir.path)
+          sh.spawn("git reset -q --hard", chdir: dir.path)
         end
 
         def update_local_repo(dir)
-          sh.spawn("git pull", chdir: dir.path)
+          sh.spawn("git pull -q", chdir: dir.path)
         end
 
         def download_remote_repo_to_local(url, dir)
           path = unpack_url(url)
-          sh.spawn("git clone --branch #{path.branch} #{path.url} #{dir.path}")
+          sh.spawn("git clone -q --branch #{path.branch} #{path.url} #{dir.path}")
         end
 
         def unpack_url(s)

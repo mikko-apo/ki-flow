@@ -6,7 +6,7 @@ this.initRouter = ->
   router.add("/logs/:base/*", (params) -> show_logs( params.base, params.splat ))
   router.add("/logs/:base", (params) -> show_log_root_base( params.base))
   router.paramVerifier = (s) -> /^[a-z0-9\/\-]+$/i.test(s)
-  router.debug = true
+#  router.debug = true
   router.transparentRouting()
   window.router = router
 
@@ -34,8 +34,8 @@ this.show_log = (base, name, id) ->
   $.get "/logs/json/log/" + base + "/" + name + "/" + id, (data) ->
     clear()
     document.title = "Logs for " + base + "/" + name + "/" + id
-    data.date = new Date(data.start * 1000).toLocaleFormat("%Y-%m-%d %H:%M:%S")
-    ignore_date = new Date(data.start * 1000).toLocaleFormat("%Y-%m-%d")
+    data.date = TimeFormat.formatDateTime(data.start * 1000)
+    ignore_date = TimeFormat.formatDate(data.start * 1000)
     renderElements "#content", "#t-show-log",
       base: base
       name: name
@@ -47,10 +47,10 @@ this.show_log = (base, name, id) ->
     showMore()
 
 this.renderLog = (data, level, ignore_date) ->
-  if ignore_date == new Date(data.start * 1000).toLocaleFormat("%Y-%m-%d")
-    data.date = new Date(data.start * 1000).toLocaleFormat("%H:%M:%S")
+  if ignore_date == TimeFormat.formatDate(data.start * 1000)
+    data.date = TimeFormat.formatTime(data.start * 1000)
   else
-    data.date = new Date(data.start * 1000).toLocaleFormat("%Y-%m-%d %H:%M:%S")
+    data.date = TimeFormat.formatDateTime(data.start * 1000)
   indent = level * 30
   if indent < 4
     indent = 4
@@ -87,3 +87,13 @@ this.showOnClick = (i, item, text, new_text) ->
       $(this).attr("title", null)
       $(this).text(this.long_text)
       delete this.long_text
+
+class TimeFormat
+  @formatTime = (timestamp) ->
+    new Date(parseInt(timestamp)).toLocaleTimeString()
+
+  @formatDate = (timestamp) ->
+    new Date(parseInt(timestamp)).toLocaleDateString()
+
+  @formatDateTime = (timestamp) ->
+    "#{@formatDate(timestamp)} #{@formatTime(timestamp)}"

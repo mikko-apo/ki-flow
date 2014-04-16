@@ -34,8 +34,8 @@ this.show_log = (base, name, id) ->
   $.get "/logs/json/log/" + base + "/" + name + "/" + id, (data) ->
     clear()
     document.title = "Logs for " + base + "/" + name + "/" + id
-    data.date = TimeFormat.formatDateTime(data.start * 1000)
-    ignore_date = TimeFormat.formatDate(data.start * 1000)
+    data.date = ignore_date = TimeFormat.formatDateTime(data.start * 1000)
+    data.duration = TimeFormat.formatDuration(data.time * 1000)
     renderElements "#content", "#t-show-log",
       base: base
       name: name
@@ -51,6 +51,7 @@ this.renderLog = (data, level, ignore_date) ->
     data.date = TimeFormat.formatTime(data.start * 1000)
   else
     data.date = TimeFormat.formatDateTime(data.start * 1000)
+  data.duration = TimeFormat.formatDuration(data.time * 1000)
   indent = level * 30
   if indent < 4
     indent = 4
@@ -89,11 +90,33 @@ this.showOnClick = (i, item, text, new_text) ->
       delete this.long_text
 
 class TimeFormat
-  @formatTime = (timestamp) ->
-    new Date(parseInt(timestamp)).toLocaleTimeString()
+  @formatTime = (timestamp_ms) ->
+    new Date(parseInt(timestamp_ms)).toLocaleTimeString()
 
-  @formatDate = (timestamp) ->
-    new Date(parseInt(timestamp)).toLocaleDateString()
+  @formatDate = (timestamp_ms) ->
+    new Date(parseInt(timestamp_ms)).toLocaleDateString()
 
-  @formatDateTime = (timestamp) ->
-    "#{@formatDate(timestamp)} #{@formatTime(timestamp)}"
+  @formatDateTime = (timestamp_ms) ->
+    "#{@formatDate(timestamp_ms)} #{@formatTime(timestamp_ms)}"
+
+  @formatDuration = (timestamp_ms) ->
+    arr = []
+    if timestamp_ms > (3600 * 1000)
+      arr.push Math.floor( sec / (3600 * 1000) )
+      arr.push "h"
+    timestamp_ms %= (3600 * 1000)
+    if timestamp_ms > (60 * 1000)
+      arr.push Math.floor( timestamp_ms / (60 * 1000) )
+      arr.push "m"
+    timestamp_ms %= (60 * 1000)
+    if timestamp_ms > (1000)
+      arr.push Math.floor( timestamp_ms / (1000) )
+      arr.push "s"
+    timestamp_ms %= (1000)
+    if timestamp_ms > 0
+      arr.push Math.floor( timestamp_ms )
+      arr.push "ms"
+    if arr.length > 0
+      arr.join("")
+    else
+      "0ms"

@@ -63,7 +63,7 @@
         {{#with data}}
         <tr><td>Name</td><td>{{name}}</td></tr>
         <tr><td>Date</td><td>{{date}}</td></tr>
-        <tr><td>Duration</td><td>{{time}}</td></tr>
+        <tr><td>Duration</td><td>{{duration}}</td></tr>
         {{#if exception}}
         <tr class="exception">
             <td>Exception</td>
@@ -105,7 +105,7 @@
     <tr class="{{classes}}">
         <td style="padding-left: {{indent}}" class="noWrap">{{name}}</td>
         <td class="noWrap">{{date}}</td>
-        <td>{{time}}</td>
+        <td>{{duration}}</td>
         <td>
             <pre class="showMoreLine">{{cmd}}</pre>
             {{#if exitstatus}}
@@ -130,7 +130,7 @@
     <tr class="{{classes}}">
         <td style="padding-left: {{indent}}" class="noWrap">{{name}}</td>
         <td class="noWrap">{{date}}</td>
-        <td>{{time}}</td>
+        <td>{{duration}}</td>
         <td>
             {{#if exception}}
                 <span class="showMoreLine">Exception: {{exception}}</span>

@@ -43,6 +43,8 @@ module Ki
         send_file(file, :type => "text/javascript")
       elsif file.end_with?(".css")
         send_file(file, :type => "text/css")
+      elsif file.end_with?(".gif")
+        send_file(file, :type => "image/gif")
 #      end
       end
     end

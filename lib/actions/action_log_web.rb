@@ -25,6 +25,11 @@ module Ki
       IO.read(LogBaseDirectories.fetch(params["base"]).log_roots.path)
     end
 
+    get '/json/status/:base' do
+      content_type :json
+      IO.read(LogBaseDirectories.fetch(params["base"]).action_status.path)
+    end
+
     def log_roots
       LogBaseDirectories.fetch(params["base"]).log_roots.reload
     end

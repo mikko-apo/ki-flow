@@ -30,10 +30,28 @@
     <hr/>
     <h3>Logs</h3>
 
+    <div id="logsStatus"></div>
+
     <table>
         <tr><th>Count: {{data.length}}</th></tr>
         {{#each data}}
         <tr><td><a class="name" href="/logs/{{../base}}/{{this}}">{{this}}</a></td></tr>
+        {{/each}}
+    </table>
+</script>
+
+<script id="t-logs-status" type="text/x-handlebars-template">
+    <table>
+        <tr><th>Count: {{data.length}}</th></tr>
+        {{#each data}}
+        {{#each this}}
+        <tr class="{{classes}}">
+            <td>{{this.log_root}}</td>
+            <td>{{this.date}}</td>
+            <td>{{this.duration}}</td>
+            <td><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}">{{this.name}}</a></td>
+        </tr>
+        {{/each}}
         {{/each}}
     </table>
 </script>

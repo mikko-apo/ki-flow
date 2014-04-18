@@ -20,6 +20,32 @@ this.show_log_root_base = (base) ->
     renderElements "#content", "#t-log-roots",
       base: base
       data: data
+  $.get "/logs/json/status/" + base, (data) ->
+    mapped_list = statusMapToList(data)
+    renderElements "#logsStatus", "#t-logs-status",
+      base: base
+      data: mapped_list
+
+statusMapToList = (map) ->
+  arr = []
+  for key, info of map
+    info_arr = []
+    if info.last_failed && info.last_ok
+      if info.last_failed.start > info.last_ok.start
+        info_arr.push(info.last_failed)
+        info_arr.push(info.last_ok)
+      else
+        info_arr.push(info.last_ok)
+        info_arr.push(info.last_failed)
+    else if info.last_failed
+      info_arr.push(info.last_failed)
+    else
+      info_arr.push(info.last_ok)
+    for i in info_arr
+      i.log_root = key
+      updateLog(i)
+    arr.push info_arr
+  arr
 
 this.show_logs = (base, name) ->
   $.get "/logs/json/logs/" + base + "/" + name, (data) ->
@@ -34,9 +60,8 @@ this.show_log = (base, name, id) ->
   $.get "/logs/json/log/" + base + "/" + name + "/" + id, (data) ->
     clear()
     document.title = "Logs for " + base + "/" + name + "/" + id
-    data.date = TimeFormat.formatDateTime(data.start * 1000)
     ignore_date = TimeFormat.formatDate(data.start * 1000)
-    data.duration = if data.time then TimeFormat.formatDuration(data.time * 1000) else "<i>&lt;running&gt;</i>"
+    updateLog(data)
     renderElements "#content", "#t-show-log",
       base: base
       name: name
@@ -47,18 +72,22 @@ this.show_log = (base, name, id) ->
         renderLog(log, 0, ignore_date)
     showMore()
 
+updateLog = (log) ->
+  log.date = TimeFormat.formatDateTime(log.start * 1000)
+  log.duration = if log.time then TimeFormat.formatDuration(log.time * 1000) else "<i>&lt;running&gt;</i>"
+  if log.exception
+    log.classes = "exception"
+
 this.renderLog = (data, level, ignore_date) ->
+  updateLog(data)
   if ignore_date == TimeFormat.formatDate(data.start * 1000)
     data.date = TimeFormat.formatTime(data.start * 1000)
   else
     data.date = TimeFormat.formatDateTime(data.start * 1000)
-  data.duration = if data.time then TimeFormat.formatDuration(data.time * 1000) else "<i>&lt;running&gt;</i>"
   indent = level * 30
   if indent < 4
     indent = 4
   data.indent = "" + (indent) + "px"
-  if data.exception
-    data.classes = "exception"
   appendElement "#log tr:last", "#t-log-line", data
   if data.logs
     for log in data.logs

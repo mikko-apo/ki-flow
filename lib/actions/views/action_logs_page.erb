@@ -25,33 +25,26 @@
 </head>
 <body>
 
-<script id="t-log-roots" type="text/x-handlebars-template">
+<script id="t-logs-status" type="text/x-handlebars-template">
     <a href="/logs/{{base}}">Logs for {{base}}</a>
     <hr/>
     <h3>Logs</h3>
 
-    <div id="logsStatus"></div>
-
     <table>
         <tr><th>Count: {{data.length}}</th></tr>
         {{#each data}}
-        <tr><td><a class="name" href="/logs/{{../base}}/{{this}}">{{this}}</a></td></tr>
-        {{/each}}
-    </table>
-</script>
-
-<script id="t-logs-status" type="text/x-handlebars-template">
-    <table>
-        <tr><th>Count: {{data.length}}</th></tr>
-        {{#each data}}
-        {{#each this}}
+        {{#with this.[0]}}
         <tr class="{{classes}}">
-            <td>{{this.log_root}}</td>
+            <td><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}" title="{{exception}} {{fail_reason}}">{{this.log_root}}/{{this.action}}</a></td>
             <td>{{this.date}}</td>
             <td>{{this.duration}}</td>
-            <td><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}">{{this.name}}</a></td>
+        {{/with}}
+        {{#with this.[1]}}
+            <td><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}" title="{{exception}} {{fail_reason}}">{{this.log_root}}/{{this.action}}</a></td>
+            <td>{{this.date}}</td>
+            <td>{{this.duration}}</td>
+        {{/with}}
         </tr>
-        {{/each}}
         {{/each}}
     </table>
 </script>

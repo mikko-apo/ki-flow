@@ -14,17 +14,12 @@ clear = ->
   $("#content").empty()
 
 this.show_log_root_base = (base) ->
-  $.get "/logs/json/logs/" + base, (data) ->
+  $.get "/logs/json/status/" + base, (data) ->
     clear()
     document.title = "Logs for " + base
-    renderElements "#content", "#t-log-roots",
+    renderElements "#content", "#t-logs-status",
       base: base
-      data: data
-  $.get "/logs/json/status/" + base, (data) ->
-    mapped_list = statusMapToList(data)
-    renderElements "#logsStatus", "#t-logs-status",
-      base: base
-      data: mapped_list
+      data: statusMapToList(data)
 
 statusMapToList = (map) ->
   arr = []
@@ -45,7 +40,17 @@ statusMapToList = (map) ->
       i.log_root = key
       updateLog(i)
     arr.push info_arr
+  arr.sort (a,b) ->
+    a0 = a[0]
+    b0 = b[0]
+    a0_error = (a0.exception || a0.fail_reason)
+    ret = if a0_error == (b0.exception || b0.fail_reason)
+      b0.start - a0.start
+    else
+      if a0_error then -1 else 1
+    ret
   arr
+
 
 this.show_logs = (base, name) ->
   $.get "/logs/json/logs/" + base + "/" + name, (data) ->

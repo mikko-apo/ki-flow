@@ -77,7 +77,14 @@ module Ki
       ensure
         background_writer.stop
         puts "Logging to #{action_log_file.path}"
-        write_log_file(log_root)
+        finish_exceptions = ExceptionCatcher.new
+        finish_exceptions.catch do("save #{action_log_file.path}")
+          write_log_file(log_root)
+        end
+        finish_exceptions.catch do("update #{action_log_dir.path}")
+          action_log_dir.update_status(log_root)
+        end
+        finish_exceptions.check
       end
     end
 

@@ -23,8 +23,33 @@ module Ki
 
   class ActionBaseDirectory < DirectoryBase
     attr_chain :log_roots, -> {ActionLogRootList.new("log_roots.json").parent(mkdir)}
+    attr_chain :action_status, -> {KiJSONHashFile.new("action_status.json").parent(mkdir)}
+
     def add_log_root(name)
       log_roots.add_item(name)
+    end
+
+    def update_status(log_root_data, log_root, action_name)
+      action_status.edit_data do |file|
+        action_status = (file.cached_data[log_root] ||= {})
+        info = {
+            "action" => File.join(log_root, action_name),
+            "start" => log_root_data["start"],
+            "time" => log_root_data["time"],
+            "name" => log_root_data["name"],
+        }
+        if log_root_data["fail_reason"]
+          info["fail_reason"] = log_root_data["fail_reason"]
+        end
+        if log_root_data["exception"]
+          info["exception"] = log_root_data["exception"]
+        end
+        if log_root_data["fail_reason"] || log_root_data["exception"]
+          action_status["last_failed"] = info
+        else
+          action_status["last_ok"] = info
+        end
+      end
     end
   end
 
@@ -48,9 +73,16 @@ module Ki
         add_log_dir( "#{last.to_i + 1}" )
       end
     end
+
+    def update_status(log_root, action_name)
+      parent.update_status(log_root, name, action_name)
+    end
   end
 
   class ActionLogDir < DirectoryBase
     attr_chain :action_log, -> {KiJSONHashFile.new("action_log.json").parent(mkdir)}
+    def update_status(log_root)
+      parent.update_status(log_root, name)
+    end
   end
 end

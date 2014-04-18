@@ -37,6 +37,44 @@ describe ActionBaseDirectory do
     JSON.parse(IO.read(action.action_log_file.path)).should eq({})
     Tester.write_files(tmp, "123/a" => "txt")
     action.write_log_file({})
-    JSON.parse(IO.read(action.action_log_file.path)).should eq({"files"=>["a"]})
+    JSON.parse(IO.read(action.action_log_file.path)).should eq({"files" => ["a"]})
+  end
+
+  it "create action log directory structure" do
+    tmp = @tester.tmpdir
+    base = ActionBaseDirectory.new(tmp)
+    root = base.add_log_root("hwo")
+    dir = root.new_log_dir
+    dir.name.should eq("1")
+    dir.update_status ({
+        "start" => 1,
+        "time" => 2,
+        "name" => "foo"
+    })
+    base.action_status.cached_data.should eq({"hwo" => {
+        "last_ok" => {"action" => "1", "start" => 1, "time" => 2, "name" => "foo"}
+    }})
+    dir = root.new_log_dir
+    dir.update_status ({
+        "start" => 2,
+        "time" => 2,
+        "name" => "zap",
+        "exception" => "exception"
+    })
+    base.action_status.cached_data.should eq({"hwo" => {
+        "last_ok" => {"action" => "1", "start" => 1, "time" => 2, "name" => "foo"},
+        "last_failed" => {"action" => "2", "start" => 2, "time" => 2, "name" => "zap", "exception" => "exception"}
+    }})
+    dir = root.new_log_dir
+    dir.update_status ({
+        "start" => 3,
+        "time" => 1,
+        "name" => "baz",
+        "fail_reason" => "uh oh"
+    })
+    base.action_status.cached_data.should eq({"hwo" => {
+        "last_ok" => {"action" => "1", "start" => 1, "time" => 2, "name" => "foo"},
+        "last_failed"=>{"action"=>"3", "start"=>3, "time"=>1, "name"=>"baz", "fail_reason"=>"uh oh"}
+    }})
   end
 end

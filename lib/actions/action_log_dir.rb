@@ -33,7 +33,7 @@ module Ki
       action_status.edit_data do |file|
         action_status = (file.cached_data[log_root] ||= {})
         info = {
-            "action" => File.join(log_root, action_name),
+            "action" => action_name,
             "start" => log_root_data["start"],
             "time" => log_root_data["time"],
             "name" => log_root_data["name"],

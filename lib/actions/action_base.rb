@@ -51,7 +51,7 @@ module Ki
       background_writer = BackgroundLooper.new
       begin
         logger.log(name) do |l|
-          log_root = l
+          @log_root = log_root = l
           background_writer.run(20) do
             @exceptions.catch do
               write_log_file(log_root)
@@ -79,6 +79,10 @@ module Ki
         puts "Logging to #{action_log_file.path}"
         write_log_file(log_root)
       end
+    end
+
+    def set_action_fail_reason(txt)
+      @log_root["fail_reason"] = txt
     end
 
     def write_log_file(log_root)

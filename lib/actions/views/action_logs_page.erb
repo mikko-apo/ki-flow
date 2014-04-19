@@ -31,8 +31,8 @@
     <h3>Logs</h3>
 
     <table>
-        <tr><th>Count: {{data.length}}</th></tr>
-        {{#each data}}
+        <tr><th>Count: {{data.list.length}} Ok: {{data.ok}} Failing {{data.failing}}</th></tr>
+        {{#each data.list}}
         {{#with this.[0]}}
         <tr class="{{classes}}">
             <td><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}" title="{{this.error}}">{{this.log_root}}/{{this.action}}</a></td>

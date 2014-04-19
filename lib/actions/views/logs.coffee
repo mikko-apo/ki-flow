@@ -23,18 +23,24 @@ this.show_log_root_base = (base) ->
 
 statusMapToList = (map) ->
   arr = []
+  failing = 0
+  ok = 0
   for key, info of map
     info_arr = []
     if info.last_failed && info.last_ok
       if info.last_failed.start > info.last_ok.start
+        failing = failing + 1
         info_arr.push(info.last_failed)
         info_arr.push(info.last_ok)
       else
+        ok = ok + 1
         info_arr.push(info.last_ok)
         info_arr.push(info.last_failed)
     else if info.last_failed
+      failing = failing + 1
       info_arr.push(info.last_failed)
     else
+      ok = ok + 1
       info_arr.push(info.last_ok)
     for i in info_arr
       i.log_root = key
@@ -50,7 +56,9 @@ statusMapToList = (map) ->
     else
       if a0_error then -1 else 1
     ret
-  arr
+  list: arr
+  failing: failing
+  ok: ok
 
 
 this.show_logs = (base, name) ->

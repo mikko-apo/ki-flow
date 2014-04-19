@@ -82,6 +82,12 @@ updateLog = (log) ->
   log.duration = if log.time then TimeFormat.formatDuration(log.time * 1000) else "<i>&lt;running&gt;</i>"
   if log.exception || log.fail_reason
     log.classes = "error"
+    if log.exception && log.fail_reason
+      log.error = "Fail reason: #{log.fail_reason} Exception: #{log.exception}"
+    else if log.exception
+      log.error = "Exception #{log.exception}"
+    else
+      log.fail_reason = "Fail reason: #{log.fail_reason}"
 
 this.renderLog = (data, level, ignore_date) ->
   updateLog(data)

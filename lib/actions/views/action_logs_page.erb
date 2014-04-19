@@ -35,12 +35,12 @@
         {{#each data}}
         {{#with this.[0]}}
         <tr class="{{classes}}">
-            <td><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}" title="{{exception}} {{fail_reason}}">{{this.log_root}}/{{this.action}}</a></td>
+            <td><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}" title="{{this.error}}">{{this.log_root}}/{{this.action}}</a></td>
             <td>{{this.date}}</td>
             <td>{{this.duration}}</td>
         {{/with}}
         {{#with this.[1]}}
-            <td><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}" title="{{exception}} {{fail_reason}}">{{this.log_root}}/{{this.action}}</a></td>
+            <td><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}" title="{{this.error}}">{{this.log_root}}/{{this.action}}</a></td>
             <td>{{this.date}}</td>
             <td>{{this.duration}}</td>
         {{/with}}

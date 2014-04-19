@@ -43,8 +43,9 @@ statusMapToList = (map) ->
   arr.sort (a,b) ->
     a0 = a[0]
     b0 = b[0]
-    a0_error = (a0.exception || a0.fail_reason)
-    ret = if a0_error == (b0.exception || b0.fail_reason)
+    a0_error = a0.error?
+    b0_error = b0.error?
+    ret = if a0_error == b0_error
       b0.start - a0.start
     else
       if a0_error then -1 else 1

@@ -85,7 +85,7 @@ updateLog = (log) ->
     if log.exception && log.fail_reason
       log.error = "Fail reason: #{log.fail_reason} Exception: #{log.exception}"
     else if log.exception
-      log.error = "Exception #{log.exception}"
+      log.error = "Exception: #{log.exception}"
     else
       log.fail_reason = "Fail reason: #{log.fail_reason}"
 

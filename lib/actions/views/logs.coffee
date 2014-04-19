@@ -80,8 +80,8 @@ this.show_log = (base, name, id) ->
 updateLog = (log) ->
   log.date = TimeFormat.formatDateTime(log.start * 1000)
   log.duration = if log.time then TimeFormat.formatDuration(log.time * 1000) else "<i>&lt;running&gt;</i>"
-  if log.exception
-    log.classes = "exception"
+  if log.exception || log.fail_reason
+    log.classes = "error"
 
 this.renderLog = (data, level, ignore_date) ->
   updateLog(data)

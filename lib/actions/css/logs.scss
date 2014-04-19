@@ -24,13 +24,13 @@ limitations under the License.
     padding-bottom: 2px;
   }
 }
-.exception {
+.error {
   td {
     background-color: #FFB0B0;
   }
 }
 
-tr.exception {
+tr.error {
   &:hover td {
     background: #FFC0C0;
   }

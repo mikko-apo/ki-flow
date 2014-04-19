@@ -87,7 +87,7 @@ updateLog = (log) ->
     else if log.exception
       log.error = "Exception: #{log.exception}"
     else
-      log.fail_reason = "Fail reason: #{log.fail_reason}"
+      log.error = "Fail reason: #{log.fail_reason}"
 
 this.renderLog = (data, level, ignore_date) ->
   updateLog(data)

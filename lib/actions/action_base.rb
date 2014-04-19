@@ -75,13 +75,15 @@ module Ki
           @exceptions.check
         end
       ensure
-        background_writer.stop
         puts "Logging to #{action_log_file.path}"
         finish_exceptions = ExceptionCatcher.new
-        finish_exceptions.catch do("save #{action_log_file.path}")
+        finish_exceptions.catch do
+          background_writer.stop
+        end
+        finish_exceptions.catch("save #{action_log_file.path}") do
           write_log_file(log_root)
         end
-        finish_exceptions.catch do("update #{action_log_dir.path}")
+        finish_exceptions.catch("update #{action_log_dir.path}") do
           action_log_dir.update_status(log_root)
         end
         finish_exceptions.check

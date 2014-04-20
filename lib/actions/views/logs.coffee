@@ -20,6 +20,7 @@ this.show_log_root_base = (base) ->
     renderElements "#content", "#t-logs-status",
       base: base
       data: statusMapToList(data)
+    showMore()
 
 statusMapToList = (map) ->
   arr = []

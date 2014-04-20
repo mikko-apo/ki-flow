@@ -31,18 +31,20 @@
     <h3>Logs</h3>
 
     <table>
-        <tr><th>Count: {{data.list.length}} Ok: {{data.ok}} Failing {{data.failing}}</th></tr>
+        <tr><th colspan="4">Count: {{data.list.length}} Ok: {{data.ok}} Failing {{data.failing}}</th></tr>
         {{#each data.list}}
         {{#with this.[0]}}
         <tr class="{{classes}}">
-            <td><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}" title="{{this.error}}">{{this.log_root}}/{{this.action}}</a></td>
+            <td class="noWrap"><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}">{{this.log_root}}/{{this.action}}</a></td>
             <td>{{this.date}}</td>
             <td>{{this.duration}}</td>
+            <td class="showMoreLine">{{this.error}}</td>
         {{/with}}
         {{#with this.[1]}}
-            <td><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}" title="{{this.error}}">{{this.log_root}}/{{this.action}}</a></td>
+            <td class="noWrap"><a href="/logs/show/{{../../base}}/{{this.log_root}}/{{this.action}}">{{this.log_root}}/{{this.action}}</a></td>
             <td>{{this.date}}</td>
             <td>{{this.duration}}</td>
+            <td class="showMoreLine">{{this.error}}</td>
         {{/with}}
         </tr>
         {{/each}}

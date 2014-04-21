@@ -96,7 +96,6 @@ module Ki
 
     def write_log_file(log_root)
       collect_files_from_log_dir(log_root)
-      puts log_root.inspect
       File.safe_write(action_log_file.path, JSON.pretty_generate(log_root.dup))
     end
 

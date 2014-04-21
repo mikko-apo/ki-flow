@@ -30,7 +30,7 @@ module Ki
         end
 
         def reset_local_repo(dir)
-          sh.spawn("git clean -q --force", chdir: dir.path)
+          sh.spawn("git clean -q --force -d -x", chdir: dir.path)
           sh.spawn("git reset -q --hard", chdir: dir.path)
         end
 

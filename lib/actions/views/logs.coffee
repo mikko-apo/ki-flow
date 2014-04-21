@@ -155,7 +155,7 @@ class TimeFormat
       return "0ms"
     arr = []
     if timestamp_ms > (3600 * 1000)
-      arr.push Math.floor( sec / (3600 * 1000) )
+      arr.push Math.floor( timestamp_ms / (3600 * 1000) )
       arr.push "h"
     timestamp_ms %= (3600 * 1000)
     if timestamp_ms > (60 * 1000)

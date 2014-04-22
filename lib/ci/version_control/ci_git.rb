@@ -39,7 +39,7 @@ module Ki
         end
 
         def export(local_path, dest)
-          sh.spawn("git -q archive master | tar -x -C #{dest.mkdir.path}", chdir: local_path.path)
+          sh.spawn("git archive master | tar -x -C #{dest.mkdir.path}", chdir: local_path.path)
         end
 
         private

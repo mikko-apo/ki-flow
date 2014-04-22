@@ -32,7 +32,11 @@ module Ki
             if changes?(build_config, vc)
               local_path = local_path(build_config, remote_url)
               vc.update_or_clone_repository_to_local_path(remote_url, local_path)
-              execute_build(local_path)
+              Dir.mktmpdir do |tmp|
+                dest = DirectoryBase.new(tmp)
+                vc.export(local_path, dest)
+                execute_build(dest)
+              end
             end
           end
         end

@@ -23,38 +23,39 @@ module Ki
       end
       class Git
         attr_chain :sh, :require
+
         def get_revision(url)
           path = unpack_url(url)
           result = sh.spawn("git ls-remote --heads #{path.url} #{path.branch}")
           result.out.split(/\s/)[0]
         end
 
-        def reset_local_repo(dir)
-          sh.spawn("git clean -q --force -d -x", chdir: dir.path)
-          sh.spawn("git reset -q --hard", chdir: dir.path)
+        def update_or_clone_repository_to_local_path(remote_url, local_path)
+          if (local_path.mkdir.empty?)
+            download_remote_repo_to_local(remote_url, local_path)
+          else
+            update_local_repo(local_path)
+          end
         end
 
-        def update_local_repo(dir)
-          sh.spawn("git pull -q", chdir: dir.path)
+        def export(local_path, dest)
+          sh.spawn("git -q archive master | tar -x -C #{dest.mkdir.path}", chdir: local_path.path)
         end
 
-        def download_remote_repo_to_local(url, dir)
-          path = unpack_url(url)
-          sh.spawn("git clone -q --branch #{path.branch} #{path.url} #{dir.path}")
+        private
+
+        def update_local_repo(local_path)
+          sh.spawn("git fetch -fp origin", chdir: local_path.path)
+        end
+
+        def download_remote_repo_to_local(remote_url, local_path)
+          path = unpack_url(remote_url)
+          sh.spawn("git clone -q --mirror #{path.url} #{local_path.path}")
         end
 
         def unpack_url(s)
           arr = s.split(":")
           GitPath.new.branch(arr.delete_at(-1)).url(arr.join(":"))
-        end
-
-        def update_or_clone_repository_to_local_path(remote_url, local_path)
-          if (local_path.empty?)
-            download_remote_repo_to_local(remote_url, local_path)
-          else
-            reset_local_repo(local_path)
-            update_local_repo(local_path)
-          end
         end
 
       end

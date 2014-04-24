@@ -6,7 +6,7 @@ module Ki
     end
 
     attr_chain :action_log_dir, :require
-    attr_chain :action_log_file, -> { action_log_dir.action_log }
+    attr_chain :action_log_file, -> { action_log_dir.mkdir.action_log }
     attr_chain :logger, -> { CiLogger.new }
     attr_chain :exceptions, -> { ExceptionCatcher.new }
     attr_chain :after_actions, -> { [] }

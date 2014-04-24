@@ -45,7 +45,7 @@ module Ki
         private
 
         def update_local_repo(local_path)
-          sh.spawn("git fetch -fp origin", chdir: local_path.path)
+          sh.spawn("git fetch -fpq origin", chdir: local_path.path)
         end
 
         def download_remote_repo_to_local(remote_url, local_path)

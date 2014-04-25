@@ -132,13 +132,10 @@
                 <pre class="showMore">{{backtrace}}</pre>
                 {{/if}}
             {{/if}}
-            {{#if stdout}}
-            stdout:
-                <pre class="showMore">{{stdout}}</pre>
-            {{/if}}
-            {{#if stderr}}
-            stderr:
-            <pre class="showMore">{{stderr}}</pre>
+            {{#if output}}
+            output:
+                <pre class="showMore">{{#each output}}{{#if this.[2]}}ERR: {{this.[1]}}{{else}}{{this.[1]}}{{/if}}
+{{/each}}</pre>
             {{/if}}
         </td>
     </tr>

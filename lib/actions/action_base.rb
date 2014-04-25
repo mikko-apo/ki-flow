@@ -115,7 +115,7 @@ module Ki
     end
 
     def new_sh
-      HashLogShell.new.root_log(logger)
+      HashLogShell.new.logger(logger)
     end
   end
 end

@@ -21,7 +21,7 @@ module Ki
     class VCBuilder
       attr_chain :ki_home, :require
       attr_chain :log, -> {TestLogger.new}
-      attr_chain :sh, -> {HashLogShell.new.root_log(log)}
+      attr_chain :sh, -> {HashLogShell.new.logger(log)}
 
       def check(builds, exceptions)
         builds.each do |build_config|

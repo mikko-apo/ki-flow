@@ -133,7 +133,7 @@ env:
 EOF
 
     git_dir = @tester.tmpdir
-    git_sh = HashLogShell.new.chdir(git_dir).root_log(TestLogger.new)
+    git_sh = HashLogShell.new.chdir(git_dir).logger(TestLogger.new)
     git_sh.spawn("git init")
 
     # create 1st version

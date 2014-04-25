@@ -30,7 +30,7 @@ module Ki
         attr_chain :metadata_file, -> {build_dir.path("ki-version.json")}
         attr_chain :config, -> {read_config}
         attr_chain :root_log, :require
-        attr_chain :sh, -> {HashLogShell.new.chdir(build_dir.path).root_log(root_log)}
+        attr_chain :sh, -> {HashLogShell.new.chdir(build_dir.path).logger(root_log)}
 
         def handles_build_directory?(dir)
           dir.exist?("ki.yml")

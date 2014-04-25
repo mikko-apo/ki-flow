@@ -112,7 +112,7 @@ After script
     second_shell_cmd = logs["logs"][1]["logs"][1]
     second_shell_cmd["name"].should eq("echo")
     second_shell_cmd["cmd"].should eq("echo Test output")
-    second_shell_cmd["stdout"].should eq("Test output\n")
+    second_shell_cmd["output"].map{|time, type, text| [type, text]}.should eq([["o", "Test output"]])
   end
 
   it "should execute build only if remote git changes" do
@@ -133,7 +133,7 @@ env:
 EOF
 
     git_dir = @tester.tmpdir
-    git_sh = HashLogShell.new.chdir(git_dir).root_log(DummyHashLog.new)
+    git_sh = HashLogShell.new.chdir(git_dir).root_log(TestLogger.new)
     git_sh.spawn("git init")
 
     # create 1st version

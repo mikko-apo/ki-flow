@@ -20,7 +20,7 @@ module Ki
 
     class VCBuilder
       attr_chain :ki_home, :require
-      attr_chain :log, -> {DummyHashLog.new}
+      attr_chain :log, -> {TestLogger.new}
       attr_chain :sh, -> {HashLogShell.new.root_log(log)}
 
       def check(builds, exceptions)

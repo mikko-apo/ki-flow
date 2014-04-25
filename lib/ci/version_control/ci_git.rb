@@ -27,7 +27,7 @@ module Ki
         def get_revision(url)
           path = unpack_url(url)
           result = sh.spawn("git ls-remote --heads #{path.url} #{path.branch}")
-          result.out.split(/\s/)[0]
+          result.stdout.split(/\s/)[0]
         end
 
         def update_or_clone_repository_to_local_path(remote_url, local_path)

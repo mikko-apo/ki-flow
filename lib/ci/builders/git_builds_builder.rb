@@ -46,6 +46,7 @@ module Ki
         remote_url = build_config.fetch("remote_url")
         remote_revision = vc.get_revision(remote_url)
         local_revision = build_config["last_revision"]
+        puts "#{build_config} remote: #{remote_revision} local: #{local_revision}"
         if (remote_revision != local_revision)
           build_config["last_revision"] = remote_revision
         end

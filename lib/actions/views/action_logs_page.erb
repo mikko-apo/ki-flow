@@ -137,6 +137,9 @@
                 <pre class="showMore">{{#each output}}{{#if this.[2]}}ERR: {{this.[1]}}{{else}}{{this.[1]}}{{/if}}
 {{/each}}</pre>
             {{/if}}
+            {{#if chdir}}
+            chdir: {{chdir}}
+            {{/if}}
         </td>
     </tr>
     {{else}}

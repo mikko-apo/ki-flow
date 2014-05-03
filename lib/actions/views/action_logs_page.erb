@@ -123,7 +123,7 @@
         <td class="noWrap">{{date}}</td>
         <td>{{{duration}}}</td>
         <td>
-            <pre class="showMoreLine">{{cmd}}</pre>
+            <pre>{{cmd}}</pre>
             {{#if exitstatus}}
                 Failed! Exitstatus: {{exitstatus}}
             {{else}}
@@ -139,6 +139,12 @@
             {{/if}}
             {{#if chdir}}
             chdir: {{chdir}}
+            {{/if}}
+            {{#if try}}
+            tries: {{try}}
+            {{/if}}
+            {{#if cmd_original}}
+            original command: <pre class="showMoreLine">{{cmd_original}}</pre>
             {{/if}}
         </td>
     </tr>

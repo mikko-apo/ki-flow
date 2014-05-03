@@ -75,6 +75,9 @@
     <table border="0">
         {{#with data}}
         <tr><td>Name</td><td>{{name}}</td></tr>
+        {{#if description}}
+        <tr><td>Description</td><td>{{{description}}}</td></tr>
+        {{/if}}
         <tr><td>Date</td><td>{{date}}</td></tr>
         <tr><td>Duration</td><td>{{{duration}}}</td></tr>
         {{#if fail_reason}}

@@ -86,6 +86,18 @@ this.show_log = (base, name, id) ->
       for log in data.logs
         renderLog(log, 0, ignore_date)
     showMore()
+    searchByText("#search", "#log tr", "#searchCount")
+
+this.searchByText = (input, row, info) ->
+  $(input).changes ->
+    searchTerm = $(this).val()
+    $(row).each ->
+      element = $(this)
+      match = element.text().toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0
+      element.toggle(match)
+      if match
+        matches += 1
+    $(info).text(matches)
 
 updateLog = (log) ->
   log.date = TimeFormat.formatDateTime(log.start * 1000)

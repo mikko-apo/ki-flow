@@ -89,7 +89,7 @@ this.show_log = (base, name, id) ->
 
 updateLog = (log) ->
   log.date = TimeFormat.formatDateTime(log.start * 1000)
-  log.duration = if log.time then TimeFormat.formatDuration(log.time * 1000) else "<i>&lt;running&gt;</i>"
+  log.duration = if log.time? then TimeFormat.formatDuration(log.time * 1000) else "<i>&lt;running&gt;</i>"
   if log.exception || log.fail_reason
     log.classes = "error"
     if log.exception && log.fail_reason
@@ -153,6 +153,11 @@ class TimeFormat
   @formatDuration = (timestamp_ms) ->
     if timestamp_ms == 0
       return "0ms"
+    showMs = true
+    # round 10.5s to 11ms
+    if timestamp_ms > 10000 && ( (timestamp_ms % 1000) > 500)
+      timestamp_ms += 1000
+      showMs = false
     arr = []
     if timestamp_ms > (3600 * 1000)
       arr.push Math.floor( timestamp_ms / (3600 * 1000) )
@@ -166,7 +171,7 @@ class TimeFormat
       arr.push Math.floor( timestamp_ms / (1000) )
       arr.push "s"
     timestamp_ms %= (1000)
-    if timestamp_ms > 0
+    if timestamp_ms > 0 && showMs
       arr.push Math.floor( timestamp_ms )
       arr.push "ms"
     arr.join("")

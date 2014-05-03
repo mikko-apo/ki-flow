@@ -155,8 +155,9 @@ class TimeFormat
       return "0ms"
     showMs = true
     # round 10.5s to 11ms
-    if timestamp_ms > 10000 && ( (timestamp_ms % 1000) > 500)
-      timestamp_ms += 1000
+    if timestamp_ms > 10000
+      if (timestamp_ms % 1000) > 500
+        timestamp_ms += 1000
       showMs = false
     arr = []
     if timestamp_ms > (3600 * 1000)

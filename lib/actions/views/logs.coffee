@@ -90,6 +90,7 @@ this.show_log = (base, name, id) ->
 
 this.searchByText = (input, row, info) ->
   $(input).changes ->
+    matches = 0
     searchTerm = $(this).val()
     $(row).each ->
       element = $(this)

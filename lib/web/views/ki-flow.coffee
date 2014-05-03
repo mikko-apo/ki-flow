@@ -81,6 +81,7 @@ limitations under the License.
       throw "Selector '#{selector}' returned #{nodeCount} elements. There were #{assertCount} asserts. #{numberOfCompared} elements were ok, but you need to #{verb} #{Math.abs(diff)} asserts!"
   null # cleaner javascript
 
+hb = Handlebars.create
 handlebarsCache = {}
 
 getCompiledTemplate = (templateId) ->
@@ -90,7 +91,7 @@ getCompiledTemplate = (templateId) ->
   template = $(templateId)
   if template.size() == 0
     throw "Could not locate template '#{templateId}'"
-  handlebarsCache[templateId] = Handlebars.compile(template.html())
+  handlebarsCache[templateId] = hb.compile(template.html())
 
 this.renderElements = (destId, templateId, data) ->
   dest = $(destId)

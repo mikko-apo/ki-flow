@@ -1,8 +1,12 @@
 # @title ki-flow: Backlog
 
+# Action logs
+- display exception colors
+- fix search
+- fix hash display on load
+- cmd output log should show timing and errors with colors
+
 # CI
-* build action logs
-* logs should be collected
 * test results should be parsed and collected
 * cmd: "ki ci-scan https://github.com/mikko-apo/ki-flow/"
 ** download repository

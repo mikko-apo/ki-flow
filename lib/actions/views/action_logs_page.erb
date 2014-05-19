@@ -108,6 +108,10 @@
     </table>
 
     <h3>Logs</h3>
+    <div id="divLog">
+    </div>
+
+    <h3>Logs</h3>
     <input type="text" id="search"> <span id="searchCount"></span>
     <table id="log" border="1">
         <tr>
@@ -168,9 +172,84 @@
     {{/if}}
 </script>
 
+<script id="t-log-div" type="text/x-handlebars-template">
+
+    {{#if childLog}}
+    <div class="childLog">
+    {{else}}
+    <div>
+    {{/if}}
+
+    <div class="header">
+        {{#if logs}}
+        <span class="showLogs">[+]</span>
+        {{/if}}
+        <a href="#{{name}}-{{start}}-{{time}}" name="{{name}}-{{start}}-{{time}}">
+        <span class="noWrap date">{{date}}</span>
+        <span class="noWrap duration">{{duration}}</span></a>
+        <span class="noWrap"><b>{{name}}</b></span>
+    </div>
+
+        {{#if cmd}}
+        <div class="info">
+            <pre class="cmd">{{cmd}}</pre>
+            {{#if cmd_original}}
+            original command: <pre class="showMoreLine">{{cmd_original}}</pre>
+            {{/if}}
+        </div>
+        {{/if}}
+
+        {{#if chdir}}
+        <div class="info">chdir: {{chdir}}</div>
+        {{/if}}
+        {{#if try}}
+        <div class="info">tries: {{try}}</div>
+        {{/if}}
+
+        {{#if cmd}}
+        {{#if exitstatus}}
+        <div class="info">
+            Failed! Exitstatus: {{exitstatus}}
+        </div>
+        {{else}}
+        {{#if exception}}
+        <div class="info">
+            <span class="showMoreLine">{{exception}}</span>
+            {{#if backtrace}}
+            <pre class="showMore">{{backtrace}}</pre>
+            {{/if}}
+        </div>
+        {{/if}}
+        {{/if}}
+        {{else}}
+        {{#if exception}}
+        <div class="info">
+            <span class="showMoreLine">Exception: {{exception}}</span>
+            {{#if backtrace}}
+            <pre class="showMore">{{backtrace}}</pre>
+            {{/if}}
+        </div>
+        {{/if}}
+        {{/if}}
+
+        {{#if output}}
+        <div class="info">
+            output:
+                <pre class="showMore">{{#each output}}{{#if this.[2]}}ERR: {{this.[1]}}{{else}}{{this.[1]}}{{/if}}
+{{/each}}</pre>
+        </div>
+        {{/if}}
+
+        {{#if logs}}
+        <div class="childLogs"></div>
+        {{/if}}
+
+    </div>
+</script>
+
 <div id="content"></div>
 
-<script type="text/javascript" src="<%= res_url("js/jquery-1.9.0.js", RepositoryWeb) %>"></script>
+<script type="text/javascript" src="<%= res_url("js/jquery-1.11.1.js", RepositoryWeb) %>"></script>
 <script type="text/javascript" src="<%= res_url("js/handlebars.js", RepositoryWeb) %>"></script>
 <script type="text/javascript" src="<%= res_url("js/ki-router.coffee", RepositoryWeb) %>"></script>
 <script type="text/javascript" src="<%= res_url("views/ki-flow.coffee", RepositoryWeb) %>"></script>

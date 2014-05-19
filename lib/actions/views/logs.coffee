@@ -82,11 +82,20 @@ this.show_log = (base, name, id) ->
       name: name
       id: id
       data: data
-    if data.logs
-      for log in data.logs
-        renderLog(log, 0, ignore_date)
-    showMore()
+    renderLogList data.logs, "#divLog", 0, ignore_date
     searchByText("#search", "#log tr", "#searchCount")
+    if window.location.hash.length > 0
+      window.location.hash = window.location.hash
+
+renderLogList = (list, dest, level, ignore_date) ->
+  if list
+    now = list[0..100]
+    rest = list[101..-1]
+    if rest.length > 0
+      setTimeout (->
+        renderLogList rest, dest, level, ignore_date), 1
+    for log in now
+      renderLog(log, 0, ignore_date, dest)
 
 this.searchByText = (input, row, info) ->
   $(input).change ->
@@ -112,23 +121,33 @@ updateLog = (log) ->
     else
       log.error = "Fail reason: #{log.fail_reason}"
 
-this.renderLog = (data, level, ignore_date) ->
+this.renderLog = (data, level, ignore_date, dest = "#divLog" ) ->
   updateLog(data)
   if ignore_date == TimeFormat.formatDate(data.start * 1000)
     data.date = TimeFormat.formatTime(data.start * 1000)
   else
     data.date = TimeFormat.formatDateTime(data.start * 1000)
-  indent = level * 30
-  if indent < 4
-    indent = 4
-  data.indent = "" + (indent) + "px"
-  appendElement "#log tr:last", "#t-log-line", data
-  if data.logs
-    for log in data.logs
-      renderLog(log, level + 1, ignore_date)
+  if level > 0
+    data.childLog = true
+  logLine = appendElement(dest, "#t-log-div", data)[0]
+  showMore(logLine)
+  $(".showLogs", logLine).click ->
+    button = $(this)
+    logs_dest = $(".childLogs", logLine)
+    if button.data("rendered")
+      if button.text() == "[+]"
+        button.text("[-]")
+        logs_dest.show()
+      else
+        button.text("[+]")
+        logs_dest.hide()
+    else
+      button.data("rendered", true)
+      button.text("[-]")
+      renderLogList data.logs, logs_dest, level + 1, ignore_date
 
-this.showMore = ->
-  for i in $(".showMore")
+this.showMore = (dest="body") ->
+  for i in $(".showMore", dest)
     item = $(i)
     text = item.text()
     arr = text.split("\n")
@@ -141,7 +160,6 @@ this.showMore = ->
     if text.length > 117
       new_text = text.substring(0, 100) + "... (show more)"
       showOnClick(i, item, text, new_text)
-
 
 this.showOnClick = (i, item, text, new_text) ->
   i.long_text = text

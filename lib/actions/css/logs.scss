@@ -16,6 +16,10 @@ limitations under the License.
 
 */
 
+body {
+  font-family: "verdana,​arial,​helvetica,​sans-serif";
+}
+
 #log {
   pre {
     margin-top: 0;
@@ -36,3 +40,33 @@ tr.error {
   }
 }
 
+
+.childLogs {
+  margin-left: 10px;
+  padding-left: 15px;
+  border-left-style: dotted;
+  border-width:1px;
+}
+
+#divLog {
+  .header {
+    font-size: 14px;
+  }
+  pre {
+    margin: 0px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  .cmd {
+    color: darkgreen;
+  }
+  .date {
+    color: grey;
+  }
+  .duration {
+    color: grey;
+  }
+  .info {
+    margin-left: 15px;
+  }
+}

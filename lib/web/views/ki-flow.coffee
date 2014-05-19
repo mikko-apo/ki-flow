@@ -92,14 +92,17 @@ getCompiledTemplate = (templateId) ->
     throw "Could not locate template '#{templateId}'"
   handlebarsCache[templateId] = Handlebars.compile(template.html())
 
-this.renderElements = (destId, templateId, data) ->
+getDest = (destId) ->
   dest = $(destId)
   if dest.size() == 0
     throw "Could not locate destination '#{destId}'"
-  dest.html(getCompiledTemplate(templateId)(data));
+  dest
+
+this.renderElements = (destId, templateId, data) ->
+  getDest(destId).html(getCompiledTemplate(templateId)(data))
 
 this.appendElement = (destId, templateId, data) ->
-  dest = $(destId)
-  if dest.size() == 0
-    throw "Could not locate destination '#{destId}'"
-  dest.after(getCompiledTemplate(templateId)(data));
+  $(getCompiledTemplate(templateId)(data)).appendTo(getDest(destId))
+
+this.afterElement = (destId, templateId, data) ->
+  getDest(destId).after(getCompiledTemplate(templateId)(data))

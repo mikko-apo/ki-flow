@@ -128,13 +128,15 @@ this.renderLog = (data, level, ignore_date, dest, parent ) ->
   else
     data.date = TimeFormat.formatDateTime(data.start * 1000)
   data.anchor = "#{data.name}-#{data.start}-#{data.time}"
+  if data.exception
+    data.classes=" error"
   logLine = appendElement(dest, "#t-log-div", data)[0]
   if parent
     $(logLine).data("parent", parent)
   showMore(logLine)
   $(".showLogs", logLine).click ->
     button = $(this)
-    logs_dest = $(".childLogs", logLine)
+    logs_dest = $(".logs", logLine)
     if button.data("rendered")
       if button.text() == "[+]"
         button.text("[-]")

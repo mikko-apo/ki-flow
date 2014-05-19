@@ -174,21 +174,19 @@
 
 <script id="t-log-div" type="text/x-handlebars-template">
 
-    {{#if childLog}}
-    <div class="childLog">
-    {{else}}
-    <div>
-    {{/if}}
+    <div class="log">
 
-    <div class="header">
-        {{#if logs}}
-        <span class="showLogs">[+]</span>
-        {{/if}}
-        <a href="#{{anchor}}" name="{{anchor}}">
-        <span class="noWrap date">{{date}}</span>
-        <span class="noWrap duration">{{duration}}</span></a>
-        <span class="noWrap"><b>{{name}}</b></span>
-    </div>
+        <div class="info{{classes}}">
+
+        <div class="header">
+            {{#if logs}}
+            <span class="showLogs">[+]</span>
+            {{/if}}
+            <a href="#{{anchor}}" name="{{anchor}}">
+            <span class="noWrap date">{{date}}</span>
+            <span class="noWrap duration">{{duration}}</span></a>
+            <span class="noWrap"><b>{{name}}</b></span>
+        </div>
 
         {{#if cmd}}
         <div class="info">
@@ -239,9 +237,10 @@
 {{/each}}</pre>
         </div>
         {{/if}}
+        </div>
 
         {{#if logs}}
-        <div class="childLogs"></div>
+        <div class="logs"></div>
         {{/if}}
 
     </div>

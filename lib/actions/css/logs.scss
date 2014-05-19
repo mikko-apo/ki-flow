@@ -29,7 +29,7 @@ body {
   }
 }
 .error {
-  td {
+  .header, .info {
     background-color: #FFB0B0;
   }
 }
@@ -41,7 +41,7 @@ tr.error {
 }
 
 
-.childLogs {
+.logs {
   margin-left: 10px;
   padding-left: 15px;
   border-left-style: dotted;

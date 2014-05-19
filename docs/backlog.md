@@ -1,7 +1,6 @@
 # @title ki-flow: Backlog
 
 # Action logs
-- display exception colors
 - fix search
 - fix hash display on load
 - cmd output log should show timing and errors with colors

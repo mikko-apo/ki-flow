@@ -82,20 +82,20 @@ this.show_log = (base, name, id) ->
       name: name
       id: id
       data: data
-    renderLogList data.logs, "#divLog", 0, ignore_date
+    renderLogList data.logs, "#divLog", 0, ignore_date, null
     searchByText("#search", "#log tr", "#searchCount")
     if window.location.hash.length > 0
       window.location.hash = window.location.hash
 
-renderLogList = (list, dest, level, ignore_date) ->
+renderLogList = (list, dest, level, ignore_date, parent = null) ->
   if list
     now = list[0..100]
     rest = list[101..-1]
     if rest.length > 0
       setTimeout (->
-        renderLogList rest, dest, level, ignore_date), 1
+        renderLogList rest, dest, level, ignore_date, parent), 1
     for log in now
-      renderLog(log, 0, ignore_date, dest)
+      renderLog log, 0, ignore_date, dest, parent
 
 this.searchByText = (input, row, info) ->
   $(input).change ->
@@ -121,15 +121,16 @@ updateLog = (log) ->
     else
       log.error = "Fail reason: #{log.fail_reason}"
 
-this.renderLog = (data, level, ignore_date, dest = "#divLog" ) ->
+this.renderLog = (data, level, ignore_date, dest, parent ) ->
   updateLog(data)
   if ignore_date == TimeFormat.formatDate(data.start * 1000)
     data.date = TimeFormat.formatTime(data.start * 1000)
   else
     data.date = TimeFormat.formatDateTime(data.start * 1000)
-  if level > 0
-    data.childLog = true
+  data.anchor = "#{data.name}-#{data.start}-#{data.time}"
   logLine = appendElement(dest, "#t-log-div", data)[0]
+  if parent
+    $(logLine).data("parent", parent)
   showMore(logLine)
   $(".showLogs", logLine).click ->
     button = $(this)
@@ -144,7 +145,7 @@ this.renderLog = (data, level, ignore_date, dest = "#divLog" ) ->
     else
       button.data("rendered", true)
       button.text("[-]")
-      renderLogList data.logs, logs_dest, level + 1, ignore_date
+      renderLogList data.logs, logs_dest, level + 1, ignore_date, logLine
 
 this.showMore = (dest="body") ->
   for i in $(".showMore", dest)

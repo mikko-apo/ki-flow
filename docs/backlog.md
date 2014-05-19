@@ -5,6 +5,7 @@
 - fix search
 - fix hash display on load
 - cmd output log should show timing and errors with colors
+- expand all
 
 # CI
 * test results should be parsed and collected

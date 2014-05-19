@@ -5,6 +5,7 @@
 - fix hash display on load
 - cmd output log should show timing and errors with colors
 - expand all
+- fix left align
 
 # CI
 * test results should be parsed and collected

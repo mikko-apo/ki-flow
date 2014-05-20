@@ -82,19 +82,18 @@ this.show_log = (base, name, id) ->
       name: name
       id: id
       data: data
-    renderLogList data.logs, "#divLog", 0, ignore_date, null
-    searchByText("#search", "#log tr", "#searchCount")
+    renderLogList data, data.logs, "#divLog", 0, ignore_date
+    searchByText("#search", "#divLog .entry", "#searchCount")
     if window.location.hash.length > 0
       window.location.hash = window.location.hash
 
-renderLogList = (list, dest, level, ignore_date, parent = null) ->
+renderLogList = (parent, list, dest, level, ignore_date) ->
   if list
-    now = list[0..100]
     rest = list[101..-1]
     if rest.length > 0
       setTimeout (->
-        renderLogList rest, dest, level, ignore_date, parent), 1
-    for log in now
+        renderLogList parent, rest, dest, level, ignore_date), 1
+    for log in list[0..100]
       renderLog log, 0, ignore_date, dest, parent
 
 this.searchByText = (input, row, info) ->
@@ -131,23 +130,22 @@ this.renderLog = (data, level, ignore_date, dest, parent ) ->
   if data.exception
     data.classes=" error"
   logLine = appendElement(dest, "#t-log-div", data)[0]
+  data.logLine = logLine
   if parent
-    $(logLine).data("parent", parent)
+    data.parent = parent
   showMore(logLine)
+  logs_dest = $(".logs", logLine)
+  logs_dest.hide()
+  setTimeout (->
+    renderLogList data, data.logs, logs_dest, level + 1, ignore_date), 500
   $(".showLogs", logLine).click ->
     button = $(this)
-    logs_dest = $(".logs", logLine)
-    if button.data("rendered")
-      if button.text() == "[+]"
-        button.text("[-]")
-        logs_dest.show()
-      else
-        button.text("[+]")
-        logs_dest.hide()
-    else
-      button.data("rendered", true)
+    if button.text() == "[+]"
       button.text("[-]")
-      renderLogList data.logs, logs_dest, level + 1, ignore_date, logLine
+      logs_dest.show()
+    else
+      button.text("[+]")
+      logs_dest.hide()
 
 this.showMore = (dest="body") ->
   for i in $(".showMore", dest)

@@ -1,24 +1,6 @@
 module Ki
 
-  module GracefulExit
-    def trap_signals
-      $CAUGHT_SIGNAL = 0
-      trap "INT" do
-        $CAUGHT_INT += 1
-      end
-      trap "TERM" do
-        $CAUGHT_TERM += 1
-      end
-    end
-
-    def no_exit_signals?
-      $CAUGHT_INT == 0 && $CAUGHT_TERM == 0
-    end
-  end
-
   module ActionBase
-
-    extend GracefulExit
 
     class CiLogger
       include HashLog
@@ -135,6 +117,20 @@ module Ki
 
     def new_sh
       HashLogShell.new.logger(logger)
+    end
+
+    def trap_signals
+      $CAUGHT_SIGNAL = 0
+      trap "INT" do
+        $CAUGHT_INT += 1
+      end
+      trap "TERM" do
+        $CAUGHT_TERM += 1
+      end
+    end
+
+    def no_exit_signals?
+      $CAUGHT_INT == 0 && $CAUGHT_TERM == 0
     end
   end
 end

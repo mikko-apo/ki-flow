@@ -18,7 +18,7 @@ module Ki
 
   module ActionBase
 
-    include GracefulExit
+    extend GracefulExit
 
     class CiLogger
       include HashLog

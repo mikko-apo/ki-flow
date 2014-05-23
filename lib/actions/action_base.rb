@@ -2,7 +2,7 @@ module Ki
 
   module GracefulExit
     def trap_signals
-      $CAUGHT_SIGNAL = 0
+      $CAUGHT_INT = $CAUGHT_TERM = 0
       trap "INT" do
         $CAUGHT_INT += 1
       end

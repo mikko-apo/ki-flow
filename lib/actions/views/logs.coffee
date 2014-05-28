@@ -151,6 +151,7 @@ this.renderLog = (data, level, ignore_date, dest, parent ) ->
       button.data("rendered", true)
       button.text("[-]")
       renderLogList data, data.logs, logs_dest, level + 1, ignore_date
+      logs_dest.show()
 
 this.showMore = (dest="body") ->
   for i in $(".showMore", dest)

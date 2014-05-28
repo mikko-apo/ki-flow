@@ -155,15 +155,19 @@ this.renderLog = (data, level, ignore_date, dest, parent ) ->
       renderLogList data, data.logs, logs_dest, level + 1, ignore_date
       logs_dest.show()
 
-expandLogs = () ->
-  expandedOne = false
-  for i in $(".showLogs")
+expandLogs = (root="body", list = null) ->
+  if !list
+    list = $(".showLogs", root)
+  rest = list[101..-1]
+  if rest.length > 0
+    setTimeout (->
+      expandLogs root, rest), 10
+  for i in list[0..100]
     button = $(i)
     if button.text() == "[+]"
       button.trigger("click")
-      expandedOne = true
-  if expandedOne
-    setTimeout expandLogs, 20
+      setTimeout (->
+        expandLogs i), 10
 
 this.showMore = (dest="body") ->
   for i in $(".showMore", dest)

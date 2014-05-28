@@ -86,6 +86,8 @@ this.show_log = (base, name, id) ->
     searchByText("#search", "#divLog .entry", "#searchCount")
     if window.location.hash.length > 0
       window.location.hash = window.location.hash
+    $(".expandLogs").click ->
+      expandLogs()
 
 renderLogList = (parent, list, dest, level, ignore_date) ->
   if list
@@ -152,6 +154,16 @@ this.renderLog = (data, level, ignore_date, dest, parent ) ->
       button.text("[-]")
       renderLogList data, data.logs, logs_dest, level + 1, ignore_date
       logs_dest.show()
+
+expandLogs = () ->
+  expandedOne = false
+  for i in $(".showLogs")
+    button = $(i)
+    if button.text() == "[+]"
+      button.trigger("click")
+      expandedOne = true
+  if expandedOne
+    setTimeout expandLogs, 20
 
 this.showMore = (dest="body") ->
   for i in $(".showMore", dest)

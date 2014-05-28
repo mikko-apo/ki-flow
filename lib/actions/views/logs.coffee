@@ -136,16 +136,21 @@ this.renderLog = (data, level, ignore_date, dest, parent ) ->
   showMore(logLine)
   logs_dest = $(".logs", logLine)
   logs_dest.hide()
-  setTimeout (->
-    renderLogList data, data.logs, logs_dest, level + 1, ignore_date), 500
+#  setTimeout (->
+#    renderLogList data, data.logs, logs_dest, level + 1, ignore_date), 500
   $(".showLogs", logLine).click ->
     button = $(this)
-    if button.text() == "[+]"
-      button.text("[-]")
-      logs_dest.show()
+    if button.data("rendered")
+      if button.text() == "[+]"
+        button.text("[-]")
+        logs_dest.show()
+      else
+        button.text("[+]")
+        logs_dest.hide()
     else
-      button.text("[+]")
-      logs_dest.hide()
+      button.data("rendered", true)
+      button.text("[-]")
+      renderLogList data, data.logs, logs_dest, level + 1, ignore_date
 
 this.showMore = (dest="body") ->
   for i in $(".showMore", dest)

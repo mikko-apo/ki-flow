@@ -86,7 +86,7 @@ this.show_log = (base, name, id) ->
     searchByText("#search", "#divLog .entry", "#searchCount")
     if window.location.hash.length > 0
       window.location.hash = window.location.hash
-    $(".expandLogs").click ->
+    $(".expandAll").click ->
       expandLogs()
 
 renderLogList = (parent, list, dest, level, ignore_date) ->
@@ -136,24 +136,27 @@ this.renderLog = (data, level, ignore_date, dest, parent ) ->
   if parent
     data.parent = parent
   showMore(logLine)
-  logs_dest = $(".logs", logLine)
-  logs_dest.hide()
+  if data.logs
+    logs_dest = $(".logs", logLine)
+    logs_dest.hide()
 #  setTimeout (->
 #    renderLogList data, data.logs, logs_dest, level + 1, ignore_date), 500
-  $(".showLogs", logLine).click ->
-    button = $(this)
-    if button.data("rendered")
-      if button.text() == "[+]"
-        button.text("[-]")
-        logs_dest.show()
+    $(".showLogs", logLine).click ->
+      button = $(this)
+      if button.data("rendered")
+        if button.text() == "[+]"
+          button.text("[-]")
+          logs_dest.show()
+        else
+          button.text("[+]")
+          logs_dest.hide()
       else
-        button.text("[+]")
-        logs_dest.hide()
-    else
-      button.data("rendered", true)
-      button.text("[-]")
-      renderLogList data, data.logs, logs_dest, level + 1, ignore_date
-      logs_dest.show()
+        button.data("rendered", true)
+        button.text("[-]")
+        renderLogList data, data.logs, logs_dest, level + 1, ignore_date
+        logs_dest.show()
+    $(".expandFully", logLine).click ->
+      expandLogs(logLine)
 
 expandLogs = (root="body", list = null) ->
   if !list

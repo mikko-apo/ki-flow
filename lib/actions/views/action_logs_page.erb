@@ -108,60 +108,11 @@
     </table>
 
     <h3>Logs</h3>
-    <span class="expandLogs">[expand]</span>
+    <span class="expandAll">[expand all]</span>
     <input type="text" id="search"> <span id="searchCount"></span>
     <div id="divLog">
     </div>
 
-</script>
-
-<script id="t-log-line" type="text/x-handlebars-template">
-    {{#if cmd}}
-    <tr class="{{classes}}">
-        <td style="padding-left: {{indent}}" class="noWrap">{{name}}</td>
-        <td class="noWrap">{{date}}</td>
-        <td>{{{duration}}}</td>
-        <td>
-            <pre>{{cmd}}</pre>
-            {{#if exitstatus}}
-                Failed! Exitstatus: {{exitstatus}}
-            {{else}}
-                <span class="showMoreLine">{{exception}}</span>
-                {{#if backtrace}}
-                <pre class="showMore">{{backtrace}}</pre>
-                {{/if}}
-            {{/if}}
-            {{#if output}}
-            output:
-                <pre class="showMore">{{#each output}}{{#if this.[2]}}ERR: {{this.[1]}}{{else}}{{this.[1]}}{{/if}}
-{{/each}}</pre>
-            {{/if}}
-            {{#if chdir}}
-            chdir: {{chdir}}
-            {{/if}}
-            {{#if try}}
-            tries: {{try}}
-            {{/if}}
-            {{#if cmd_original}}
-            original command: <pre class="showMoreLine">{{cmd_original}}</pre>
-            {{/if}}
-        </td>
-    </tr>
-    {{else}}
-    <tr class="{{classes}}">
-        <td style="padding-left: {{indent}}" class="noWrap">{{name}}</td>
-        <td class="noWrap">{{date}}</td>
-        <td>{{{duration}}}</td>
-        <td>
-            {{#if exception}}
-                <span class="showMoreLine">Exception: {{exception}}</span>
-                {{#if backtrace}}
-                <pre class="showMore">{{backtrace}}</pre>
-                {{/if}}
-            {{/if}}
-        </td>
-    </tr>
-    {{/if}}
 </script>
 
 <script id="t-log-div" type="text/x-handlebars-template">
@@ -178,6 +129,9 @@
             <span class="noWrap date">{{date}}</span>
             <span class="noWrap duration">{{duration}}</span></a>
             <span class="noWrap"><b>{{name}}</b></span>
+            {{#if logs}}
+            <span class="expandFully">[expand]</span>
+            {{/if}}
         </div>
 
         {{#if cmd}}
